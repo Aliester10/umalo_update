@@ -196,6 +196,11 @@
                                     <span class="sub-item">Pertanyaan</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('admin.brand-partner.index') }}">
+                                    <span class="sub-item">Brand & Logo</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

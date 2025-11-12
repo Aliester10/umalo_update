@@ -8,9 +8,12 @@
         <div class="header-carousel-item bg-primary"
             style="background-image: url('{{ asset('assets/img/default_about.jpg') }}');
                    background-size: cover;
-                   background-position: center;
+                   background-position: center 40%;
                    background-repeat: no-repeat;
-                   height: 100vh;">
+                   height: 100vh;
+                   width: 100%;
+                   margin: 0;
+                   padding: 0;">
             <div class="carousel-caption text-start bg-overlay">
                 <div class="container">
                     <div class="row g-4 align-items-center justify-content-center">
@@ -33,10 +36,16 @@
             <div class="header-carousel-item"
                 style="background-image: url('{{ asset($slider->image_url) }}');
                        background-size: cover;
-                       background-position: center;
+                       background-position: center 40%;
                        background-repeat: no-repeat;
                        height: 100vh;
-                       position: relative;">
+                       width: 100%;
+                       margin: 0;
+                       padding: 0;
+                       position: relative;
+                       display: flex;
+                       align-items: center;
+                       justify-content: center;">
 
                 @if ($slider->title || $slider->subtitle || $slider->description || $slider->button_text)
                     <div class="carousel-caption text-start bg-overlay">
@@ -74,12 +83,339 @@
 <!-- Carousel End -->
 
 <style>
-    .header-carousel-item {
-        position: relative;
-        width: 100%;
-        height: 100vh;
+    /*** Carousel Hero Header Start ***/
+    
+    /* Desktop (1200px+) */
+    @media (min-width: 1200px) {
+        .header-carousel {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .header-carousel.owl-carousel {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-carousel .owl-stage-outer,
+        .header-carousel .owl-stage {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .header-carousel-item {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-size: cover;
+            background-position: center 40%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-caption h1.display-1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .carousel-caption h4 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .carousel-caption .btn {
+            font-size: 1rem;
+            padding: 0.75rem 2rem !important;
+        }
     }
 
+    /* Tablet Landscape (992px - 1199px) */
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .header-carousel {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .header-carousel.owl-carousel {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .header-carousel .owl-stage-outer,
+        .header-carousel .owl-stage {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .header-carousel-item {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-size: cover;
+            background-position: center 35%;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-caption h1.display-1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .carousel-caption h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .carousel-caption .btn {
+            font-size: 0.95rem;
+            padding: 0.6rem 1.5rem !important;
+        }
+    }
+
+    /* Tablet Portrait (768px - 991px) */
+    @media (min-width: 768px) and (max-width: 991px) {
+        .header-carousel {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .header-carousel.owl-carousel {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .header-carousel .owl-stage-outer,
+        .header-carousel .owl-stage {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .header-carousel-item {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-caption {
+            padding: 0 2rem !important;
+        }
+
+        .carousel-caption h1.display-1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-caption h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-caption .btn {
+            font-size: 0.85rem;
+            padding: 0.5rem 1.25rem !important;
+        }
+    }
+
+    /* Small Tablet / Large Mobile (576px - 767px) */
+    @media (min-width: 576px) and (max-width: 767px) {
+        .header-carousel {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .header-carousel.owl-carousel {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .header-carousel .owl-stage-outer,
+        .header-carousel .owl-stage {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .header-carousel-item {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-size: cover;
+            background-position: center 25%;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-caption {
+            padding: 0 1.5rem !important;
+        }
+
+        .carousel-caption h1.display-1 {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .carousel-caption h4 {
+            font-size: 0.85rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .carousel-caption p {
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .carousel-caption .btn {
+            font-size: 0.75rem;
+            padding: 0.4rem 1rem !important;
+        }
+    }
+
+    /* Mobile (max-width: 575px) */
+    @media (max-width: 575px) {
+        .header-carousel {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .header-carousel.owl-carousel {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .header-carousel .owl-stage-outer,
+        .header-carousel .owl-stage {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .header-carousel-item {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-size: cover;
+            background-position: center 20%;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-caption {
+            padding: 0 1rem !important;
+        }
+
+        .carousel-caption h1.display-1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+        }
+
+        .carousel-caption h4 {
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.5px;
+        }
+
+        .carousel-caption p {
+            font-size: 0.7rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .carousel-caption .btn {
+            font-size: 0.65rem;
+            padding: 0.35rem 0.75rem !important;
+            white-space: nowrap;
+        }
+    }
+
+    /* Common Styles untuk semua ukuran */
     .bg-overlay {
         background: rgba(0, 0, 0, 0.45);
         position: absolute;
@@ -87,14 +423,50 @@
         left: 0;
         width: 100%;
         height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        z-index: 2;
+    }
+
+    .carousel-caption {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
     }
 
     .header-carousel .owl-nav .owl-prev,
     .header-carousel .owl-nav .owl-next {
         display: none !important;
     }
-</style>
 
+    .header-carousel .owl-dots {
+        display: none !important;
+    }
+
+    .carousel-caption .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .carousel-caption .text-start {
+        padding: 2rem 0;
+    }
+
+    /*** Carousel Hero Header End ***/
+</style>
 
     <!-- About Start -->
     <div class="container-fluid bg-light about mb-5">

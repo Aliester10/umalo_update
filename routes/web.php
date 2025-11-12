@@ -4,7 +4,7 @@
     use App\Http\Controllers\Admin\MasterData\KategoriController;
     use App\Http\Controllers\Member\Portal\PortalController;
     use App\Http\Controllers\Member\Product\MemberProductController;
-use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Guest\Home\HomeController;
     use Illuminate\Support\Facades\Auth;
     use App\Http\Controllers\Admin\Member\MemberController;
@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Admin\Slider\SliderController;
     use App\Http\Controllers\Admin\Activity\ActivityController;
     use App\Http\Controllers\Admin\Banner\BannerController;
+    use App\Http\Controllers\Admin\Brand\BrandController;
     use App\Http\Controllers\Guest\Activity\ActivityGuestController;
     use App\Http\Controllers\Admin\BrandPartner\BrandPartnerController;
     use App\Http\Controllers\Admin\Dashboard\DashboardController;
@@ -158,12 +159,11 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
-        Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-        Route::post('/admin/change-password', [DashboardController::class, 'changePassword'])->name('admin.changePassword');
-
-
+            Route::get('dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+            Route::post('/admin/change-password', [DashboardController::class, 'changePassword'])->name('admin.changePassword');
+            // Brand & Logo Management
+Route::resource('admin/brand-partner', BrandPartnerController::class)->names('admin.brand-partner');
             Route::get('/admin/visitors', [VisitorController::class, 'index'])->name('admin.visitors');
-
             Route::resource('admin/product', ProductController::class)->names('admin.product');
             Route::resource('admin/parameter', CompanyParameterController::class);
             Route::resource('admin/category', CategoryController::class)->names('admin.category');

@@ -15,7 +15,7 @@ class CompanyParameterController extends Controller
     public function index()
     {
         $companyParameters = CompanyParameter::all();
-        return view('admin.parameter.index', compact('companyParameters'));
+        return view('Admin.Parameter.index', compact('companyParameters'));
     }
 
     /**
@@ -28,7 +28,7 @@ class CompanyParameterController extends Controller
             return redirect()->route('parameter.index')->with('error', 'Data already exists. You can only edit the existing data.');
         }
     
-        return view('admin.parameter.create');
+        return view('Admin.Parameter.create');
     }
     
 
@@ -111,7 +111,7 @@ class CompanyParameterController extends Controller
     public function show($id)
     {
         $companyParameter = CompanyParameter::findOrFail($id);
-        return view('admin.parameter.show', compact('companyParameter'));
+        return view('Admin.Parameter.show', compact('companyParameter'));
     }
 
     /**
@@ -121,7 +121,7 @@ class CompanyParameterController extends Controller
     {
         // Retrieve the company parameter by ID
         $companyParameter = CompanyParameter::findOrFail($id);
-        return view('admin.parameter.edit', compact('companyParameter'));
+        return view('Admin.Parameter.edit', compact('companyParameter'));
     }
 
     public function update(Request $request, $id)
