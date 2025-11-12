@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
-    <title>Umalo - Way To Know</title>
+    <title>{{ $company->company_name ?? 'Umalo' }} - {{ $company->slogan ?? 'Way To Know' }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="{{ $company->keywords ?? '' }}" name="keywords">
+    <meta content="{{ $company->description ?? '' }}" name="description">
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('assets/img/logo.png') }}" type="image/png">
-
+    <link rel="icon" href="{{ asset($company->logo ?? 'assets/img/logo.png') }}" type="image/png">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,30 +23,26 @@
     <!-- Libraries Stylesheet -->
     <link href="{{ asset('assets/lib/member/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/lib/member/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/lib/member/owlcarousel/assets/owl.carousel.min.css') }} " rel="stylesheet">
+    <link href="{{ asset('assets/lib/member/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
-
+    <!-- Flickity CSS -->
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-
-    <!-- Flickity JS -->
-    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('assets/css/member/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('assets/css/member/style.css') }}" rel="stylesheet">
+    
+    <!-- Loading Animation Stylesheet - TAMBAHAN BARU -->
+    <link href="{{ asset('assets/css/member/loading-animation.css') }}" rel="stylesheet">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @stack('styles')
 </head>
 
-
-{{-- <script>
-    document.addEventListener("contextmenu", function(e){
-        e.preventDefault();
-    }, false);
-
-    document.onkeydown = function(e) {
-        if(e.ctrlKey && (e.keyCode === 85 || e.keyCode === 73)) {
-            return false;
-        }
-    };
-</script> --}}
+<body>
+    {{-- Include Loader Component --}}
+    @include('layouts.guest.loader')

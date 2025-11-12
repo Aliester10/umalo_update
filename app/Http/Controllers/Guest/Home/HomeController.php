@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Guest\Home;
 
 use App\Http\Controllers\Controller;
-
 use Illuminate\Support\Facades\Cache;
 use App\Helpers\TranslateHelper;
 use App\Models\Activity;
 use App\Models\BrandPartner;
 use App\Models\CompanyParameter;
 use App\Models\Faq;
-use App\Models\Kategori;
 use App\Models\Message;
 use App\Models\Monitoring;
 use App\Models\Banner;
@@ -20,82 +18,74 @@ use App\Models\Product;
 
 class HomeController extends Controller
 {
+    /**
+     * Halaman utama (Home)
+     */
     public function index()
     {
-        $products = Product::take(6)->get(); 
-        $sliders = Banner::all(); 
-        $company = CompanyParameter::first(); // Single object, not a collection
-        
-        $locale = app()->getLocale(); 
-    
-        // Terjemahkan nama produk
+        // Ambil data produk terbatas 6 item
+        $products = Product::take(6)->get();
+
+        // Ambil semua banner/slider
+        $sliders = Banner::all();
+
+        // Ambil data perusahaan
+        $company = CompanyParameter::first();
+
+        // Ambil semua brand partner tanpa kolom 'order'
+        $brands = BrandPartner::all();
+
+        $locale = app()->getLocale();
+
+        // Terjemahkan judul dan subtitle slider
         foreach ($sliders as $slider) {
-            $slider->title = $slider->title !== null 
-                ? TranslateHelper::translate($slider->title, $locale) 
+            $slider->title = $slider->title !== null
+                ? TranslateHelper::translate($slider->title, $locale)
                 : null;
-        
-            if ($slider->subtitle !== 'Way To Know' && $slider->subtitle !== null) {
+
+            if ($slider->subtitle !== null && $slider->subtitle !== 'Way to Know') {
                 $slider->subtitle = TranslateHelper::translate($slider->subtitle, $locale);
             }
-        
-            $slider->button_text = $slider->button_text !== null 
-                ? TranslateHelper::translate($slider->button_text, $locale) 
-                : null;
-        
-            $slider->description = $slider->description !== null 
-                ? TranslateHelper::translate($slider->description, $locale) 
-                : null;
         }
-        
-    
-        if ($company) {
-            $company->short_history = TranslateHelper::translate($company->short_history, $locale);
-        }
-    
-        return view('guest.home.home', compact('products', 'sliders', 'company',));
+
+        return view('guest.home.home', compact('products', 'sliders', 'company', 'brands'));
     }
-    
 
-
-
+    /**
+     * Halaman Tentang Kami (About)
+     */
     public function about()
     {
+        // Ambil data perusahaan
         $company = CompanyParameter::first();
+        $locale = app()->getLocale();
 
-        $locale = app()->getLocale(); 
-
-        if ($company) {
-            $company->short_history = TranslateHelper::translate($company->short_history, $locale);
+        // Terjemahkan deskripsi perusahaan jika ada
+        if ($company && $company->description) {
+            $company->description = TranslateHelper::translate($company->description, $locale);
         }
 
-        if ($company) {
-            $company->visi = TranslateHelper::translate($company->visi, $locale);
-        }
-
-        if ($company) {
-            $company->misi = TranslateHelper::translate($company->misi, $locale);
-        }
-
-        return view('guest.about.about', compact('company',));
+        // Kirim data ke view
+        return view('guest.about.about', compact('company'));
     }
 
-    public function faq()
-    {
-        $locale = app()->getLocale(); 
+public function faq()
+{
+    $faqs = Faq::all();
+    $locale = app()->getLocale();
 
-        $company = CompanyParameter::first();
-    
-        // Retrieve all FAQs
-        $faqs = Faq::all();
-    
-        // Iterate through each FAQ and translate the 'pertanyaan' and 'jawaban' fields
-        foreach ($faqs as $faq) {
-            $faq->questions = TranslateHelper::translate($faq->questions, $locale);
-            $faq->answers = TranslateHelper::translate($faq->answers, $locale);
+    // Terjemahkan pertanyaan dan jawaban FAQ
+    foreach ($faqs as $faq) {
+        if (!empty($faq->question)) {
+            $faq->question = \App\Helpers\TranslateHelper::translate($faq->question, $locale);
         }
-    
-        // Pass the translated FAQs to the view
-        return view('guest.faq.index', compact('faqs', 'company'));
+
+        if (!empty($faq->answer)) {
+            $faq->answer = \App\Helpers\TranslateHelper::translate($faq->answer, $locale);
+        }
     }
-    
+
+    return view('guest.faq.index', compact('faqs'));
+}
+ 
 }

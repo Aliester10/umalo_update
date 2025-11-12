@@ -1,4 +1,4 @@
-{{-- <div class="container"> --}}
-
+{{-- Main Content Wrapper --}}
+<main id="main-content">
     @yield('content')
-{{-- </div> --}}
+</main>

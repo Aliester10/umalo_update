@@ -102,11 +102,14 @@
     padding: 0;
     position: relative;
     z-index: 1;
+    overflow: hidden;
 }
 
 .header-carousel.owl-carousel {
     width: 100%;
     height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 .header-carousel .owl-stage-outer,
@@ -114,25 +117,23 @@
     height: 100vh;
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 .header-carousel-item {
+    position: relative;
     width: 100%;
     height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-size: contain;
-    background-position: center center;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-size: cover;
+    background-position: center 40%;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    position: relative;
     display: flex !important;
     align-items: center;
     justify-content: center;
-}
-
-.header-carousel .owl-nav {
-    display: none !important;
+    overflow: hidden;
 }
 
 .carousel-caption {
@@ -145,32 +146,281 @@
     bottom: 0;
     margin: 0;
     padding: 0;
-    background: rgba(0, 0, 0, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3;
 }
 
 .bg-overlay {
-    display: none;
+    background: rgba(0, 0, 0, 0.45);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
 }
 
-@media (max-width: 991px) {
+.header-carousel .owl-nav .owl-prev,
+.header-carousel .owl-nav .owl-next {
+    display: none !important;
+}
+
+.header-carousel .owl-dots {
+    display: none !important;
+}
+
+.carousel-caption .container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.carousel-caption .text-start {
+    padding: 2rem 0;
+}
+
+.carousel-caption h1.display-1 {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.carousel-caption h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.carousel-caption p {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+.carousel-caption .btn {
+    font-size: 1rem;
+    padding: 0.75rem 2rem !important;
+}
+
+/* Tablet Landscape (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .carousel-caption h1.display-1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .carousel-caption h4 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .carousel-caption p {
+        font-size: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .carousel-caption .btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1.5rem !important;
+    }
+
     .header-carousel-item {
-        height: 100vh;
+        background-position: center 35%;
+        background-attachment: scroll;
+    }
+}
+
+/* Tablet Portrait (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .carousel-caption {
+        padding: 0 2rem !important;
+    }
+
+    .carousel-caption h1.display-1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .carousel-caption h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .carousel-caption p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .carousel-caption .btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 1.25rem !important;
+    }
+
+    .header-carousel-item {
+        background-position: center 30%;
+        background-attachment: scroll;
+    }
+}
+
+/* Small Tablet / Large Mobile (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .carousel-caption {
+        padding: 0 1.5rem !important;
+    }
+
+    .carousel-caption h1.display-1 {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.2;
+    }
+
+    .carousel-caption h4 {
+        font-size: 0.85rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .carousel-caption p {
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .carousel-caption .btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 1rem !important;
+    }
+
+    .header-carousel-item {
+        background-position: center 25%;
+        background-attachment: scroll;
+    }
+}
+
+/* Mobile (max-width: 575px) */
+@media (max-width: 575px) {
+    .carousel-caption {
+        padding: 0 1rem !important;
+    }
+
+    .carousel-caption h1.display-1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.1;
+        font-weight: 800;
+    }
+
+    .carousel-caption h4 {
+        font-size: 0.75rem;
+        margin-bottom: 0.25rem;
+        letter-spacing: 0.5px;
+    }
+
+    .carousel-caption p {
+        font-size: 0.7rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+
+    .carousel-caption .btn {
+        font-size: 0.65rem;
+        padding: 0.35rem 0.75rem !important;
+        white-space: nowrap;
+    }
+
+    .header-carousel-item {
+        background-position: center 20%;
+        background-attachment: scroll;
+    }
+}
+
+/*** Carousel Hero Header End ***/
+
+/*** About Section Start ***/
+.about {
+    padding: 30px 15px;
+}
+
+.about .row {
+    flex-direction: column-reverse;
+}
+
+.about-item-content,
+.bg-white {
+    padding: 20px;
+}
+
+.about-item-content h4 {
+    margin-bottom: 1rem;
+}
+
+.about-item-content h1.display-4 {
+    margin-bottom: 1.5rem;
+    color: var(--bs-primary);
+}
+
+.about-item-content p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.about-item-content .btn {
+    margin-top: 1.25rem;
+}
+
+@media (min-width: 992px) {
+    .about .row {
+        flex-direction: row;
+    }
+
+    .about-item-content,
+    .bg-white {
+        padding: 20px;
     }
 }
 
 @media (max-width: 767px) {
-    .header-carousel-item {
-        height: 100vh;
+    .about .row {
+        flex-direction: column-reverse;
+    }
+
+    .about-item-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .about-item-content {
+        padding: 15px;
+    }
+
+    .about-image {
+        display: none;
     }
 }
-/*** Carousel Hero Header End ***/
 
-/*** Single Page Hero Header Start ***/
+@media (max-width: 576px) {
+    .about .row {
+        flex-direction: column-reverse;
+    }
 
-/*** Single Page Hero Header End ***/
+    .about-item-content h1 {
+        font-size: 2rem;
+    }
+
+    .about-item-content p {
+        font-size: 1rem;
+    }
+
+    .about {
+        padding: 20px 10px;
+    }
+
+    .about-item-content a.btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+/*** About Section End ***/
 
 /*** Feature Start ***/
 .feature .feature-item {
@@ -246,6 +496,12 @@
 /*** Feature End ***/
 
 /*** Service Start ***/
+.service-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
 .service .service-item {
     border-radius: 10px;
 }
@@ -569,8 +825,17 @@
 /*** Testimonial End ***/
 
 /*** Contact Start ***/
-.contact .contact-img {
+.contact-img {
     position: relative;
+    height: 100%;
+}
+
+.contact-img-inner {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
 }
 
 .contact .contact-img::after {
@@ -616,6 +881,13 @@
 .contact .contact-img .contact-img-inner {
     position: relative;
     z-index: 9;
+}
+
+@media (max-width: 768px) {
+    .contact-img-inner {
+        top: 50%;
+        max-width: 100%;
+    }
 }
 /*** Contact End ***/
 
