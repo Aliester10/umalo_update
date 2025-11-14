@@ -13,12 +13,12 @@ class ActivityController extends Controller
     public function index()
     {
         $activities = Activity::all();
-        return view('admin.activity.index', compact('activities'));
+        return view('Admin.Activity.index', compact('activities'));
     }
 
     public function create()
     {
-        return view('admin.activity.create');
+        return view('Admin.Activity.create');
     }
 
     public function store(Request $request)
@@ -51,18 +51,18 @@ class ActivityController extends Controller
     ]);
 
     // Redirect with success message
-    return redirect()->route('admin.activity.index')->with('success', 'Activity created successfully.');
+    return redirect()->route('Admin.Activity.index')->with('success', 'Activity created successfully.');
 }
 
 
     public function edit(Activity $activity)
     {
-        return view('admin.activity.edit', compact('activity'));
+        return view('Admin.Activity.edit', compact('activity'));
     }
 
     public function show(Activity $activity)
     {
-        return view('admin.activity.show', compact('activity'));
+        return view('Admin.Activity.show', compact('activity'));
     }
 
     public function update(Request $request, Activity $activity)
@@ -113,6 +113,6 @@ class ActivityController extends Controller
             unlink(public_path($activity->images));
         }
         $activity->delete();
-        return redirect()->route('admin.activity.index')->with('success', 'Activity deleted successfully.');
+        return redirect()->route('Admin.Activity.index')->with('success', 'Activity deleted successfully.');
     }
 }

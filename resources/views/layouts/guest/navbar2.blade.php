@@ -27,7 +27,7 @@
 
                 <!-- 4 Menu Kanan -->
                 <a href="#" class="nav-link">Solution</a>
-                <a href="{{ route('career.index') }}" class="nav-link {{ Route::is('career.index') ? 'active' : '' }}">Career</a>
+                <a href="{{ route('career.index') }}" class="nav-link">Career</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ Route::is('contact') ? 'active' : '' }}">{{ __('messages.contactUS') }}</a>
                 <a href="{{ route('faq') }}" class="nav-link {{ Route::is('faq') ? 'active' : '' }}">{{ __('messages.faqs') }}</a>
             </div>
@@ -51,10 +51,10 @@
                 @auth
                     <!-- User Dropdown for Authenticated Users -->
                     <div class="dropdown">
-                        <button class="login-btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;">
+                        <a href="#" class="login-btn dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 8px;">
                             <i class="fas fa-user"></i>
                             <span>{{ Str::limit(Auth::user()->nama_perusahaan, 15, '...') ?? 'Your Company' }}</span>
-                        </button>
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                             <li>
                                 <a class="dropdown-item" href="{{ route('portal') }}">
@@ -134,7 +134,7 @@
             <a href="#" class="nav-link">
                 <i class="fas fa-lightbulb"></i>Solution
             </a>
-            <a href="{{ route('career.index') }}" class="nav-link {{ Route::is('career.index') ? 'active' : '' }}">
+            <a href="#" class="nav-link">
                 <i class="fas fa-briefcase"></i>Career
             </a>
             <a href="{{ route('contact') }}" class="nav-link {{ Route::is('contact') ? 'active' : '' }}">
@@ -268,7 +268,7 @@
     }
 
     .nav-link {
-        color: #ffffff !important;
+        color: #000000 !important;
         text-decoration: none;
         font-weight: 400;
         position: relative;
@@ -287,13 +287,13 @@
         bottom: 0;
         height: 2px;
         width: 0;
-        background: #ffffff;
+        background: #000000;
         transition: all 0.3s ease;
     }
 
     .nav-link:hover,
     .nav-link.active {
-        color: #ffffff !important;
+        color: #000000 !important;
         font-weight: 500;
     }
 
@@ -446,6 +446,20 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
 
+    /* Updated scrolled state for login button */
+    .navbar-pertamina.scrolled .login-btn {
+        background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%) !important;
+        border-color: transparent !important;
+        color: #fff !important;
+        box-shadow: 0 2px 8px rgba(16, 124, 16, 0.25);
+    }
+
+    .navbar-pertamina.scrolled .login-btn:hover {
+        background: linear-gradient(135deg, #0d6b0d 0%, #0a5308 100%) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(16, 124, 16, 0.35);
+    }
+
     .nav-actions .dropdown-menu {
         border: 1px solid rgba(0, 0, 0, 0.1) !important;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
@@ -499,9 +513,16 @@
     }
 
     .navbar-pertamina.scrolled .btn-whatsapp {
-        background: rgba(37, 211, 102, 0.15) !important;
-        border-color: rgba(37, 211, 102, 0.4);
-        color: #25D366 !important;
+        background: #25D366 !important;
+        border-color: transparent;
+        color: #ffffff !important;
+        box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+    }
+
+    .navbar-pertamina.scrolled .btn-whatsapp:hover {
+        background: #20b85c !important;
+        transform: scale(1.12);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
     }
 
     /* ===== MOBILE LAYOUT - SIMPLE & CLEAN ===== */
@@ -531,9 +552,8 @@
     }
     
     .login-btn-mobile {
-        background: rgba(255, 255, 255, 0.2) !important;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%) !important;
+        border: 1px solid transparent;
         color: #fff !important;
         padding: 8px 16px;
         border-radius: 18px;
@@ -542,10 +562,14 @@
         font-size: 12px;
         font-family: 'Poppins', sans-serif;
         white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(16, 124, 16, 0.25);
+        transition: all 0.3s ease;
     }
 
     .login-btn-mobile:hover {
-        background: rgba(255, 255, 255, 0.3) !important;
+        background: linear-gradient(135deg, #0d6b0d 0%, #0a5308 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 124, 16, 0.35);
     }
     
     .hamburger {
@@ -642,7 +666,7 @@
     
     .mobile-menu .nav-link {
         padding: 15px 20px !important;
-        color: #1a1a1a !important;
+        color: #000000 !important;
         text-decoration: none;
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         font-weight: 400;
@@ -689,6 +713,14 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .login-btn-mobile-menu:hover {
+        background: linear-gradient(135deg, #0d6b0d 0%, #0a5308 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 124, 16, 0.35);
     }
 
     /* Responsive */
@@ -770,11 +802,6 @@
 
     .navbar-pertamina.scrolled .hamburger span {
         background: #107c10;
-    }
-
-    .navbar-pertamina.scrolled .login-btn-mobile {
-        background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%) !important;
-        border-color: transparent;
     }
 
     .navbar-pertamina.scrolled .nav-logo-mobile img {

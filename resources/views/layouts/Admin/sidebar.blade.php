@@ -205,6 +205,29 @@
                     </div>
                 </li>
 
+<!-- Career Section -->
+<li class="nav-section">
+    <span class="sidebar-mini-icon">
+        <i class="fa fa-briefcase"></i>
+    </span>
+    <h4 class="text-section">Karir</h4>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('admin.career.positions.index') }}">
+        <i class="fas fa-briefcase"></i>
+        <p>Buat Karir</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('admin.career.applications.index') }}">
+        <i class="fas fa-envelope-open"></i>
+        <p>Lamaran Masuk</p>
+    </a>
+</li>
+
+
                 <!-- faqs Management -->
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
