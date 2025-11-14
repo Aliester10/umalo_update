@@ -9,52 +9,38 @@
     $compro = \App\Models\CompanyParameter::first();
     @endphp
 
-    <!-- New Navbar Component - Pertamina Style -->
-    <nav class="navbar navbar-pertamina">
-        <!-- Desktop Layout -->
+    <!-- Navbar Component V2 - Light Background -->
+    <nav class="navbar navbar-pertamina-v2">
+        <!-- DESKTOP NAVBAR - TETAP ABSOLUT TIDAK BERUBAH -->
         <div class="nav-desktop">
             <div class="nav-content">
-                <!-- 4 Menu Kiri -->
                 <a href="{{ route('home') }}" class="nav-link {{ Route::is('home') ? 'active' : '' }}">{{ __('messages.home') }}</a>
                 <a href="{{ route('about') }}" class="nav-link {{ Route::is('about') ? 'active' : '' }}">{{ __('messages.about') }}</a>
                 <a href="{{ route('product.index') }}" class="nav-link {{ Route::is('product.index') ? 'active' : '' }}">{{ __('messages.products') }}</a>
                 <a href="{{ route('activity') }}" class="nav-link {{ Route::is('activity') ? 'active' : '' }}">{{ __('messages.activities') }}</a>
 
-                <!-- Logo Tengah -->
                 <a href="{{ route('home') }}" class="nav-logo">
-                    <img src="{{ asset('assets/img/logo.png') }}" alt="Umalo Logo" class="logo-white" />
+                    <img src="{{ asset('assets/img/logo.png') }}" alt="Umalo Logo" />
                 </a>
 
-                <!-- 4 Menu Kanan -->
                 <a href="#" class="nav-link">Solution</a>
-                <a href="{{ route('career.index') }}" class="nav-link">Career</a>
+                <a href="{{ route('career.index') }}" class="nav-link {{ Route::is('career.index') ? 'active' : '' }}">Career</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ Route::is('contact') ? 'active' : '' }}">{{ __('messages.contactUS') }}</a>
                 <a href="{{ route('faq') }}" class="nav-link {{ Route::is('faq') ? 'active' : '' }}">{{ __('messages.faqs') }}</a>
             </div>
 
             <div class="nav-actions">
-                <!-- Search Box -->
-                <div class="search-box" id="searchBox">
-                    <button class="search-toggle" id="searchToggle">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <input type="text" placeholder="Search..." class="search-input" id="searchInput" />
-                </div>
 
                 @guest
-                    <!-- Login Button for Guest -->
                     <a href="{{ route('login') }}" class="login-btn">Masuk</a>
                 @endguest
 
                 @auth
-                    <!-- User Dropdown for Authenticated Users -->
                     <div class="dropdown">
-                        <a href="#" class="login-btn dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 8px;">
+                        <button class="login-btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user"></i>
                             <span>{{ Str::limit(Auth::user()->nama_perusahaan, 15, '...') ?? 'Your Company' }}</span>
-                        </a>
+                        </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                             <li>
                                 <a class="dropdown-item" href="{{ route('portal') }}">
@@ -77,10 +63,7 @@
 
                 @guest
                     @if (!empty($compro->no_wa))
-                        <!-- WhatsApp Button -->
-                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $compro->no_wa) }}?text={{ urlencode(__('messages.consult_text')) }}" 
-                           class="btn-whatsapp" 
-                           target="_blank">
+                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $compro->no_wa) }}" class="btn-whatsapp" target="_blank">
                             <i class="fab fa-whatsapp fa-lg"></i>
                         </a>
                     @endif
@@ -88,736 +71,599 @@
             </div>
         </div>
 
-        <!-- Mobile Layout -->
+        <!-- MOBILE NAVBAR - STICKY -->
         <div class="nav-mobile">
-            <a href="{{ route('home') }}" class="nav-logo-mobile">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="Umalo Logo" />
+            <a href="{{ route('home') }}" class="nav-mobile-logo">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" />
             </a>
 
-            <div class="nav-mobile-actions">
-                @guest
-                    <a href="{{ route('login') }}" class="login-btn-mobile">Masuk</a>
-                @endguest
-
-                @auth
-                    <a href="{{ route('portal') }}" class="login-btn-mobile">Portal</a>
-                @endauth
-            </div>
-
-            <button class="hamburger" id="hamburger">
+            <button class="hamburger" id="hamburger" aria-label="Menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
 
-        <!-- Mobile Menu -->
+        <!-- MOBILE MENU DROPDOWN -->
         <div class="mobile-menu" id="mobileMenu">
-            <!-- Search di dalam mobile menu -->
-            <div class="mobile-search-container">
-                <input type="text" placeholder="Search..." class="mobile-search-input" />
-            </div>
+            <a href="{{ route('home') }}" class="mobile-menu-link {{ Route::is('home') ? 'active' : '' }}">
+                {{ __('messages.home') }}
+            </a>
+            <a href="{{ route('about') }}" class="mobile-menu-link {{ Route::is('about') ? 'active' : '' }}">
+                {{ __('messages.about') }}
+            </a>
+            <a href="{{ route('product.index') }}" class="mobile-menu-link {{ Route::is('product.index') ? 'active' : '' }}">
+                {{ __('messages.products') }}
+            </a>
+            <a href="{{ route('activity') }}" class="mobile-menu-link {{ Route::is('activity') ? 'active' : '' }}">
+                {{ __('messages.activities') }}
+            </a>
+            <a href="#" class="mobile-menu-link">Solution</a>
+            <a href="{{ route('career.index') }}" class="mobile-menu-link {{ Route::is('career.index') ? 'active' : '' }}">
+                Career
+            </a>
+            <a href="{{ route('contact') }}" class="mobile-menu-link {{ Route::is('contact') ? 'active' : '' }}">
+                {{ __('messages.contactUS') }}
+            </a>
+            <a href="{{ route('faq') }}" class="mobile-menu-link {{ Route::is('faq') ? 'active' : '' }}">
+                {{ __('messages.faqs') }}
+            </a>
 
-            <!-- Main Menu Items -->
-            <a href="{{ route('home') }}" class="nav-link {{ Route::is('home') ? 'active' : '' }}">
-                <i class="fas fa-home"></i>{{ __('messages.home') }}
-            </a>
-            <a href="{{ route('about') }}" class="nav-link {{ Route::is('about') ? 'active' : '' }}">
-                <i class="fas fa-info-circle"></i>{{ __('messages.about') }}
-            </a>
-            <a href="{{ route('product.index') }}" class="nav-link {{ Route::is('product.index') ? 'active' : '' }}">
-                <i class="fas fa-box"></i>{{ __('messages.products') }}
-            </a>
-            <a href="{{ route('activity') }}" class="nav-link {{ Route::is('activity') ? 'active' : '' }}">
-                <i class="fas fa-calendar-alt"></i>{{ __('messages.activities') }}
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-lightbulb"></i>Solution
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-briefcase"></i>Career
-            </a>
-            <a href="{{ route('contact') }}" class="nav-link {{ Route::is('contact') ? 'active' : '' }}">
-                <i class="fas fa-envelope"></i>{{ __('messages.contactUS') }}
-            </a>
-            <a href="{{ route('faq') }}" class="nav-link {{ Route::is('faq') ? 'active' : '' }}">
-                <i class="fas fa-question-circle"></i>{{ __('messages.faqs') }}
-            </a>
-            
+            <div class="mobile-menu-divider"></div>
+
             @foreach ($activeMetas as $type => $metas)
-                <div class="nav-link-dropdown">
-                    <span class="dropdown-title">
-                        <i class="fas fa-folder"></i>{{ ucfirst($type) }}
-                    </span>
+                <div class="mobile-menu-section">
+                    <div class="mobile-menu-title">{{ ucfirst($type) }}</div>
                     @foreach ($metas as $meta)
-                        <a href="{{ route('member.meta.show', $meta->slug) }}" class="dropdown-item {{ Route::is('member.meta.show') && request()->slug == $meta->slug ? 'active' : '' }}">
+                        <a href="{{ route('member.meta.show', $meta->slug) }}" class="mobile-menu-sublink">
                             {{ $meta->title }}
                         </a>
                     @endforeach
                 </div>
             @endforeach
 
-            <!-- Language Selector (Mobile) -->
-            <div class="nav-link-dropdown">
-                <span class="dropdown-title">
-                    <i class="fas fa-globe-europe"></i>
-                    @if(LaravelLocalization::getCurrentLocale() == 'id')
-                        Bahasa
-                    @elseif(LaravelLocalization::getCurrentLocale() == 'en')
-                        English
-                    @else
-                        {{ LaravelLocalization::getCurrentLocaleNative() }}
-                    @endif
-                </span>
-                <a href="{{ LaravelLocalization::getLocalizedURL('id') }}" class="dropdown-item">
-                    <span class="me-2">🇮🇩</span>{{ __('messages.bahasa') }}
+            <div class="mobile-menu-divider"></div>
+
+            <div class="mobile-menu-section">
+                <div class="mobile-menu-title">Bahasa</div>
+                <a href="{{ LaravelLocalization::getLocalizedURL('id') }}" class="mobile-menu-sublink">
+                    🇮🇩 {{ __('messages.bahasa') }}
                 </a>
-                <a href="{{ LaravelLocalization::getLocalizedURL('en') }}" class="dropdown-item">
-                    <span class="me-2">🇬🇧</span>{{ __('messages.english') }}
+                <a href="{{ LaravelLocalization::getLocalizedURL('en') }}" class="mobile-menu-sublink">
+                    🇬🇧 {{ __('messages.english') }}
                 </a>
             </div>
 
-            @auth
-                <a href="{{ route('portal') }}" class="login-btn-mobile-menu">
-                    <i class="fas fa-th-large"></i>Portal
+            <div class="mobile-menu-divider"></div>
+
+            @guest
+                <a href="{{ route('login') }}" class="mobile-menu-btn">
+                    Masuk
                 </a>
-                <a href="{{ route('logout') }}" 
-                   class="login-btn-mobile-menu" 
-                   style="background: #dc3545;"
-                   onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
-                    <i class="fas fa-sign-out-alt"></i>Logout
+                @if (!empty($compro->no_wa))
+                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $compro->no_wa) }}" class="mobile-menu-btn whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                @endif
+            @endguest
+
+            @auth
+                <a href="{{ route('portal') }}" class="mobile-menu-btn">
+                    Portal
+                </a>
+                <a href="{{ route('logout') }}" class="mobile-menu-btn logout" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
+                    Logout
                 </a>
                 <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
-            @else
-                <a href="{{ route('login') }}" class="login-btn-mobile-menu">
-                    <i class="fas fa-sign-in-alt"></i>Masuk
-                </a>
-                @if (!empty($compro->no_wa))
-                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $compro->no_wa) }}?text={{ urlencode(__('messages.consult_text')) }}" 
-                       class="login-btn-mobile-menu" 
-                       style="background: #25D366;" 
-                       target="_blank">
-                        <i class="fab fa-whatsapp"></i>WhatsApp
-                    </a>
-                @endif
-            @endguest
+            @endauth
         </div>
     </nav>
 
-    <script src="{{ asset('assets/js/navbar.js') }}"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-<style>
-    /* Import Google Fonts - Poppins untuk navbar modern */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-    /* ===== NAVBAR PERTAMINA STYLE - FULLY TRANSPARENT ===== */
-    .navbar-pertamina {
-        background: transparent !important;
-        border-bottom: none !important;
-        position: absolute !important;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        z-index: 1000;
-        padding: 15px 0;
-        font-family: 'Poppins', 'Segoe UI', sans-serif;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Navbar saat di-scroll */
-    .navbar-pertamina.scrolled {
-        background: rgba(255, 255, 255, 0.98) !important;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-        padding: 10px 0;
-        border-bottom: none !important;
-    }
-
-    .navbar-pertamina.scrolled .nav-link,
-    .navbar-pertamina.scrolled .search-toggle,
-    .navbar-pertamina.scrolled .hamburger span {
-        color: #1a1a1a !important;
-    }
-
-    .navbar-pertamina.scrolled .login-btn {
-        background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%) !important;
-        color: #fff !important;
-        border-color: transparent !important;
-    }
-
-    /* ===== DESKTOP LAYOUT ===== */
-    .nav-desktop {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 30px;
-        height: 70px;
-        width: 100%;
-        position: relative;
-    }
-
-    .nav-content {
-        display: grid;
-        grid-template-columns: repeat(4, auto) auto repeat(4, auto);
-        align-items: center;
-        justify-content: center;
-        gap: 40px;
-        position: relative;
-    }
-
-    .nav-link {
-        color: #000000 !important;
-        text-decoration: none;
-        font-weight: 400;
-        position: relative;
-        transition: all 0.3s ease;
-        white-space: nowrap;
-        font-size: 14.5px;
-        letter-spacing: 0.3px;
-        padding: 8px 0 !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-
-    .nav-link::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 2px;
-        width: 0;
-        background: #000000;
-        transition: all 0.3s ease;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-        color: #000000 !important;
-        font-weight: 500;
-    }
-
-    .nav-link:hover::after,
-    .nav-link.active::after {
-        width: 100%;
-    }
-
-    .navbar-pertamina.scrolled .nav-link::after {
-        background: #107c10;
-    }
-
-    .navbar-pertamina.scrolled .nav-link:hover,
-    .navbar-pertamina.scrolled .nav-link.active {
-        color: #107c10 !important;
-    }
-
-    .nav-logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-        margin: 0 20px;
-    }
-
-    .nav-logo img {
-        height: 60px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15)) brightness(1.1);
-    }
-    
-    .nav-logo:hover img {
-        transform: scale(1.05);
-    }
-
-    .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        position: absolute;
-        right: 30px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .search-box {
-        position: relative;
-        display: flex;
-        align-items: center;
-        height: 38px;
-    }
-    
-    .search-toggle {
-        background: rgba(255, 255, 255, 0.15) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        cursor: pointer;
-        color: #ffffff;
-        padding: 0;
-        border-radius: 50%;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        flex-shrink: 0;
-        z-index: 2;
-        position: relative;
-    }
-
-    .search-toggle:hover {
-        background: rgba(255, 255, 255, 0.25) !important;
-        border-color: rgba(255, 255, 255, 0.5);
-        transform: scale(1.05);
-    }
-
-    .navbar-pertamina.scrolled .search-toggle {
-        background: rgba(16, 124, 16, 0.1) !important;
-        border-color: rgba(16, 124, 16, 0.3);
-        color: #107c10;
-    }
-
-    .navbar-pertamina.scrolled .search-toggle:hover {
-        background: rgba(16, 124, 16, 0.2) !important;
-    }
-    
-    .search-input {
-        position: absolute;
-        right: 48px;
-        width: 0;
-        opacity: 0;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 8px 15px;
-        outline: none;
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-        color: #ffffff;
-        height: 38px;
-        z-index: 1;
-    }
-    
-    .search-box.active .search-input {
-        width: 220px;
-        opacity: 1;
-    }
-
-    .search-input::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-        font-weight: 300;
-    }
-
-    .navbar-pertamina.scrolled .search-input {
-        color: #1a1a1a;
-        background: rgba(255, 255, 255, 0.9);
-        border-color: rgba(16, 124, 16, 0.2);
-    }
-
-    .navbar-pertamina.scrolled .search-input::placeholder {
-        color: rgba(26, 26, 26, 0.5);
-    }
-    
-    .login-btn {
-        background: rgba(255, 255, 255, 0.2) !important;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        color: #fff !important;
-        padding: 9px 26px;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        white-space: nowrap;
-        font-size: 14px;
-        letter-spacing: 0.4px;
-        font-family: 'Poppins', sans-serif;
-        flex-shrink: 0;
-    }
-    
-    .login-btn:hover {
-        background: rgba(255, 255, 255, 0.3) !important;
-        border-color: rgba(255, 255, 255, 0.5) !important;
-        transform: translateY(-2px);
-        color: #fff !important;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Updated scrolled state for login button */
-    .navbar-pertamina.scrolled .login-btn {
-        background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%) !important;
-        border-color: transparent !important;
-        color: #fff !important;
-        box-shadow: 0 2px 8px rgba(16, 124, 16, 0.25);
-    }
-
-    .navbar-pertamina.scrolled .login-btn:hover {
-        background: linear-gradient(135deg, #0d6b0d 0%, #0a5308 100%) !important;
-        transform: translateY(-3px);
-        box-shadow: 0 6px 16px rgba(16, 124, 16, 0.35);
-    }
-
-    .nav-actions .dropdown-menu {
-        border: 1px solid rgba(0, 0, 0, 0.1) !important;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
-        border-radius: 12px;
-        padding: 10px 0;
-        min-width: 200px;
-        background: #ffffff !important;
-        margin-top: 15px;
-    }
-
-    .nav-actions .dropdown-item {
-        padding: 12px 20px;
-        color: #1a1a1a !important;
-        transition: all 0.2s ease;
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-        font-weight: 400;
-    }
-
-    .nav-actions .dropdown-item:hover {
-        background: rgba(16, 124, 16, 0.08) !important;
-        color: #107c10 !important;
-        padding-left: 24px;
-    }
-
-    .nav-actions .dropdown-divider {
-        margin: 8px 0;
-        opacity: 0.15;
-    }
-
-    .btn-whatsapp {
-        background: rgba(37, 211, 102, 0.2) !important;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(37, 211, 102, 0.3);
-        color: #ffffff !important;
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        flex-shrink: 0;
-    }
-
-    .btn-whatsapp:hover {
-        background: rgba(37, 211, 102, 0.35) !important;
-        transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-    }
-
-    .navbar-pertamina.scrolled .btn-whatsapp {
-        background: #25D366 !important;
-        border-color: transparent;
-        color: #ffffff !important;
-        box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
-    }
-
-    .navbar-pertamina.scrolled .btn-whatsapp:hover {
-        background: #20b85c !important;
-        transform: scale(1.12);
-        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
-    }
-
-    /* ===== MOBILE LAYOUT - SIMPLE & CLEAN ===== */
-    .nav-mobile {
-        display: none;
-        grid-template-columns: 1fr auto auto;
-        align-items: center;
-        gap: 12px;
-        height: 60px;
-        padding: 0 16px;
-    }
-    
-    .nav-logo-mobile {
-        justify-self: start;
-    }
-    
-    .nav-logo-mobile img {
-        height: 40px;
-        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15)) brightness(1.1);
-    }
-    
-    .nav-mobile-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        justify-self: end;
-    }
-    
-    .login-btn-mobile {
-        background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%) !important;
-        border: 1px solid transparent;
-        color: #fff !important;
-        padding: 8px 16px;
-        border-radius: 18px;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 12px;
-        font-family: 'Poppins', sans-serif;
-        white-space: nowrap;
-        box-shadow: 0 2px 8px rgba(16, 124, 16, 0.25);
-        transition: all 0.3s ease;
-    }
-
-    .login-btn-mobile:hover {
-        background: linear-gradient(135deg, #0d6b0d 0%, #0a5308 100%) !important;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(16, 124, 16, 0.35);
-    }
-    
-    .hamburger {
-        background: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 8px;
-        cursor: pointer;
-        padding: 8px;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        justify-self: end;
-    }
-
-    .hamburger:hover {
-        background: rgba(255, 255, 255, 0.2);
-    }
-    
-    .hamburger span {
-        width: 20px;
-        height: 2px;
-        background: #ffffff;
-        transition: all 0.3s ease;
-        border-radius: 2px;
-    }
-    
-    .hamburger.active {
-        background: rgba(255, 255, 255, 0.25);
-    }
-    
-    .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-    
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -5px);
-    }
-
-    /* Mobile Menu */
-    .mobile-menu {
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.98) !important;
-        backdrop-filter: blur(15px);
-        transition: transform 0.4s ease;
-        transform: translateX(-100%);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-        max-height: calc(100vh - 60px);
-        overflow-y: auto;
-    }
-    
-    .mobile-menu.active {
-        display: flex;
-        transform: translateX(0);
-    }
-
-    /* Mobile Search Container */
-    .mobile-search-container {
-        padding: 16px 20px;
-        border-bottom: 2px solid rgba(16, 124, 16, 0.1);
-        background: rgba(16, 124, 16, 0.02);
-    }
-
-    .mobile-search-input {
-        width: 100%;
-        padding: 12px 16px;
-        border: 1px solid rgba(16, 124, 16, 0.2);
-        border-radius: 22px;
-        background: #ffffff;
-        outline: none;
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-        color: #1a1a1a;
-        transition: all 0.3s ease;
-    }
-
-    .mobile-search-input:focus {
-        border-color: #107c10;
-        box-shadow: 0 0 0 3px rgba(16, 124, 16, 0.1);
-    }
-
-    .mobile-search-input::placeholder {
-        color: rgba(26, 26, 26, 0.5);
-    }
-    
-    .mobile-menu .nav-link {
-        padding: 15px 20px !important;
-        color: #000000 !important;
-        text-decoration: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        font-weight: 400;
-        font-family: 'Poppins', sans-serif;
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        transition: all 0.2s ease;
-    }
-
-    .mobile-menu .nav-link i {
-        color: #107c10;
-        opacity: 0.7;
-        width: 24px;
-        font-size: 17px;
-        margin-right: 12px;
-    }
-    
-    .mobile-menu .nav-link:hover,
-    .mobile-menu .nav-link.active {
-        color: #107c10 !important;
-        background: rgba(16, 124, 16, 0.05);
-        font-weight: 500;
-    }
-
-    .mobile-menu .nav-link:hover i,
-    .mobile-menu .nav-link.active i {
-        opacity: 1;
-    }
-    
-    .login-btn-mobile-menu {
-        margin: 16px 20px;
-        padding: 14px;
-        text-align: center;
-        background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%) !important;
-        color: #fff !important;
-        border-radius: 24px;
-        text-decoration: none;
-        font-weight: 600;
-        font-family: 'Poppins', sans-serif;
-        box-shadow: 0 4px 15px rgba(16, 124, 16, 0.25);
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-        border: none;
-    }
-
-    .login-btn-mobile-menu:hover {
-        background: linear-gradient(135deg, #0d6b0d 0%, #0a5308 100%) !important;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(16, 124, 16, 0.35);
-    }
-
-    /* Responsive */
-    @media (max-width: 1400px) {
-        .nav-content { gap: 32px; }
-        .nav-link { font-size: 14px; }
-        .nav-logo img { height: 56px; }
-    }
-
-    @media (max-width: 1200px) {
-        .nav-content { gap: 24px; }
-        .nav-link { font-size: 13.5px; }
-        .nav-logo img { height: 52px; }
-    }
-
-    @media (max-width: 1024px) {
-        .nav-desktop { display: none; }
-        .nav-mobile { display: grid; }
-    }
-
-    /* Dropdowns */
-    .nav-link-dropdown {
-        padding: 15px 20px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .nav-link-dropdown .dropdown-title {
-        font-weight: 600;
-        color: #1a1a1a;
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        font-family: 'Poppins', sans-serif;
-        font-size: 15px;
-    }
-
-    .nav-link-dropdown .dropdown-title i {
-        color: #107c10;
-        width: 24px;
-        font-size: 17px;
-        margin-right: 12px;
-    }
-
-    .nav-link-dropdown .dropdown-item {
-        padding: 10px 0 10px 44px;
-        color: #555;
-        text-decoration: none;
-        display: block;
-        font-size: 14px;
-        font-family: 'Poppins', sans-serif;
-        transition: all 0.2s ease;
-    }
-
-    .nav-link-dropdown .dropdown-item:hover,
-    .nav-link-dropdown .dropdown-item.active {
-        color: #107c10;
-        font-weight: 500;
-    }
-
-    /* Scrollbar */
-    .mobile-menu::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    .mobile-menu::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.03);
-    }
-
-    .mobile-menu::-webkit-scrollbar-thumb {
-        background: rgba(16, 124, 16, 0.3);
-        border-radius: 2px;
-    }
-
-    /* Scrolled state */
-    .navbar-pertamina.scrolled .hamburger {
-        background: rgba(16, 124, 16, 0.08);
-        border-color: rgba(16, 124, 16, 0.2);
-    }
-
-    .navbar-pertamina.scrolled .hamburger span {
-        background: #107c10;
-    }
-
-    .navbar-pertamina.scrolled .nav-logo-mobile img {
-        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1)) brightness(1);
-    }
-</style>
-
-<script>
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar-pertamina');
-        if (window.scrollY > 80) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+        /* ===== NAVBAR MAIN V2 - FOR LIGHT BACKGROUND ===== */
+        .navbar-pertamina-v2 {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: transparent !important;
+            border-bottom: none !important;
         }
-    });
-</script>
+
+        /* ===== DESKTOP NAVBAR - UNTUK BACKGROUND CERAH ===== */
+        .navbar-pertamina-v2 .nav-desktop {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 30px;
+            height: 70px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: transparent;
+        }
+
+        .navbar-pertamina-v2 .nav-content {
+            display: grid;
+            grid-template-columns: repeat(4, auto) auto repeat(4, auto);
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            position: relative;
+        }
+
+        /* PERUBAHAN UTAMA: Warna teks menjadi gelap untuk background cerah */
+        .navbar-pertamina-v2 .nav-link {
+            color: #1a1a1a !important;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 14.5px;
+            letter-spacing: 0.3px;
+            padding: 8px 0 !important;
+            text-shadow: none;
+        }
+
+        .navbar-pertamina-v2 .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 0;
+            background: #107c10;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-pertamina-v2 .nav-link:hover,
+        .navbar-pertamina-v2 .nav-link.active {
+            color: #107c10 !important;
+            font-weight: 600;
+        }
+
+        .navbar-pertamina-v2 .nav-link:hover::after,
+        .navbar-pertamina-v2 .nav-link.active::after {
+            width: 100%;
+        }
+
+        .navbar-pertamina-v2 .nav-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            margin: 0 20px;
+        }
+
+        .navbar-pertamina-v2 .nav-logo img {
+            height: 60px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08)) brightness(1);
+        }
+
+        .navbar-pertamina-v2 .nav-logo:hover img {
+            transform: scale(1.05);
+        }
+
+        .navbar-pertamina-v2 .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* PERUBAHAN: Liquid glass dengan background gelap untuk kontras di background cerah */
+        .navbar-pertamina-v2 .login-btn {
+            background: rgba(16, 124, 16, 0.08) !important;
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(16, 124, 16, 0.2) !important;
+            color: #107c10 !important;
+            padding: 9px 26px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            letter-spacing: 0.4px;
+            font-family: 'Poppins', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .navbar-pertamina-v2 .login-btn:hover {
+            background: rgba(16, 124, 16, 0.15) !important;
+            border-color: rgba(16, 124, 16, 0.35) !important;
+            transform: translateY(-2px);
+            color: #0d6b0d !important;
+            box-shadow: 0 6px 20px rgba(16, 124, 16, 0.2);
+        }
+
+        .navbar-pertamina-v2 .nav-actions .dropdown-menu {
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
+            border-radius: 12px;
+            padding: 10px 0;
+            min-width: 200px;
+            background: #ffffff !important;
+            margin-top: 15px;
+        }
+
+        .navbar-pertamina-v2 .nav-actions .dropdown-item {
+            padding: 12px 20px;
+            color: #1a1a1a !important;
+            transition: all 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .navbar-pertamina-v2 .nav-actions .dropdown-item:hover {
+            background: rgba(16, 124, 16, 0.08) !important;
+            color: #107c10 !important;
+            padding-left: 24px;
+        }
+
+        .navbar-pertamina-v2 .nav-actions .dropdown-divider {
+            margin: 8px 0;
+            opacity: 0.15;
+        }
+
+        /* PERUBAHAN: WhatsApp button dengan liquid glass yang lebih terlihat */
+        .navbar-pertamina-v2 .btn-whatsapp {
+            background: rgba(37, 211, 102, 0.12) !important;
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(37, 211, 102, 0.3);
+            color: #25D366 !important;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .navbar-pertamina-v2 .btn-whatsapp:hover {
+            background: rgba(37, 211, 102, 0.2) !important;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+            border-color: rgba(37, 211, 102, 0.5);
+        }
+
+        /* ===== MOBILE NAVBAR - STICKY ===== */
+        .navbar-pertamina-v2 .nav-mobile {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+        }
+
+        .navbar-pertamina-v2 .nav-mobile-logo {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .navbar-pertamina-v2 .nav-mobile-logo img {
+            height: 100%;
+            width: auto;
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1)) brightness(1);
+        }
+
+        .navbar-pertamina-v2 .hamburger {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-pertamina-v2 .hamburger:hover {
+            background: rgba(16, 124, 16, 0.08);
+            border-radius: 8px;
+        }
+
+        .navbar-pertamina-v2 .hamburger span {
+            width: 24px;
+            height: 2.5px;
+            background: #1a1a1a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .navbar-pertamina-v2 .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .navbar-pertamina-v2 .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .navbar-pertamina-v2 .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .navbar-pertamina-v2 .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            max-height: calc(100vh - 60px);
+            background: white;
+            overflow-y: auto;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            animation: slideDown 0.3s ease;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu.active {
+            display: flex;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-link {
+            display: block;
+            padding: 14px 20px;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-link:hover,
+        .navbar-pertamina-v2 .mobile-menu-link.active {
+            background: rgba(16, 124, 16, 0.05);
+            color: #107c10;
+            font-weight: 500;
+            padding-left: 24px;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.08);
+            margin: 8px 0;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-section {
+            padding: 0;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-title {
+            padding: 12px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a1a1a;
+            background: rgba(16, 124, 16, 0.03);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-sublink {
+            display: block;
+            padding: 12px 20px 12px 40px;
+            color: #555;
+            text-decoration: none;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-sublink:hover,
+        .navbar-pertamina-v2 .mobile-menu-sublink.active {
+            background: rgba(16, 124, 16, 0.05);
+            color: #107c10;
+            font-weight: 500;
+            padding-left: 48px;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-btn {
+            margin: 8px 16px;
+            padding: 12px 16px;
+            text-align: center;
+            background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%);
+            color: white !important;
+            text-decoration: none;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 124, 16, 0.3);
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-btn.whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #1FB040 100%);
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-btn.whatsapp:hover {
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-btn.logout {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .navbar-pertamina-v2 .mobile-menu-btn.logout:hover {
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .navbar-pertamina-v2 .nav-desktop {
+                display: none;
+            }
+
+            .navbar-pertamina-v2 .nav-mobile {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-pertamina-v2 .nav-mobile {
+                padding: 10px 12px;
+                height: 55px;
+            }
+
+            .navbar-pertamina-v2 .nav-mobile-logo {
+                height: 36px;
+            }
+
+            .navbar-pertamina-v2 .hamburger {
+                width: 40px;
+                height: 40px;
+            }
+
+            .navbar-pertamina-v2 .hamburger span {
+                width: 20px;
+                height: 2px;
+            }
+
+            .navbar-pertamina-v2 .mobile-menu {
+                top: 55px;
+                max-height: calc(100vh - 55px);
+            }
+
+            .navbar-pertamina-v2 .mobile-menu-link {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+
+            .navbar-pertamina-v2 .mobile-menu-link:hover,
+            .navbar-pertamina-v2 .mobile-menu-link.active {
+                padding-left: 22px;
+            }
+
+            .navbar-pertamina-v2 .mobile-menu-title {
+                padding: 10px 16px;
+                font-size: 11px;
+            }
+
+            .navbar-pertamina-v2 .mobile-menu-sublink {
+                padding: 10px 16px 10px 36px;
+                font-size: 12px;
+            }
+
+            .navbar-pertamina-v2 .mobile-menu-sublink:hover,
+            .navbar-pertamina-v2 .mobile-menu-sublink.active {
+                padding-left: 44px;
+            }
+
+            .navbar-pertamina-v2 .mobile-menu-btn {
+                margin: 6px 12px;
+                padding: 10px 14px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .navbar-pertamina-v2 .nav-mobile {
+                padding: 8px 10px;
+            }
+
+            .navbar-pertamina-v2 .nav-mobile-logo {
+                height: 32px;
+            }
+
+            .navbar-pertamina-v2 .hamburger {
+                width: 38px;
+                height: 38px;
+            }
+
+            .navbar-pertamina-v2 .hamburger span {
+                width: 18px;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            // Hamburger toggle
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
+            });
+
+            // Close menu saat klik link
+            document.querySelectorAll('.mobile-menu-link, .mobile-menu-sublink, .mobile-menu-btn').forEach(item => {
+                item.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+
+            // Close menu saat klik di luar
+            document.addEventListener('click', function(e) {
+                if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
 
 </body>
