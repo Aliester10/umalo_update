@@ -4,6 +4,8 @@ return [
     'welcome' => 'Welcome to Umalo',
     'slogan' => 'Way To Know',
     'explore_services' => 'Explore Our Services',
+    'messages.company_activity' => 'Company Activities',    
+    'discover_our' => 'Discover Our',
     'our_products' => 'Our Products',
     'best_products' => 'We Provide Best Products',
     'company_info' => 'More Information',
@@ -17,6 +19,14 @@ return [
     'smart_automation' => 'Smart Automation',
     'smart_it_solutions' => 'Smart IT Solutions',
     'our_services' => 'Our Services',
+    'contact_admin' => 'Contact Admin',
+    'view_brochure' => 'View Brochure',
+    'description' => 'Description',
+    'specifications' => 'Specifications',
+    'about_product' => 'About Product',
+    'other_products' => 'Other Products',
+
+
 
     'services_title' => 'Our Services',
     'services_subtitle' => 'Umalo',

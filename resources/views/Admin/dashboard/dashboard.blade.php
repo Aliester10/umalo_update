@@ -151,7 +151,7 @@
         </div>
         
         <div class="col-sm-6 col-md-3">
-            <a href="{{ route('admin.activity.index') }}" style="text-decoration: none;">
+            <a href="{{ route('Admin.Activity.index') }}" style="text-decoration: none;">
                 <div class="card card-stats card-round" style="cursor: pointer">
                     <div class="card-body">
                         <div class="row align-items-center">

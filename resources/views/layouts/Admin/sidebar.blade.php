@@ -187,7 +187,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.activity.index') }}">
+                                <a href="{{ route('Admin.Activity.index') }}">
                                     <span class="sub-item">Aktivitas</span>
                                 </a>
                             </li>

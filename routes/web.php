@@ -53,8 +53,6 @@ use App\Http\Controllers\Admin\Career\JobPositionController;
 use App\Http\Controllers\Admin\Career\JobApplicationController;
 use App\Http\Controllers\Guest\Career\CareerGuestController;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -79,15 +77,18 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['se
     Route::get('/product/{slug}', [ProductGuestController::class, 'show'])->name('product.show');
     Route::get('/products/filter/{slug}', [ProductGuestController::class, 'filterByCategory'])->name('filterByCategory');
 
-    // Activity
+    // ==========================
+    // Activity (LIST & DETAIL) — FIXED
+    // ==========================
     Route::get('/activity', [ActivityGuestController::class, 'activity'])->name('activity');
-    Route::get('/activities/{activity}', [ActivityGuestController::class, 'show'])->name('activity.show');
+    Route::get('/activity/{slug}', [ActivityGuestController::class, 'show'])->name('activity.show');
+    // (TIDAK ADA LAGI /activities/{activity})
 
     // Meta
     Route::get('/meta/{slug}', [MetaGuestController::class, 'showMetaBySlug'])->name('member.meta.show');
     Route::get('/meta', [MetaGuestController::class, 'showMeta'])->name('member.meta.index');
 
-    // 🆕 CAREER ROUTES - Accessible to all (guests and authenticated users)
+    // Career
     Route::get('/career', [CareerGuestController::class, 'index'])->name('career.index');
     Route::post('/career/apply', [CareerGuestController::class, 'apply'])->name('career.apply');
 
@@ -189,16 +190,23 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::resource('admin/category', CategoryController::class)->names('admin.category');
         Route::resource('admin/faq', FAQController::class)->names('admin.faq');
         Route::resource('admin/banner', BannerController::class)->names('admin.banner');
-        Route::resource('admin/activity', ActivityController::class)->names('admin.activity');
+
+        // ================================
+        // ADMIN ACTIVITY — FULL CRUD
+        // ================================
+        Route::resource('admin/activity', ActivityController::class)->names('Admin.Activity');
+
         Route::resource('admin/meta', MetaController::class)->names('admin.meta');
 
         Route::post('/froala/upload_image', [MetaController::class, 'uploadImage'])->name('froala.upload_image');
 
+        // Messages
         Route::get('admin/messages', [MessageController::class, 'index'])->name('messages.index');
         Route::get('admin/messages/{id}', [MessageController::class, 'show'])->name('messages.show');
         Route::delete('admin/messages/{id}', [MessageController::class, 'destroy'])->name('messages.destroy');
         Route::post('admin/messages/mark-all-read', [MessageController::class, 'markAllAsRead'])->name('messages.markAllRead');
 
+        // Members
         Route::resource('admin/members', MemberController::class);
         Route::put('/members/{id}/update-password', [MemberController::class, 'updatePassword'])->name('members.update-password');
 
@@ -208,6 +216,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::get('members/{id}/edit-products', [MemberController::class, 'editProducts'])->name('members.edit-products');
         Route::put('members/{id}/update-products', [MemberController::class, 'updateProducts'])->name('members.update-products');
 
+        // Documentation
         Route::get('/members/products/{id}/documentation/add', [MemberController::class, 'addDocumentation'])->name('members.products.documentation.add');
         Route::post('/members/products/{id}/documentation', [MemberController::class, 'storeDocumentation'])->name('members.products.documentation.store');
         Route::get('/members/products/{id}/documentation', [MemberController::class, 'listDocumentation'])->name('members.products.documentation.list');
@@ -216,15 +225,18 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::get('/documentation/{id}/edit', [MemberController::class, 'editDocumentation'])->name('documentation.edit');
         Route::put('/documentation/{id}/update', [MemberController::class, 'updateDocumentation'])->name('documentation.update');
 
+        // Ticketing
         Route::get('/admin/ticketing', [AdminTicketingController::class, 'index'])->name('admin.ticketing.index');
         Route::patch('/admin/ticketing/{id}/update-status', [AdminTicketingController::class, 'updateStatus'])->name('admin.ticketing.update-status');
         Route::patch('/admin/ticketing/{id}/mark-as-viewed', [AdminTicketingController::class, 'markAsViewed'])->name('admin.ticketing.markAsViewed');
         Route::post('/admin/ticketing/{id}/send-data', [AdminTicketingController::class, 'sendRequestData'])->name('admin.ticketing.send-data');
 
+        // Distributors
         Route::resource('admin/distributors', DistributorController::class);
         Route::put('/distributors/{id}/update-password', [DistributorController::class, 'updatePassword'])->name('distributors.update-password');
         Route::patch('/distributors/{id}/verify', [DistributorController::class, 'verify'])->name('distributors.verify');
 
+        // Quotations
         Route::get('/admin/quotations', [AdminQuotationController::class, 'index'])->name('admin.quotations.index');
         Route::get('/admin/quotations/{id}', [AdminQuotationController::class, 'show'])->name('admin.quotations.show');
         Route::get('/admin/quotations/{id}/edit', [AdminQuotationController::class, 'edit'])->name('admin.quotations.edit');
@@ -235,25 +247,25 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::put('/admin/quotations/negotiation/{negotiationId}', [AdminQuotationNegotiationController::class, 'update'])->name('admin.quotations.negotiation.update');
         Route::put('quotations/negotiation/{negotiationId}/complete', [AdminQuotationNegotiationController::class, 'complete'])->name('admin.quotations.negotiation.complete');
 
+        // Purchase Orders
         Route::get('admin/quotation/{id}/purchase-orders', [AdminPurchaseOrderController::class, 'index'])->name('admin.purchaseorder.index');
         Route::get('/admin/purchaseorder/{id}', [AdminPurchaseOrderController::class, 'show'])->name('admin.purchaseorder.show');
         Route::put('admin/purchase-orders/{id}/approve', [AdminPurchaseOrderController::class, 'approve'])->name('admin.purchaseorder.approve');
         Route::put('admin/purchase-orders/{id}/reject', [AdminPurchaseOrderController::class, 'reject'])->name('admin.purchaseorder.reject');
  
+        // Proforma Invoice
         Route::get('admin/quotation/{id}/proforma-invoice', [AdminProformaInvoiceController::class, 'index'])->name('admin.proformainvoice.index');
         Route::get('admin/proforma-invoice/{id}', [AdminProformaInvoiceController::class, 'show'])->name('admin.proformainvoice.show');
         Route::get('admin/proforma-invoice/create/{id}', [AdminProformaInvoiceController::class, 'create'])->name('admin.proformainvoice.create');
         Route::post('admin/proforma-invoice/store/{id}', [AdminProformaInvoiceController::class, 'store'])->name('admin.proformainvoice.store');
         Route::put('admin/proforma-invoice//payment-proofs/{id}', [AdminProformaInvoiceController::class, 'update'])->name('admin.proformainvoice.paymentProof.update');
 
-
-
-        // =============================
-        // ADMIN CAREER (2 MENU SAJA)
-        // =============================
+        // ===============================
+        // ADMIN CAREER
+        // ===============================
         Route::prefix('admin/career')->group(function () {
 
-            // CAREER — CREATE & MANAGE POSITIONS
+            // CAREER POSITIONS
             Route::resource('positions', JobPositionController::class)->names([
                 'index'   => 'admin.career.positions.index',
                 'create'  => 'admin.career.positions.create',
