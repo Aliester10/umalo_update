@@ -22,7 +22,7 @@ class ActivityController extends Controller
     {
         return view('Admin.Activity.show', compact('activity'));
     }
-    
+
     public function create()
     {
         return view('Admin.Activity.create');
@@ -34,15 +34,7 @@ class ActivityController extends Controller
             'images'        => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'cover_image'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'title'         => 'required|string|max:255',
-            'description'   => 'required|string',
-            'start_date'    => 'nullable|date',
-            'end_date'      => 'nullable|date',
-            'location'      => 'nullable|string',
-            'participants'  => 'nullable|string',
-            'duration'      => 'nullable|string',
-            'category'      => 'nullable|string',
-            'status'        => 'nullable|in:ongoing,completed,upcoming',
-            'tags'          => 'nullable|string',
+            'description'   => 'required|string'
         ]);
 
         // Upload main image
@@ -63,7 +55,6 @@ class ActivityController extends Controller
             $coverPath = 'uploads/activities/images/'.$filename;
         }
 
-        // Create Activity
         $activity = Activity::create([
             'images'        => $imagePath,
             'cover_image'   => $coverPath,
@@ -76,74 +67,70 @@ class ActivityController extends Controller
             'participants'  => $request->participants,
             'duration'      => $request->duration,
             'category'      => $request->category,
-            'status'        => $request->status ?? 'ongoing',
-            'tags'          => $request->tags
+            'status'        => $request->status,
+            'tags'          => $request->tags,
         ]);
 
-        // Insert Highlights (array)
+        // Highlights
         if ($request->highlights) {
-            foreach ($request->highlights as $highlight) {
-                if (!empty(trim($highlight))) {
+            foreach ($request->highlights as $h) {
+                if (!empty(trim($h))) {
                     ActivityHighlight::create([
                         'activity_id' => $activity->id,
-                        'highlight' => $highlight
+                        'highlight'   => $h
                     ]);
                 }
             }
         }
 
-        // Insert Gallery Images (multiple)
+        // Gallery
         if ($request->hasFile('gallery')) {
-            foreach ($request->file('gallery') as $gFile) {
-                $gName = time().'_'.$gFile->getClientOriginalName();
-                $gFile->move('uploads/activities/gallery/', $gName);
+            foreach ($request->file('gallery') as $file) {
+                $name = time().'_'.$file->getClientOriginalName();
+                $file->move('uploads/activities/gallery/', $name);
 
                 ActivityGallery::create([
                     'activity_id' => $activity->id,
-                    'image' => 'uploads/activities/gallery/'.$gName
+                    'image'       => 'uploads/activities/gallery/'.$name
                 ]);
             }
         }
 
-        // Insert Schedules
+        // Schedules
         if ($request->schedule_day && $request->schedule_content) {
-            foreach ($request->schedule_day as $key => $day) {
+            foreach ($request->schedule_day as $i => $day) {
                 ActivitySchedule::create([
                     'activity_id' => $activity->id,
                     'day_title' => $day,
-                    'schedule_content' => $request->schedule_content[$key]
+                    'schedule_content' => $request->schedule_content[$i]
                 ]);
             }
         }
 
-        return redirect()->route('Admin.Activity.index')
-                         ->with('success', 'Activity created successfully.');
+        return redirect()->route('Admin.Activity.index')->with('success', 'Activity created successfully.');
     }
+
 
     public function edit(Activity $activity)
     {
-        $activity->load(['galleries', 'highlights', 'schedules']);
+        $activity->load(['highlights', 'galleries', 'schedules']);
         return view('Admin.Activity.edit', compact('activity'));
     }
 
+
+    // ================================================================
+    //                          UPDATE SECTION
+    // ================================================================
     public function update(Request $request, Activity $activity)
     {
         $request->validate([
             'images'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'cover_image'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'title'         => 'required|string|max:255',
-            'description'   => 'required|string',
-            'start_date'    => 'nullable|date',
-            'end_date'      => 'nullable|date',
-            'location'      => 'nullable|string',
-            'participants'  => 'nullable|string',
-            'duration'      => 'nullable|string',
-            'category'      => 'nullable|string',
-            'status'        => 'nullable|in:ongoing,completed,upcoming',
-            'tags'          => 'nullable|string',
+            'description'   => 'required|string'
         ]);
 
-        // Update main image
+        // ================== UPDATE MAIN IMAGE ==================
         if ($request->hasFile('images')) {
             if ($activity->images && file_exists(public_path($activity->images))) {
                 unlink(public_path($activity->images));
@@ -155,7 +142,7 @@ class ActivityController extends Controller
             $activity->images = 'uploads/activities/images/'.$filename;
         }
 
-        // Update cover image
+        // ================= UPDATE COVER IMAGE ===================
         if ($request->hasFile('cover_image')) {
             if ($activity->cover_image && file_exists(public_path($activity->cover_image))) {
                 unlink(public_path($activity->cover_image));
@@ -167,38 +154,131 @@ class ActivityController extends Controller
             $activity->cover_image = 'uploads/activities/images/'.$filename;
         }
 
-        // Update main fields - PERBAIKAN: tambahkan images dan cover_image
-        $activity->update([
-            'images'        => $activity->images,
-            'cover_image'   => $activity->cover_image,
-            'title'         => $request->title,
-            'slug'          => Str::slug($request->title),
-            'description'   => $request->description,
-            'start_date'    => $request->start_date,
-            'end_date'      => $request->end_date,
-            'location'      => $request->location,
-            'participants'  => $request->participants,
-            'duration'      => $request->duration,
-            'category'      => $request->category,
-            'status'        => $request->status ?? 'ongoing',
-            'tags'          => $request->tags
-        ]);
+        // ================== UPDATE BASIC FIELDS ==================
+        $activity->title        = $request->title;
+        $activity->slug         = Str::slug($request->title);
+        $activity->description  = $request->description;
+        $activity->start_date   = $request->start_date;
+        $activity->end_date     = $request->end_date;
+        $activity->location     = $request->location;
+        $activity->duration     = $request->duration;
+        $activity->participants = $request->participants;
+        $activity->category     = $request->category;
+        $activity->status       = $request->status;
+        $activity->tags         = $request->tags;
+        $activity->save();
+
+
+        // ======================================================
+        //                      HIGHLIGHTS
+        // ======================================================
+
+        // HAPUS highlight lama
+        if ($request->delete_highlight) {
+            foreach ($request->delete_highlight as $id) {
+                ActivityHighlight::where('id', $id)->delete();
+            }
+        }
+
+        // UPDATE highlight lama
+        if ($request->highlight_ids) {
+            foreach ($request->highlight_ids as $i => $id) {
+                ActivityHighlight::where('id', $id)->update([
+                    'highlight' => $request->highlights_old[$i]
+                ]);
+            }
+        }
+
+        // TAMBAH highlight baru
+        if ($request->highlights) {
+            foreach ($request->highlights as $h) {
+                if (!empty(trim($h))) {
+                    ActivityHighlight::create([
+                        'activity_id' => $activity->id,
+                        'highlight'   => $h
+                    ]);
+                }
+            }
+        }
+
+
+        // ======================================================
+        //                        GALLERY
+        // ======================================================
+
+        // HAPUS foto gallery
+        if ($request->delete_gallery) {
+            foreach ($request->delete_gallery as $id) {
+                $g = ActivityGallery::find($id);
+                if ($g) {
+                    if (file_exists(public_path($g->image))) {
+                        unlink(public_path($g->image));
+                    }
+                    $g->delete();
+                }
+            }
+        }
+
+        // TAMBAH gallery baru
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $filename = time().'_'.$file->getClientOriginalName();
+                $file->move('uploads/activities/gallery/', $filename);
+
+                ActivityGallery::create([
+                    'activity_id' => $activity->id,
+                    'image'       => 'uploads/activities/gallery/'.$filename
+                ]);
+            }
+        }
+
+
+        // ======================================================
+        //                     SCHEDULE (JADWAL)
+        // ======================================================
+
+        // HAPUS schedule lama
+        if ($request->delete_schedule) {
+            foreach ($request->delete_schedule as $id) {
+                ActivitySchedule::where('id', $id)->delete();
+            }
+        }
+
+        // UPDATE schedule lama
+        if ($request->schedule_ids) {
+            foreach ($request->schedule_ids as $i => $id) {
+                ActivitySchedule::where('id', $id)->update([
+                    'day_title'        => $request->schedule_old_day[$i],
+                    'schedule_content' => $request->schedule_old_content[$i],
+                ]);
+            }
+        }
+
+        // TAMBAH schedule baru
+        if ($request->schedule_day) {
+            foreach ($request->schedule_day as $i => $day) {
+                if (!empty(trim($day))) {
+                    ActivitySchedule::create([
+                        'activity_id'      => $activity->id,
+                        'day_title'        => $day,
+                        'schedule_content' => $request->schedule_content[$i]
+                    ]);
+                }
+            }
+        }
+
 
         return redirect()->route('Admin.Activity.index')
-                         ->with('success', 'Activity updated successfully.');
+            ->with('success', 'Activity updated successfully.');
     }
 
+
+    // ======================================================
+    //                      DESTROY
+    // ======================================================
     public function destroy(Activity $activity)
     {
-        if ($activity->images && file_exists(public_path($activity->images))) {
-            unlink(public_path($activity->images));
-        }
-
-        if ($activity->cover_image && file_exists(public_path($activity->cover_image))) {
-            unlink(public_path($activity->cover_image));
-        }
-
-        // delete gallery images
+        // hapus gallery
         foreach ($activity->galleries as $gallery) {
             if (file_exists(public_path($gallery->image))) {
                 unlink(public_path($gallery->image));
@@ -206,14 +286,25 @@ class ActivityController extends Controller
             $gallery->delete();
         }
 
-        // delete highlight & schedule
+        // hapus highlight
         $activity->highlights()->delete();
+
+        // hapus schedule
         $activity->schedules()->delete();
 
-        // delete activity
+        // hapus cover image
+        if ($activity->cover_image && file_exists(public_path($activity->cover_image))) {
+            unlink(public_path($activity->cover_image));
+        }
+
+        // hapus main image
+        if ($activity->images && file_exists(public_path($activity->images))) {
+            unlink(public_path($activity->images));
+        }
+
         $activity->delete();
 
         return redirect()->route('Admin.Activity.index')
-                         ->with('success', 'Activity deleted successfully.');
+            ->with('success', 'Aktivitas berhasil dihapus.');
     }
 }

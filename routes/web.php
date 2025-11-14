@@ -53,6 +53,7 @@ use App\Http\Controllers\Admin\Career\JobPositionController;
 use App\Http\Controllers\Admin\Career\JobApplicationController;
 use App\Http\Controllers\Guest\Career\CareerGuestController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,11 +79,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['se
     Route::get('/products/filter/{slug}', [ProductGuestController::class, 'filterByCategory'])->name('filterByCategory');
 
     // ==========================
-    // Activity (LIST & DETAIL) — FIXED
+    // GUEST ACTIVITY — FIXED
     // ==========================
     Route::get('/activity', [ActivityGuestController::class, 'activity'])->name('activity');
     Route::get('/activity/{slug}', [ActivityGuestController::class, 'show'])->name('activity.show');
-    // (TIDAK ADA LAGI /activities/{activity})
 
     // Meta
     Route::get('/meta/{slug}', [MetaGuestController::class, 'showMetaBySlug'])->name('member.meta.show');
@@ -94,7 +94,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['se
 
     Auth::routes();
 });
-
 
 
 // ==========================
@@ -170,7 +169,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
 });
 
 
-
 // ==========================
 // Admin Routes
 // ==========================
@@ -192,12 +190,11 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::resource('admin/banner', BannerController::class)->names('admin.banner');
 
         // ================================
-        // ADMIN ACTIVITY — FULL CRUD
+        // ADMIN ACTIVITY — FIXED FULL CRUD
         // ================================
         Route::resource('admin/activity', ActivityController::class)->names('Admin.Activity');
 
         Route::resource('admin/meta', MetaController::class)->names('admin.meta');
-
         Route::post('/froala/upload_image', [MetaController::class, 'uploadImage'])->name('froala.upload_image');
 
         // Messages
@@ -252,7 +249,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::get('/admin/purchaseorder/{id}', [AdminPurchaseOrderController::class, 'show'])->name('admin.purchaseorder.show');
         Route::put('admin/purchase-orders/{id}/approve', [AdminPurchaseOrderController::class, 'approve'])->name('admin.purchaseorder.approve');
         Route::put('admin/purchase-orders/{id}/reject', [AdminPurchaseOrderController::class, 'reject'])->name('admin.purchaseorder.reject');
- 
+
         // Proforma Invoice
         Route::get('admin/quotation/{id}/proforma-invoice', [AdminProformaInvoiceController::class, 'index'])->name('admin.proformainvoice.index');
         Route::get('admin/proforma-invoice/{id}', [AdminProformaInvoiceController::class, 'show'])->name('admin.proformainvoice.show');
