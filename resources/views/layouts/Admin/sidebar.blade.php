@@ -169,6 +169,29 @@
                 </li>
 
                 <li class="nav-item">
+    <a data-bs-toggle="collapse" href="#solution-management">
+        <i class="fas fa-lightbulb"></i>
+        <p>Solution</p>
+        <span class="caret"></span>
+    </a>
+    <div class="collapse" id="solution-management">
+        <ul class="nav nav-collapse">
+            <li>
+                <a href="{{ route('admin.solution.index') }}">
+                    <span class="sub-item">Semua Solution</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.solution.create') }}">
+                    <span class="sub-item">Tambah Solution</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
+
+
+                <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#content-management">
                         <i class="fas fa-info-circle"></i>
                         <p>Meta & Konten</p>

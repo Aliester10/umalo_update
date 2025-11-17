@@ -46,7 +46,7 @@ use App\Http\Controllers\Guest\Meta\MetaGuestController;
 use App\Http\Controllers\Member\Dashboard\DashboardMemberController;
 use App\Http\Controllers\Member\Profile\MemberProfileController;
 use App\Http\Controllers\Member\Ticketing\MemberTicketingController;
-
+use App\Http\Controllers\Admin\Solution\SolutionController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 use App\Http\Controllers\Admin\Career\JobPositionController;
@@ -193,7 +193,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         // ADMIN ACTIVITY — FIXED FULL CRUD
         // ================================
         Route::resource('admin/activity', ActivityController::class)->names('Admin.Activity');
-
+        Route::resource('admin/solution', SolutionController::class)->names('admin.solution');
         Route::resource('admin/meta', MetaController::class)->names('admin.meta');
         Route::post('/froala/upload_image', [MetaController::class, 'uploadImage'])->name('froala.upload_image');
 
