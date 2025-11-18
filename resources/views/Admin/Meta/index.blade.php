@@ -10,7 +10,7 @@
                     <div class="card-title">
                     <h1 class="h3">Daftar Meta</h1>
                     </div>
-        <a href="{{ route('admin.meta.create') }}" class="btn btn-primary">Buat Meta Baru</a>
+        <a href="{{ route('Admin.Meta.create') }}" class="btn btn-primary">Buat Meta Baru</a>
 
     </div>
     @if (session('success'))
@@ -41,8 +41,8 @@
                             <td>{{ $meta->start_date }}</td>
                             <td>{{ $meta->end_date }}</td>
                             <td class="text-center">
-                                <a href="{{ route('admin.meta.edit', $meta->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                <form action="{{ route('admin.meta.destroy', $meta->id) }}" method="POST"
+                                <a href="{{ route('Admin.Meta.edit', $meta->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('Admin.Meta.destroy', $meta->id) }}" method="POST"
                                     style="display:inline;">
                                     @csrf
                                     @method('DELETE')

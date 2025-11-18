@@ -3,331 +3,126 @@
 @section('content')
 <div class="container-fluid py-4">
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold">Tambah Solusi</h3>
-        <a href="{{ route('admin.solution.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left me-1"></i> Kembali
-        </a>
-    </div>
+    <h3 class="fw-bold mb-4">Tambah Solusi Baru</h3>
 
-    <form action="{{ route('admin.solution.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
 
-        <div class="row">
+            <form action="{{ route('admin.solution.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-            <!-- LEFT SIDE -->
-            <div class="col-md-8">
+                <!-- Title -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Judul Solusi</label>
+                    <input type="text" class="form-control" name="title" required>
+                </div>
 
-                <!-- GENERAL DATA -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Informasi Utama</h5>
-                    </div>
-                    <div class="card-body">
+                <!-- Banner -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Banner Image</label>
+                    <input type="file" class="form-control" name="banner_image">
+                </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Judul Solusi</label>
-                            <input type="text" name="title" class="form-control" required>
-                        </div>
+                <!-- Short Description -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Deskripsi Singkat</label>
+                    <textarea class="form-control" name="short_description" rows="3"></textarea>
+                </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Slug (otomatis jika kosong)</label>
-                            <input type="text" name="slug" class="form-control">
-                        </div>
+                <!-- Overview -->
+                <h5 class="mt-4 fw-bold">Overview</h5>
 
-                        <div class="mb-3">
-                            <label class="form-label">Deskripsi Singkat</label>
-                            <textarea name="short_description" class="form-control" rows="3"></textarea>
-                        </div>
+                <div class="mb-3">
+                    <label class="form-label">Judul Overview</label>
+                    <input type="text" name="overview_title" class="form-control">
+                </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Deskripsi Lengkap</label>
-                            <textarea name="long_description" class="form-control" rows="6"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Urutan Tampil</label>
-                            <input type="number" name="order" class="form-control" value="0">
-                        </div>
-
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Deskripsi Overview</label>
+                    <textarea name="overview_description" class="form-control" rows="4"></textarea>
                 </div>
 
                 <!-- FEATURES -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">Fitur Solusi</h5>
+                <h5 class="fw-bold mt-4">Features</h5>
+
+                <div id="feature-wrapper">
+
+                    <div class="border rounded p-3 mb-3 feature-item">
+                        <label class="form-label">Judul Feature</label>
+                        <input type="text" class="form-control mb-2" name="features[0][title]">
+
+                        <label class="form-label">Icon (Opsional)</label>
+                        <input type="text" class="form-control" name="features[0][icon]" placeholder="ex: fas fa-check">
                     </div>
 
-                    <div class="card-body">
-                        <div id="feature-wrapper">
-                            <div class="row g-3 feature-item mb-2">
-                                <div class="col-md-3">
-                                    <input type="text" name="features[0][icon]" class="form-control" placeholder="Icon (opsional)">
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" name="features[0][feature]" class="form-control" placeholder="Nama Fitur">
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-danger btn-sm w-100 remove-feature">X</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="button" id="add-feature" class="btn btn-outline-primary btn-sm mt-2">
-                            + Tambah Fitur
-                        </button>
-                    </div>
                 </div>
 
-                <!-- METRICS -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-warning text-white">
-                        <h5 class="mb-0">Metrics / Highlight Angka</h5>
-                    </div>
+                <button type="button" class="btn btn-secondary mb-3" onclick="addFeature()">
+                    + Tambah Feature
+                </button>
 
-                    <div class="card-body">
-                        <div id="metrics-wrapper">
-                            <div class="row g-3 metric-item mb-2">
-                                <div class="col-md-5">
-                                    <input type="text" name="metrics[0][label]" class="form-control" placeholder="Label">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" name="metrics[0][value]" class="form-control" placeholder="Nilai">
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-danger btn-sm w-100 remove-metric">X</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="button" id="add-metric" class="btn btn-outline-warning btn-sm mt-2">
-                            + Tambah Metric
-                        </button>
-                    </div>
+                <!-- Benefits -->
+                <div class="mb-3 mt-4">
+                    <label class="form-label fw-bold">Benefits</label>
+                    <textarea name="benefits" class="form-control" rows="4"></textarea>
                 </div>
 
-                <!-- TAGS -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-secondary text-white">
-                        <h5 class="mb-0">Tag Solusi</h5>
-                    </div>
-
-                    <div class="card-body">
-                        <div id="tag-wrapper">
-                            <div class="row g-3 tag-item mb-2">
-                                <div class="col-md-11">
-                                    <input type="text" name="tags[0][tag]" class="form-control" placeholder="Tag (misal: 'Network', 'Smart System')">
-                                </div>
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-danger btn-sm w-100 remove-tag">X</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="button" id="add-tag" class="btn btn-outline-secondary btn-sm mt-2">
-                            + Tambah Tag
-                        </button>
-                    </div>
+                <!-- Brochure -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Brochure File (PDF)</label>
+                    <input type="file" class="form-control" name="brochure_file">
                 </div>
 
-                <!-- MEDIA -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-dark text-white">
-                        <h5 class="mb-0">Media (Foto/Video)</h5>
-                    </div>
-
-                    <div class="card-body">
-                        <div id="media-wrapper">
-
-                            <div class="row g-3 media-item mb-2">
-                                <div class="col-md-3">
-                                    <select name="media[0][type]" class="form-control">
-                                        <option value="image">Image</option>
-                                        <option value="video">Video</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-8">
-                                    <input type="text" name="media[0][url]" class="form-control" placeholder="URL Media">
-                                </div>
-
-                                <div class="col-md-1">
-                                    <button type="button" class="btn btn-danger btn-sm w-100 remove-media">X</button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <button type="button" id="add-media" class="btn btn-outline-dark btn-sm mt-2">
-                            + Tambah Media
-                        </button>
-                    </div>
+                <!-- Contact Link -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Link Kontak</label>
+                    <input type="text" name="contact_link" class="form-control">
                 </div>
 
-            </div>
-
-            <!-- RIGHT SIDE -->
-            <div class="col-md-4">
-
-                <!-- BROCHURE -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">File Brosur</h5>
-                    </div>
-
-                    <div class="card-body">
-                        <input type="file" name="brochure_file" class="form-control" accept=".pdf,.doc,.docx">
-                    </div>
+                <!-- Order -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Urutan</label>
+                    <input type="number" class="form-control" name="order" value="0">
                 </div>
 
-                <!-- THUMBNAIL -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">Thumbnail</h5>
-                    </div>
-
-                    <div class="card-body">
-                        <input type="file" name="thumbnail" class="form-control" accept="image/*">
-                    </div>
+                <!-- Status -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="draft">Draft</option>
+                        <option value="published">Publish</option>
+                    </select>
                 </div>
 
-                <!-- COVER IMAGE -->
-                <div class="card shadow-sm mb-4 border-0">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Cover Image</h5>
-                    </div>
+                <button class="btn btn-primary px-4">Simpan</button>
+            </form>
 
-                    <div class="card-body">
-                        <input type="file" name="cover_image" class="form-control" accept="image/*">
-                    </div>
-                </div>
-
-            </div>
         </div>
-
-        <!-- SUBMIT -->
-        <button type="submit" class="btn btn-primary w-100 py-2 mt-3">Simpan Solusi</button>
-    </form>
+    </div>
 
 </div>
 
-@endsection
-
-@section('scripts')
 <script>
-    let featureIndex = 1;
-    let metricIndex = 1;
-    let tagIndex = 1;
-    let mediaIndex = 1;
+let featureIndex = 1;
 
-    // Add Feature
-    document.getElementById('add-feature').addEventListener('click', function () {
-        let wrapper = document.getElementById('feature-wrapper');
-        wrapper.insertAdjacentHTML('beforeend', `
-            <div class="row g-3 feature-item mb-2">
-                <div class="col-md-3">
-                    <input type="text" name="features[${featureIndex}][icon]" class="form-control" placeholder="Icon (opsional)">
-                </div>
-                <div class="col-md-8">
-                    <input type="text" name="features[${featureIndex}][feature]" class="form-control" placeholder="Nama Fitur">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger btn-sm w-100 remove-feature">X</button>
-                </div>
-            </div>
-        `);
+function addFeature() {
+    let html = `
+    <div class="border rounded p-3 mb-3 feature-item">
+        <label class="form-label">Judul Feature</label>
+        <input type="text" class="form-control mb-2" name="features[${featureIndex}][title]">
 
-        featureIndex++;
-    });
+        <label class="form-label">Icon (Opsional)</label>
+        <input type="text" class="form-control" name="features[${featureIndex}][icon]" placeholder="ex: fas fa-check">
 
-    // Remove Feature
-    document.addEventListener('click', function(e) {
-        if(e.target.classList.contains('remove-feature')) {
-            e.target.closest('.feature-item').remove();
-        }
-    });
+        <button type="button" class="btn btn-danger btn-sm mt-2" onclick="this.parentNode.remove()">
+            Hapus Feature
+        </button>
+    </div>
+    `;
 
-    // Add Metric
-    document.getElementById('add-metric').addEventListener('click', function () {
-        let wrapper = document.getElementById('metrics-wrapper');
-        wrapper.insertAdjacentHTML('beforeend', `
-            <div class="row g-3 metric-item mb-2">
-                <div class="col-md-5">
-                    <input type="text" name="metrics[${metricIndex}][label]" class="form-control" placeholder="Label">
-                </div>
-                <div class="col-md-6">
-                    <input type="text" name="metrics[${metricIndex}][value]" class="form-control" placeholder="Nilai">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger btn-sm w-100 remove-metric">X</button>
-                </div>
-            </div>
-        `);
-
-        metricIndex++;
-    });
-
-    // Remove Metric
-    document.addEventListener('click', function(e) {
-        if(e.target.classList.contains('remove-metric')) {
-            e.target.closest('.metric-item').remove();
-        }
-    });
-
-    // Add Tag
-    document.getElementById('add-tag').addEventListener('click', function () {
-        let wrapper = document.getElementById('tag-wrapper');
-        wrapper.insertAdjacentHTML('beforeend', `
-            <div class="row g-3 tag-item mb-2">
-                <div class="col-md-11">
-                    <input type="text" name="tags[${tagIndex}][tag]" class="form-control" placeholder="Tag">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger btn-sm w-100 remove-tag">X</button>
-                </div>
-            </div>
-        `);
-
-        tagIndex++;
-    });
-
-    // Remove Tag
-    document.addEventListener('click', function(e) {
-        if(e.target.classList.contains('remove-tag')) {
-            e.target.closest('.tag-item').remove();
-        }
-    });
-
-    // Add Media
-    document.getElementById('add-media').addEventListener('click', function () {
-        let wrapper = document.getElementById('media-wrapper');
-        wrapper.insertAdjacentHTML('beforeend', `
-            <div class="row g-3 media-item mb-2">
-                <div class="col-md-3">
-                    <select name="media[${mediaIndex}][type]" class="form-control">
-                        <option value="image">Image</option>
-                        <option value="video">Video</option>
-                    </select>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" name="media[${mediaIndex}][url]" class="form-control" placeholder="URL Media">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger btn-sm w-100 remove-media">X</button>
-                </div>
-            </div>
-        `);
-
-        mediaIndex++;
-    });
-
-    // Remove Media
-    document.addEventListener('click', function(e) {
-        if(e.target.classList.contains('remove-media')) {
-            e.target.closest('.media-item').remove();
-        }
-    });
+    document.getElementById('feature-wrapper').insertAdjacentHTML('beforeend', html);
+    featureIndex++;
+}
 </script>
+
 @endsection

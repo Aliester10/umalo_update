@@ -22,7 +22,7 @@ use App\Http\Controllers\Admin\BrandPartner\BrandPartnerController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Distributor\DistributorController;
 use App\Http\Controllers\Admin\Meta\MetaController;
-use App\Http\Controllers\Guest\Meta\MetaMemberController;
+use App\Http\Controllers\Guest\Meta\MetaGuestController;
 use App\Http\Controllers\Guest\Contact\ContactGuestController;
 use App\Http\Controllers\Guest\Profile\ProfileMemberController;
 use App\Http\Controllers\Admin\Location\LocationController;
@@ -42,11 +42,11 @@ use App\Http\Controllers\Distributor\PurchaseOrder\DistributorPurchaseOrderContr
 use App\Http\Controllers\Distributor\Quotations\DistributorQuotationController;
 use App\Http\Controllers\Distributor\Quotations\DistributorQuotationNegotiationController;
 use App\Http\Controllers\Guest\Location\LocationMemberController;
-use App\Http\Controllers\Guest\Meta\MetaGuestController;
 use App\Http\Controllers\Member\Dashboard\DashboardMemberController;
 use App\Http\Controllers\Member\Profile\MemberProfileController;
 use App\Http\Controllers\Member\Ticketing\MemberTicketingController;
 use App\Http\Controllers\Admin\Solution\SolutionController;
+use App\Http\Controllers\Guest\Solution\GuestSolutionController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 use App\Http\Controllers\Admin\Career\JobPositionController;
@@ -79,10 +79,19 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['se
     Route::get('/products/filter/{slug}', [ProductGuestController::class, 'filterByCategory'])->name('filterByCategory');
 
     // ==========================
-    // GUEST ACTIVITY — FIXED
+    // GUEST ACTIVITY
     // ==========================
     Route::get('/activity', [ActivityGuestController::class, 'activity'])->name('activity');
     Route::get('/activity/{slug}', [ActivityGuestController::class, 'show'])->name('activity.show');
+
+    // ==========================
+    // GUEST SOLUTION - UPDATED ✅
+    // ==========================
+    Route::prefix('solutions')->name('solutions.')->group(function () {
+        Route::get('/', [GuestSolutionController::class, 'index'])->name('index');
+        Route::get('/{slug}', [GuestSolutionController::class, 'show'])->name('show');
+        Route::get('/{slug}/download', [GuestSolutionController::class, 'downloadBrochure'])->name('download');
+    });
 
     // Meta
     Route::get('/meta/{slug}', [MetaGuestController::class, 'showMetaBySlug'])->name('member.meta.show');
@@ -190,11 +199,16 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::resource('admin/banner', BannerController::class)->names('admin.banner');
 
         // ================================
-        // ADMIN ACTIVITY — FIXED FULL CRUD
+        // ADMIN ACTIVITY
         // ================================
         Route::resource('admin/activity', ActivityController::class)->names('Admin.Activity');
+
+        // ================================
+        // ADMIN SOLUTION (CRUD lengkap) ✅
+        // ================================
         Route::resource('admin/solution', SolutionController::class)->names('admin.solution');
-        Route::resource('admin/meta', MetaController::class)->names('admin.meta');
+
+        Route::resource('Admin/Meta', MetaController::class)->names('Admin.Meta');
         Route::post('/froala/upload_image', [MetaController::class, 'uploadImage'])->name('froala.upload_image');
 
         // Messages

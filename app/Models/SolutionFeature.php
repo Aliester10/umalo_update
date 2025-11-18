@@ -11,12 +11,23 @@ class SolutionFeature extends Model
 
     protected $fillable = [
         'solution_id',
-        'icon',
-        'feature',
+        'feature_title',
+        'feature_icon'
     ];
 
+    /**
+     * Relationship to solution
+     */
     public function solution()
     {
         return $this->belongsTo(Solution::class);
+    }
+
+    /**
+     * Get icon class for Font Awesome
+     */
+    public function getIconClassAttribute()
+    {
+        return 'fas fa-' . ($this->feature_icon ?? 'check');
     }
 }

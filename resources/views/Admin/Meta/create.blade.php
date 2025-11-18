@@ -9,7 +9,7 @@
                         <h4 class="mb-0">Tambah Meta Baru</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.meta.store') }}" method="POST">
+                        <form action="{{ route('Admin.Meta.store') }}" method="POST">
                             @csrf
 
                             <div class="form-group">

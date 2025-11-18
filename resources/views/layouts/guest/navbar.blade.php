@@ -23,7 +23,7 @@
                     <img src="{{ asset('assets/img/logo.png') }}" alt="Umalo Logo" />
                 </a>
 
-                <a href="#" class="nav-link">Solution</a>
+                <a href="{{ route('solutions.index') }}" class="nav-link {{ Route::is('solutions.*') ? 'active' : '' }}">Solution</a>
                 <a href="{{ route('career.index') }}" class="nav-link {{ Route::is('career.index') ? 'active' : '' }}">Career</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ Route::is('contact') ? 'active' : '' }}">{{ __('messages.contactUS') }}</a>
                 <a href="{{ route('faq') }}" class="nav-link {{ Route::is('faq') ? 'active' : '' }}">{{ __('messages.faqs') }}</a>
@@ -98,7 +98,9 @@
             <a href="{{ route('activity') }}" class="mobile-menu-link {{ Route::is('activity') ? 'active' : '' }}">
                 {{ __('messages.activities') }}
             </a>
-            <a href="#" class="mobile-menu-link">Solution</a>
+            <a href="{{ route('solutions.index') }}" class="mobile-menu-link {{ Route::is('solutions.*') ? 'active' : '' }}">
+                Solution
+            </a>
             <a href="{{ route('career.index') }}" class="mobile-menu-link {{ Route::is('career.index') ? 'active' : '' }}">
                 Career
             </a>
