@@ -186,4 +186,44 @@ return [
     'no_file_available' => 'No file available.',
     'no_inspeksi_data' => 'No inspection maintenance data available for this product.',
 
+
+    //about 
+
+'ourteam_title' => 'Meet our Team',
+'ourteam_desc' => 'We meticulously execute each stage of production to ensure every solution we deliver meets the highest standards of quality and precision.',
+'ourteam_designer' => 'Transforming ideas into elegant and valuable digital experiences.',
+'ourteam_rnd' => 'Exploring ideas and designing innovations through research on technology, trends, and market needs.',
+'ourteam_iot' => 'Designing and building systems based on physical devices digitally integrated with smart solutions.',
+'ourteam_se' => 'Translating functional requirements into optimized and integrated software systems.',
+'ourteam_marketing' => 'Crafting and directing communication and promotional strategies to build brand image and reach.',
+
+'production_line_title' => 'From Idea to Innovation',
+'production_line_desc' => 'We carry out every stage of production with meticulous attention to ensure that each solution we deliver meets the highest standards of quality and precision.',
+
+'production_line_1_title' => 'Research and Development',
+'production_line_1_desc' => 'Exploring ideas, technology trends, and validating user needs before production.',
+
+'production_line_2_title' => 'Product Design',
+'production_line_2_desc' => 'Designing the appearance, functionality, and architecture of the product in a comprehensive manner.',
+
+'production_line_3_title' => 'Material Preparation',
+'production_line_3_desc' => 'Selecting and inspecting raw materials used in the production process.',
+
+'production_line_4_title' => 'Assembly & Integration',
+'production_line_4_desc' => 'Assembling and integrating hardware and software into a complete system.',
+
+'production_line_5_title' => 'QC & Testing',
+'production_line_5_desc' => 'Ensuring the entire system operates according to standards and is free of defects.',
+
+'production_line_6_title' => 'Product Display',
+'production_line_6_desc' => 'Presenting the finished product for promotion, demonstrations, or client presentations.',
+
+'production_line_7_title' => 'Marketing & Distribution',
+'production_line_7_desc' => 'Launching product marketing strategies and distributing to partners or clients.',
+    'about_us_slogan' => 'Get to know more about the vision, mission, and philosophy that define Umalo commitment.',
+
+    'vision' => 'Achieve global leadership in smart technology solutions by fostering continuous innovation and forward-thinking excellence.',
+    'mission_1' => 'Deliver smart technology solutions and premium IT services that drive digital transformation, enhance operational efficiency, and empower our partners to stay competitive.',
+    'mission_2' => 'Provide integrated digital solutions that advance learning, empower educational institutions, and shape future-ready generations equipped for global challenges.',
+
 ];

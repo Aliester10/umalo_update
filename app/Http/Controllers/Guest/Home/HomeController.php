@@ -54,20 +54,24 @@ class HomeController extends Controller
     /**
      * Halaman Tentang Kami (About)
      */
-    public function about()
-    {
-        // Ambil data perusahaan
-        $company = CompanyParameter::first();
-        $locale = app()->getLocale();
+public function about()
+{
+    // Ambil data perusahaan
+    $company = CompanyParameter::first();
+    $locale = app()->getLocale();
 
-        // Terjemahkan deskripsi perusahaan jika ada
-        if ($company && $company->description) {
-            $company->description = TranslateHelper::translate($company->description, $locale);
-        }
-
-        // Kirim data ke view
-        return view('guest.about.about', compact('company'));
+    // Terjemahkan deskripsi perusahaan jika ada
+    if ($company && $company->description) {
+        $company->description = TranslateHelper::translate($company->description, $locale);
     }
+
+    // Ambil brand partner untuk ditampilkan di halaman About
+    $brands = BrandPartner::orderBy('id', 'asc')->get();
+
+    // Kirim data ke view
+    return view('guest.about.about', compact('company', 'brands'));
+}
+
 
 public function faq()
 {

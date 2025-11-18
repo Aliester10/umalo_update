@@ -12,7 +12,7 @@
                 @csrf
                 @method('PUT')
 
-                @include('admin.parameter.partials.form')
+                @include('Admin.Parameter.partials.form')
 
                 <button type="submit" class="btn btn-primary">Perbaharui</button>
             </form>
