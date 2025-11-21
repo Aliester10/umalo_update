@@ -173,6 +173,7 @@
 
                     <div class="collapse" id="content-management">
                         <ul class="nav nav-collapse">
+
                             <li>
                                 <a href="{{ route('Admin.Meta.index') }}">
                                     <span class="sub-item">Meta</span>
@@ -191,15 +192,11 @@
                                 </a>
                             </li>
 
-                            <!-- ========================= -->
-                            <!-- NEW ADDED MENU: SOLUTION -->
-                            <!-- ========================= -->
                             <li>
                                 <a href="{{ route('admin.solution.index') }}">
                                     <span class="sub-item">Solution</span>
                                 </a>
                             </li>
-                            <!-- ========================= -->
 
                             <li>
                                 <a href="{{ route('admin.faq.index') }}">
@@ -212,6 +209,42 @@
                                     <span class="sub-item">Brand & Logo</span>
                                 </a>
                             </li>
+
+                            <!-- =============================== -->
+                            <!-- NEW : ABOUT MANAGEMENT SECTION -->
+                            <!-- =============================== -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#about-management">
+                                    <span class="sub-item">About Us</span>
+                                    <span class="caret"></span>
+                                </a>
+
+                                <div class="collapse" id="about-management">
+                                    <ul class="nav nav-collapse">
+
+                                        <li>
+                                            <a href="{{ route('admin.team.index') }}">
+                                                <span class="sub-item">Team Members</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ route('admin.core.index') }}">
+                                                <span class="sub-item">Core Values</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ route('admin.process.index') }}">
+                                                <span class="sub-item">Process Steps</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- =============================== -->
+
                         </ul>
                     </div>
                 </li>

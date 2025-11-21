@@ -52,44 +52,23 @@ class HomeController extends Controller
     }
 
     /**
-     * Halaman Tentang Kami (About)
+     * Halaman FAQ
      */
-public function about()
-{
-    // Ambil data perusahaan
-    $company = CompanyParameter::first();
-    $locale = app()->getLocale();
+    public function faq()
+    {
+        $faqs = Faq::all();
+        $locale = app()->getLocale();
 
-    // Terjemahkan deskripsi perusahaan jika ada
-    if ($company && $company->description) {
-        $company->description = TranslateHelper::translate($company->description, $locale);
-    }
+        foreach ($faqs as $faq) {
+            if (!empty($faq->question)) {
+                $faq->question = TranslateHelper::translate($faq->question, $locale);
+            }
 
-    // Ambil brand partner untuk ditampilkan di halaman About
-    $brands = BrandPartner::orderBy('id', 'asc')->get();
-
-    // Kirim data ke view
-    return view('guest.about.about', compact('company', 'brands'));
-}
-
-
-public function faq()
-{
-    $faqs = Faq::all();
-    $locale = app()->getLocale();
-
-    // Terjemahkan pertanyaan dan jawaban FAQ
-    foreach ($faqs as $faq) {
-        if (!empty($faq->question)) {
-            $faq->question = \App\Helpers\TranslateHelper::translate($faq->question, $locale);
+            if (!empty($faq->answer)) {
+                $faq->answer = TranslateHelper::translate($faq->answer, $locale);
+            }
         }
 
-        if (!empty($faq->answer)) {
-            $faq->answer = \App\Helpers\TranslateHelper::translate($faq->answer, $locale);
-        }
+        return view('guest.faq.index', compact('faqs'));
     }
-
-    return view('guest.faq.index', compact('faqs'));
-}
- 
 }

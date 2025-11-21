@@ -1,192 +1,580 @@
 @extends('layouts.guest.master')
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
-    /* Animations */
-    @keyframes fadeInDown {
-        from { opacity: 0; transform: translate3d(0, -100%, 0); }
-        to { opacity: 1; transform: translate3d(0, 0, 0); }
-    }
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translate3d(0, 100%, 0); }
-        to { opacity: 1; transform: translate3d(0, 0, 0); }
-    }
-    @keyframes fadeInLeft {
-        from { opacity: 0; transform: translate3d(-100%, 0, 0); }
-        to { opacity: 1; transform: translate3d(0, 0, 0); }
-    }
-    @keyframes fadeInRight {
-        from { opacity: 0; transform: translate3d(100%, 0, 0); }
-        to { opacity: 1; transform: translate3d(0, 0, 0); }
-    }
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    .animate-fade-in-up { 
-        animation: fadeInUp 0.8s ease-out; 
+    body {
+        overflow-x: hidden;
     }
-    .animate-fade-in-right { 
-        animation: fadeInRight 0.8s ease-out; 
+
+    /* ==========================================
+       ROOT VARIABLES
+       ========================================== */
+    :root {
+        --primary: #228b22;
+        --primary-dark: #1a6b1a;
+        --primary-light: #2d9f2d;
+        --accent: #207178;
+        --text-primary: #111827;
+        --text-secondary: #6b7280;
+        --text-tertiary: #9ca3af;
+        --dark: #1a1a1a;
+        --gray-900: #0f172a;
+        --gray-700: #334155;
+        --gray-600: #475569;
+        --gray-500: #64748b;
+        --gray-400: #94a3b8;
+        --gray-300: #cbd5e1;
+        --gray-200: #e2e8f0;
+        --gray-100: #f1f5f9;
+        --gray-50: #f8fafc;
+        --white: #ffffff;
+        --bg-light: #f8f9fa;
+        --border: #e5e7eb;
+        
+        --gradient-primary: linear-gradient(135deg, #228b22 0%, #207178 100%);
+        --section-padding: 100px;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+        --radius-2xl: 24px;
+        --transition: all 0.3s ease;
+        --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .fade-in-up { 
-        animation: fadeInUp 0.6s ease-out forwards; 
-        opacity: 0; 
+
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px;
+    }
+
+    /* ==========================================
+       SUBTLE ANIMATIONS
+       ========================================== */
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+        from { 
+            opacity: 0;
+            transform: translateX(-40px); 
+        }
+        to { 
+            opacity: 1;
+            transform: translateX(0); 
+        }
+    }
+
+    @keyframes slideInRight {
+        from { 
+            opacity: 0;
+            transform: translateX(40px); 
+        }
+        to { 
+            opacity: 1;
+            transform: translateX(0); 
+        }
     }
     
-    /* Hero Section */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    /* ==========================================
+       UPDATED HERO SECTION - SMOOTH GRADIENT
+       ========================================== */
     .hero-section {
         position: relative;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 450px;
+        min-height: 500px;
+        height: 70vh;
+        max-height: 600px;
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
     }
     
-    /* Intro Section */
+    /* Dark overlay untuk kontras text */
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, 
+            rgba(0, 0, 0, 0.4), 
+            rgba(0, 0, 0, 0.5));
+        z-index: 1;
+    }
+    
+    /* SMOOTH WHITE gradient - UPDATED untuk lebih halus */
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px; /* Diperpanjang untuk transisi lebih smooth */
+        background: linear-gradient(to top, 
+            rgba(255, 255, 255, 1) 0%,      /* Putih solid 100% */
+            rgba(255, 255, 255, 0.95) 15%,  
+            rgba(255, 255, 255, 0.65) 30%,  
+            rgba(255, 255, 255, 0.5) 45%,   
+            rgba(255, 255, 255, 0.22) 60%,   
+            rgba(255, 255, 255, 0) 75%,   
+            rgba(255, 255, 255, 0) 90%,   
+            transparent 100%);               /* Fade ke transparan */
+        z-index: 2;
+        pointer-events: none; /* Tidak menghalangi klik */
+    }
+    
+    /* Hero Content - Simple Box with Subtle Shadow */
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        color: white;
+        padding: 3rem 2rem;
+        max-width: 900px;
+        animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1.5rem;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 50px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.6s ease-out 0.2s backwards;
+    }
+    
+    .hero-badge i {
+        font-size: 1rem;
+    }
+    
+    /* Title dengan warna PUTIH */
+    .hero-title {
+        font-size: clamp(2.75rem, 6vw, 4.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.02em;
+        color: #ffffff; /* PUTIH */
+        text-shadow: 
+            0 2px 10px rgba(0, 0, 0, 0.5),
+            0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.6s ease-out 0.3s backwards;
+    }
+    
+    .hero-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin: 2rem auto;
+        animation: fadeIn 0.6s ease-out 0.4s backwards;
+    }
+    
+    .hero-divider::before,
+    .hero-divider::after {
+        content: '';
+        width: 50px;
+        height: 2px;
+        background: white;
+        opacity: 0.7;
+    }
+    
+    .divider-dot {
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+    
+    .hero-subtitle {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        font-weight: 300;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.95);
+        max-width: 700px;
+        margin: 0 auto;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        animation: fadeInUp 0.6s ease-out 0.5s backwards;
+    }
+    
+    /* Decorative corner lines - subtle */
+    .hero-decoration {
+        position: absolute;
+        z-index: 3;
+        pointer-events: none;
+    }
+    
+    .corner-line {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .corner-tl-v {
+        top: 30px;
+        left: 30px;
+        width: 2px;
+        height: 60px;
+    }
+    
+    .corner-tl-h {
+        top: 30px;
+        left: 30px;
+        width: 60px;
+        height: 2px;
+    }
+    
+    .corner-br-v {
+        bottom: 30px;
+        right: 30px;
+        width: 2px;
+        height: 60px;
+    }
+    
+    .corner-br-h {
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 2px;
+    }
+    
+    /* Small decorative dots */
+    .hero-dots {
+        position: absolute;
+        z-index: 3;
+        pointer-events: none;
+    }
+    
+    .hero-dot {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+    }
+    
+    .hero-dot:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .hero-dot:nth-child(2) {
+        top: 30%;
+        right: 15%;
+        animation: float 4s ease-in-out infinite;
+        animation-delay: 0.5s;
+    }
+    
+    .hero-dot:nth-child(3) {
+        bottom: 25%;
+        left: 20%;
+        animation: float 3.5s ease-in-out infinite;
+        animation-delay: 1s;
+    }
+    
+    .hero-dot:nth-child(4) {
+        bottom: 35%;
+        right: 12%;
+        animation: float 4.5s ease-in-out infinite;
+        animation-delay: 1.5s;
+    }
+    
+    /* ==========================================
+       PROFESSIONAL INTRO SECTION
+       ========================================== */
     .intro-section {
-        padding: 4rem 0;
-        background: transparent;
+        padding: 6rem 0;
+        background: white;
+        position: relative;
     }
     
     .intro-container {
-        max-width: 80rem;
+        max-width: 1280px;
         margin: 0 auto;
-        padding: 0 1rem;
+        padding: 0 2rem;
     }
     
     .intro-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 3rem;
-        align-items: stretch;
+        gap: 4rem;
+        align-items: center;
     }
     
     @media (min-width: 1024px) {
         .intro-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 5rem;
         }
     }
     
-    .intro-card {
-        background-color: #f0fdf4;
-        padding: 2rem;
-        border-radius: 1rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(4px);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    .intro-content {
+        animation: slideInLeft 0.8s ease-out;
     }
     
-    .intro-video-wrapper {
+    .intro-label {
+        display: inline-block;
+        font-size: 0.8125rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--primary);
+        padding: 0.5rem 1.25rem;
+        background: rgba(34, 139, 34, 0.08);
+        border-radius: 50px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .intro-title {
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        font-weight: 700;
+        color: var(--gray-900);
+        line-height: 1.25;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.01em;
+    }
+    
+    .intro-title-highlight {
+        color: var(--primary);
         position: relative;
+        display: inline-block;
     }
     
-    .intro-video {
-        width: 100%;
-        height: 16rem;
-        object-fit: cover;
-        border-radius: 0.75rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
-    
-    @media (min-width: 1024px) {
-        .intro-video {
-            height: 100%;
-        }
-    }
-    
-    .intro-thumbnail {
+    .intro-title-highlight::after {
+        content: '';
         position: absolute;
-        bottom: -1.5rem;
-        left: -1.5rem;
-        width: 7rem;
-        height: 5rem;
-        border-radius: 0.5rem;
-        overflow: hidden;
-        border: 2px solid white;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        z-index: 10;
+        bottom: 4px;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background: rgba(34, 139, 34, 0.15);
+        z-index: -1;
     }
     
-    @media (min-width: 768px) {
-        .intro-thumbnail {
-            width: 8rem;
-            height: 6rem;
+    .intro-text {
+        font-size: 1.0625rem;
+        line-height: 1.8;
+        color: var(--gray-600);
+        text-align: justify;
+        margin-bottom: 2rem;
+    }
+    
+
+    .intro-visual {
+        position: relative;
+        animation: slideInRight 0.8s ease-out;
+    }
+    
+    .intro-image-main {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+    
+    .intro-image-main video,
+    .intro-image-main img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .intro-image-badge {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        width: 180px;
+        height: 180px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 5px solid white;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        transition: var(--transition);
+    }
+    
+    .intro-image-badge:hover {
+        transform: scale(1.05);
+    }
+    
+    .intro-image-badge img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    @media (max-width: 1023px) {
+        .intro-image-badge {
+            width: 140px;
+            height: 140px;
+            bottom: -15px;
+            right: -15px;
         }
     }
     
-    /* Vision Mission Section */
+    /* ==========================================
+       PROFESSIONAL VISION MISSION SECTION
+       ========================================== */
     .vision-mission-section {
-        padding: 2.5rem 0;
-        background: transparent;
+        padding: 5rem 0;
+        background: linear-gradient(180deg, #f8fdf9 0%, #ffffff 100%);
     }
     
     .vision-mission-container {
-        max-width: 64rem;
+        max-width: 1280px;
         margin: 0 auto;
-        padding: 0 1rem;
+        padding: 0 2rem;
     }
     
     .vision-mission-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 1.25rem;
+        gap: 2.5rem;
     }
     
     @media (min-width: 768px) {
         .vision-mission-grid {
             grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
         }
     }
     
-    .vision-mission-card {
+    .vm-card {
         background: white;
-        border-radius: 1rem;
-        padding: 2rem;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        transition: transform 0.7s ease-in-out;
+        border-radius: 16px;
+        padding: 3rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(34, 139, 34, 0.1);
+        transition: var(--transition-smooth);
         position: relative;
         overflow: hidden;
     }
     
-    .vision-mission-card:hover {
-        transform: scale(1.05);
-    }
-    
-    .vision-bg-circle {
+    .vm-card::before {
+        content: '';
         position: absolute;
-        top: -2rem;
-        right: -2rem;
-        width: 6rem;
-        height: 6rem;
-        background-color: #dcfce7;
-        border-radius: 50%;
-        opacity: 0.3;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
     }
     
-    .mission-bg-circle {
+    .vm-card:hover::before {
+        transform: scaleX(1);
+    }
+    
+    .vm-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(34, 139, 34, 0.15);
+        border-color: var(--primary);
+    }
+    
+    .vm-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .vm-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #228b22, #207178);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .vm-icon i {
+        font-size: 1.75rem;
+        color: white;
+    }
+    
+    .vm-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        letter-spacing: -0.01em;
+    }
+    
+    .vm-content {
+        color: var(--gray-600);
+        font-size: 1.0625rem;
+        line-height: 1.8;
+        text-align: justify;
+    }
+    
+    .vm-content ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .vm-content ul li {
+        position: relative;
+        padding-left: 1.75rem;
+        margin-bottom: 0.875rem;
+    }
+    
+    .vm-content ul li::before {
+        content: '';
         position: absolute;
-        bottom: -2rem;
-        left: -2rem;
-        width: 6rem;
-        height: 6rem;
-        background-color: #dcfce7;
+        left: 0;
+        top: 0.5rem;
+        width: 8px;
+        height: 8px;
+        background: var(--primary);
         border-radius: 50%;
-        opacity: 0.3;
     }
     
-    .icon-pulse {
-        animation: pulse 2s infinite;
-    }
-    
-    /* Our Brand Section */
+    /* ==========================================
+       BRAND SECTION
+       ========================================== */
     .brand-section {
         position: relative;
         padding-top: 6rem;
@@ -277,29 +665,9 @@
         z-index: 0;
     }
     
-    /* Core Values Section */
-    .core-values-section {
-        padding: 5rem 0;
-        background: linear-gradient(to bottom, white, #f9fafb);
-        opacity: 0.95;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .core-values-header {
-        max-width: 56rem;
-        margin: 0 auto;
-        padding: 0 1.5rem;
-        margin-bottom: 4rem;
-    }
-    
-    .core-values-card {
-        background: rgba(255,255,255,0.7);
-        backdrop-filter: blur(12px);
-        border-radius: 1rem;
-        padding: 2rem;
-    }
-    
+    /* ==========================================
+       SECTION TITLE
+       ========================================== */
     .section-title {
         font-size: 2.25rem;
         font-weight: 800;
@@ -322,408 +690,677 @@
         margin: 0.75rem auto 0;
         border-radius: 9999px;
     }
-    
-    .core-values-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
-        max-width: 72rem;
+
+    /* ==========================================
+       CORE VALUES SECTION
+       ========================================== */
+    .core-values-section {
+        padding: var(--section-padding) 0;
+        background: white;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 5rem;
+    }
+
+    .section-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        background: white;
+        border: 2px solid var(--primary);
+        border-radius: 100px;
+        color: var(--primary);
+        font-size: 0.8125rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 15px rgba(34, 139, 34, 0.15);
+    }
+
+    .section-title-highlight {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .section-subtitle {
+        font-size: 1.125rem;
+        color: var(--gray-600);
+        max-width: 600px;
         margin: 0 auto;
-        padding: 0 1rem;
-        position: relative;
-        z-index: 10;
     }
-    
-    .core-value-item {
-        width: 100%;
-        background: rgba(255,255,255,0.7);
-        backdrop-filter: blur(12px);
-        border: 1px solid #e5e7eb;
-        border-radius: 1rem;
-        padding: 1.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.5s;
-        transform: translateY(0);
+
+    .core-values-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
-    
+
     @media (min-width: 640px) {
-        .core-value-item {
-            width: calc(50% - 1rem);
+        .core-values-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
-    
-    @media (min-width: 768px) {
-        .core-value-item {
-            width: calc(33.333% - 1.5rem);
-        }
-    }
-    
+
     @media (min-width: 1024px) {
-        .core-value-item {
-            width: calc(28% - 1.5rem);
+        .core-values-grid {
+            grid-template-columns: repeat(3, 1fr);
         }
     }
-    
-    .core-value-item:hover {
-        background: #16a34a;
-        transform: translateY(-0.5rem) scale(1.05);
+
+    @media (min-width: 1280px) {
+        .core-values-grid {
+            grid-template-columns: repeat(5, 1fr);
+        }
     }
-    
+
+    .core-value-item {
+        background: white;
+        border-radius: var(--radius-2xl);
+        padding: 2.5rem 2rem;
+        box-shadow: var(--shadow-md);
+        text-align: center;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .core-value-item::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-primary);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .core-value-item:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .core-value-item:hover::before {
+        opacity: 1;
+    }
+
     .value-icon-wrapper {
-        background: #dcfce7;
-        padding: 1rem;
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
         border-radius: 50%;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        transition: all 0.3s;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 1.75rem;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
     }
-    
+
     .core-value-item:hover .value-icon-wrapper {
         background: white;
+        transform: scale(1.1);
     }
-    
+
     .value-icon {
-        color: #15803d;
-        font-size: 1.5rem;
-        transition: all 0.3s;
+        color: var(--primary-dark);
+        font-size: 2rem;
     }
-    
+
     .value-title {
-        color: #1e3a8a;
-        font-size: 1.125rem;
-        font-weight: 600;
-        text-align: center;
-        margin-bottom: 0.5rem;
-        transition: all 0.3s;
+        color: var(--gray-900);
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 2;
+        transition: color 0.3s ease;
     }
-    
+
     .core-value-item:hover .value-title {
         color: white;
     }
-    
+
     .value-desc {
-        color: black;
-        font-weight: 600;
-        font-size: 0.875rem;
-        line-height: 1.625;
-        text-align: justify;
-        transition: all 0.3s;
+        color: var(--gray-600);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        position: relative;
+        z-index: 2;
+        transition: color 0.3s ease;
     }
-    
+
     .core-value-item:hover .value-desc {
-        color: rgba(255,255,255,0.9);
+        color: rgba(255, 255, 255, 0.95);
     }
-    
-    /* Our Team Section */
+
+    /* ==========================================
+       TEAM SECTION
+       ========================================== */
     .team-section {
-        background: white;
-        padding: 4rem 0;
+        padding: var(--section-padding) 0;
+        background: linear-gradient(to bottom, var(--gray-50), white);
     }
-    
-    .team-container {
-        max-width: 80rem;
-        margin: 0 auto;
-        padding: 0 1.5rem;
+
+    .team-image-wrapper {
+        max-width: 1000px;
+        margin: 0 auto 5rem;
+        border-radius: 2rem;
+        overflow: hidden;
+        box-shadow: var(--shadow-2xl);
+        position: relative;
     }
-    
+
     .team-image {
         width: 100%;
-        max-width: 56rem;
-        margin: 0 auto 3rem;
         height: auto;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        object-fit: cover;
         display: block;
     }
-    
-    .team-grid {
+
+    .team-badge {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: var(--dark);
+        padding: 0.875rem 1.75rem;
+        border-radius: 3rem;
+        font-weight: 800;
+        font-size: 0.9375rem;
+        box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1.5rem;
+        align-items: center;
+        gap: 0.625rem;
     }
-    
-    .team-card {
-        width: 100%;
-        background: white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        transition: all 0.3s;
-        text-align: center;
-        transform: translateY(0);
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
-    
+
     @media (min-width: 640px) {
-        .team-card {
-            width: calc(50% - 0.75rem);
+        .team-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
-    
-    @media (min-width: 768px) {
-        .team-card {
-            width: calc(33.333% - 1rem);
-        }
-    }
-    
+
     @media (min-width: 1024px) {
-        .team-card {
-            width: calc(20% - 1.2rem);
+        .team-grid {
+            grid-template-columns: repeat(3, 1fr);
         }
     }
-    
-    .team-card:hover {
-        background: #dbeafe;
-        transform: translateY(-0.25rem);
+
+    @media (min-width: 1280px) {
+        .team-grid {
+            grid-template-columns: repeat(5, 1fr);
+        }
     }
-    
+
+    .team-card {
+        background: white;
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        transition: var(--transition-smooth);
+        box-shadow: var(--shadow-sm);
+        position: relative;
+    }
+
+    .team-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: var(--gradient-primary);
+        z-index: 1;
+        transition: height 0.5s ease;
+    }
+
+    .team-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-primary);
+        opacity: 0;
+        z-index: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .team-card:hover {
+        transform: translateY(-12px);
+        box-shadow: var(--shadow-2xl);
+        border-color: var(--primary);
+    }
+
+    .team-card:hover::before {
+        height: 100%;
+    }
+
+    .team-card:hover::after {
+        opacity: 1;
+    }
+
+    .team-card-content {
+        position: relative;
+        z-index: 2;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .team-photo-wrapper {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1.25rem;
+        position: relative;
+    }
+
+    .team-photo-border {
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    }
+
     .team-photo {
-        width: 6rem;
-        height: 6rem;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
         object-fit: cover;
         border: 4px solid white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        margin: 0 auto;
-        transition: all 0.3s;
-        display: block;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        transition: transform 0.4s ease;
     }
-    
+
     .team-card:hover .team-photo {
+        transform: scale(1.08);
+    }
+
+    .team-name {
+        color: var(--dark);
+        font-size: 1.125rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .team-card:hover .team-name {
+        color: white;
+    }
+
+    .team-position {
+        display: inline-block;
+        background: var(--gradient-primary);
+        color: white;
+        font-size: 0.8125rem;
+        font-weight: 700;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        margin-bottom: 0.875rem;
+        transition: all 0.4s ease;
+    }
+
+    .team-card:hover .team-position {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: var(--dark);
         transform: scale(1.05);
     }
-    
-    .team-name {
-        color: #1f2937;
-        font-size: 1.125rem;
-        font-weight: 600;
-        margin-top: 1rem;
-    }
-    
-    .team-card:hover .team-name {
-        color: #1e3a8a;
-    }
-    
-    .team-position {
-        color: #16a34a;
-        font-size: 0.875rem;
-        font-weight: 500;
-        margin-top: 0.25rem;
-    }
-    
-    .team-card:hover .team-position {
-        color: #1d4ed8;
-    }
-    
+
     .team-desc {
-        color: #6b7280;
-        font-size: 0.75rem;
-        margin-top: 0.5rem;
-        line-height: 1.375;
+        color: var(--gray-600);
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
     }
-    
+
     .team-card:hover .team-desc {
-        color: #374151;
+        color: rgba(255, 255, 255, 0.95);
     }
-    
-    /* Production Line Section */
-    .production-section {
-        background: white;
-        padding: 4rem 0;
-    }
-    
-    .production-container {
-        max-width: 80rem;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-    
-    .production-grid {
+
+    .team-social {
         display: flex;
-        flex-wrap: wrap;
         justify-content: center;
-        gap: 2.5rem;
-        max-width: 72rem;
-        margin: 0 auto;
+        gap: 0.625rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.4s ease;
     }
-    
-    .production-step {
-        width: 100%;
-        max-width: 18rem;
+
+    .team-card:hover .team-social {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .team-social-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
         display: flex;
-        flex-direction: column;
         align-items: center;
-        position: relative;
-        transition: all 0.3s;
+        justify-content: center;
+        color: white;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
     }
-    
-    @media (min-width: 640px) {
-        .production-step {
-            width: calc(50% - 1.25rem);
+
+    .team-social-icon:hover {
+        background: white;
+        transform: translateY(-3px) scale(1.1);
+    }
+
+    .team-social-icon:nth-child(1):hover { color: #0077b5; }
+    .team-social-icon:nth-child(2):hover { color: #333; }
+    .team-social-icon:nth-child(3):hover { color: #ea4335; }
+
+    /* ==========================================
+       PRODUCTION SECTION
+       ========================================== */
+    .production-section {
+        padding: var(--section-padding) 0;
+        background: white;
+    }
+
+    .production-timeline {
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .timeline-line {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 3px;
+        height: 0;
+        background: linear-gradient(to bottom, var(--primary), #fbbf24);
+        transform: translateX(-50%);
+        transition: height 0.5s ease;
+    }
+
+    @media (max-width: 1023px) {
+        .timeline-line {
+            display: none;
         }
     }
-    
+
+    .production-step {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        align-items: center;
+        margin-bottom: 5rem;
+        position: relative;
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s ease;
+    }
+
+    .production-step.in-view {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
     @media (min-width: 1024px) {
         .production-step {
-            width: auto;
+            grid-template-columns: 1fr auto 1fr;
+        }
+
+        .production-step:nth-child(even) .step-content {
+            order: 3;
+        }
+
+        .production-step:nth-child(even) .step-image-card {
+            order: 1;
         }
     }
-    
-    .production-step:hover {
-        transform: scale(1.05);
-    }
-    
-    .step-image-wrapper {
-        position: relative;
-        width: 100%;
-        margin-bottom: 1rem;
-    }
-    
-    .step-image {
-        width: 100%;
-        height: 10rem;
-        object-fit: cover;
-        border-radius: 0.75rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-    
-    .step-number {
-        position: absolute;
-        top: -1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        width: 2.5rem;
-        height: 2.5rem;
-        background-color: #16a34a;
-        color: white;
+
+    .step-number-circle {
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-primary);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.875rem;
-        font-weight: 700;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        font-size: 2rem;
+        font-weight: 900;
+        color: white;
+        box-shadow: 0 10px 30px rgba(34, 139, 34, 0.3), 0 0 0 12px rgba(34, 139, 34, 0.1);
+        margin: 0 auto;
+        transition: all 0.5s ease;
+        position: relative;
+        z-index: 10;
     }
-    
-    .step-arrow {
-        position: absolute;
-        right: -35px;
-        top: 100px;
-        display: none;
-    }
-    
-    @media (min-width: 768px) {
-        .step-arrow {
-            display: block;
+
+    @media (min-width: 1024px) {
+        .step-number-circle {
+            order: 2;
         }
     }
-    
-    .step-title {
-        color: #1e3a8a;
-        font-size: 1.125rem;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
+
+    .step-content {
         text-align: center;
+        transition: all 0.5s ease;
     }
-    
+
+    @media (min-width: 1024px) {
+        .production-step:nth-child(odd) .step-content {
+            text-align: right;
+            padding-right: 2rem;
+        }
+
+        .production-step:nth-child(even) .step-content {
+            text-align: left;
+            padding-left: 2rem;
+        }
+    }
+
+    .step-title {
+        color: var(--gray-900);
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .production-step.in-view .step-title {
+        color: var(--primary);
+    }
+
     .step-desc {
-        color: #4b5563;
-        font-size: 0.875rem;
-        text-align: center;
-        padding: 0 0.5rem;
+        color: var(--gray-600);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .step-image-card {
+        background: white;
+        border-radius: var(--radius-2xl);
+        padding: 1.25rem;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        transition: all 0.5s ease;
+    }
+
+    .production-step.in-view .step-image-card {
+        box-shadow: var(--shadow-2xl);
+    }
+
+    .step-image {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        border-radius: var(--radius-xl);
+        transition: transform 0.4s ease;
+    }
+
+    .production-step:hover .step-image {
+        transform: scale(1.05);
+    }
+
+    /* ==========================================
+       RESPONSIVE
+       ========================================== */
+    @media (max-width: 768px) {
+        :root {
+            --section-padding: 70px;
+        }
+
+        .hero-section {
+            height: 65vh;
+            min-height: 450px;
+        }
+        
+        .hero-content {
+            padding: 2rem 1.5rem;
+        }
+        
+        .hero-decoration {
+            display: none;
+        }
+
+        .intro-section {
+            padding: 4rem 0;
+        }
+        
+        .vision-mission-section {
+            padding: 4rem 0;
+        }
+
+        .vm-card {
+            padding: 2rem;
+        }
+
+        .team-badge {
+            top: 1rem;
+            right: 1rem;
+            padding: 0.625rem 1.25rem;
+            font-size: 0.8125rem;
+        }
+
+        .production-step {
+            margin-bottom: 4rem;
+        }
     }
 </style>
 
-<!-- Background wrapper -->
-<div style="position: relative; overflow: hidden;">
-    <!-- Background Image Blurred -->
-    <div style="position: absolute; inset: 0; z-index: -10;">
-        <img src="{{ asset('storage/img/about_bground.webp') }}"
-             alt="Background Kelas Digital"
-             style="width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: blur(4px);" />
-    </div>
+<!-- Main Wrapper -->
+<div style="width: 100%; overflow-x: hidden;">
 
-    <!-- Hero Section -->
-    <section class="hero-section" style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('{{ asset('storage/img/about_bground.webp') }}');">
-        <div style="text-align: center; color: white; padding: 0 1rem;">
-            <h1 style="font-size: 2.25rem; font-weight: 700; margin-bottom: 1rem;" data-aos="fade-down" data-aos-delay="100">
-                {{ __('messages.about_us') }}
-            </h1>
-            <p style="font-size: 1.125rem;" data-aos="fade-up" data-aos-delay="300">
+    <!-- CLEAN & ELEGANT HERO SECTION WITH SMOOTH GRADIENT -->
+    <section class="hero-section" style="background-image: url('{{ asset('storage/img/kantor.jpg') }}');">
+        
+        <!-- Simple corner decorations -->
+        <div class="hero-decoration">
+            <div class="corner-line corner-tl-v"></div>
+            <div class="corner-line corner-tl-h"></div>
+            <div class="corner-line corner-br-v"></div>
+            <div class="corner-line corner-br-h"></div>
+        </div>
+        
+        <!-- Floating dots -->
+        <div class="hero-dots">
+            <div class="hero-dot"></div>
+            <div class="hero-dot"></div>
+            <div class="hero-dot"></div>
+            <div class="hero-dot"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-building"></i>
+                WELCOME TO
+            </div>
+            <h1 class="hero-title">{{ __('messages.about_us') }}</h1>
+            <div class="hero-divider">
+                <span class="divider-dot"></span>
+            </div>
+            <p class="hero-subtitle">
                 {{ __('messages.about_us_slogan') }}
             </p>
         </div>
     </section>
 
-    <!-- Intro Section -->
+    <!-- PROFESSIONAL INTRO SECTION -->
     <section class="intro-section">
         <div class="intro-container">
             <div class="intro-grid">
-                <!-- Kiri: Card teks -->
-                <div style="display: flex;">
-                    <div class="intro-card animate-fade-in-up">
-                        <h2 style="color: #15803d; font-size: 0.875rem; font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem;">
-                            {{ $company->company_name ?? 'Umalo Sedia Tekno' }}
-                        </h2>
-                        <h3 style="font-size: 1.875rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">
-                            {{ $company->slogan ?? 'Way To Know' }}
-                        </h3>
-                        <p style="color: #374151; line-height: 1.625; text-align: justify;">
-                            {{ $company->short_history ?? 'Umalo adalah penyedia solusi teknologi pendidikan dan integrasi sistem yang didirikan pada tahun 2023 dengan komitmen mendalam terhadap transformasi digital.' }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Kanan: Video -->
-                <div class="intro-video-wrapper animate-fade-in-right">
-                    <video class="intro-video"
-                        autoplay muted loop playsinline preload="metadata"
-                        poster="{{ asset('storage/img/kantor-umalo.webp') }}">
-                        <source src="{{ asset('storage/videos/umalo_introduction.mp4') }}" type="video/mp4">
-                    </video>
+                <!-- Content -->
+                <div class="intro-content">
+                    <span class="intro-label">{{ $company->company_name ?? 'Umalo Sedia Tekno' }}</span>
                     
-                    <div class="intro-thumbnail">
-                        <img src="{{ asset('storage/img/kantor-umalo.webp') }}"
-                             alt="Kantor Umalo"
-                             style="width: 100%; height: 100%; object-fit: cover;">
+                    <h2 class="intro-title">
+                        <span class="intro-title-highlight">{{ $company->slogan ?? 'Way To Know' }}</span> 
+                        Transformasi Digital
+                    </h2>
+                    
+                    <p class="intro-text">
+                        {{ $company->short_history ?? 'Umalo adalah penyedia solusi teknologi pendidikan dan integrasi sistem yang didirikan pada tahun 2023 dengan komitmen mendalam terhadap transformasi digital.' }}
+                    </p>
+                    
+                </div>
+                
+                <!-- Visual -->
+                <div class="intro-visual">
+                    <div class="intro-image-main">
+                        <video autoplay muted loop playsinline preload="metadata"
+                            poster="{{ asset('storage/img/kantor-umalo.webp') }}">
+                            <source src="{{ asset('storage/videos/umalo_introduction.mp4') }}" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <div class="intro-image-badge">
+                        <img src="{{ asset('storage/img/kantor-umalo.webp') }}" alt="Kantor Umalo">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Vision Mission Section -->
+    <!-- PROFESSIONAL VISION MISSION SECTION -->
     <section class="vision-mission-section">
         <div class="vision-mission-container">
             <div class="vision-mission-grid">
                 <!-- VISI -->
-                <div class="vision-mission-card" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="vision-bg-circle"></div>
-                    <div style="position: relative; z-index: 10; display: flex; align-items: center; margin-bottom: 1rem;">
-                        <i class="fas fa-eye icon-pulse" style="color: #15803d; font-size: 1.5rem; margin-right: 0.75rem;"></i>
-                        <span style="color: #15803d; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.025em;">VISI</span>
+                <div class="vm-card">
+                    <div class="vm-header">
+                        <div class="vm-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 class="vm-title">Visi</h3>
                     </div>
-                    <p style="color: #1f2937; line-height: 1.625; text-align: justify; position: relative; z-index: 10;">
-                        {{ __('messages.vision') ?? $company->visi }}
-                    </p>
+                    <div class="vm-content">
+                        <p>{{ __('messages.vision') ?? $company->visi }}</p>
+                    </div>
                 </div>
 
                 <!-- MISI -->
-                <div class="vision-mission-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-                    <div class="mission-bg-circle"></div>
-                    <div style="position: relative; z-index: 10; display: flex; align-items: center; margin-bottom: 1rem;">
-                        <i class="fas fa-bullseye icon-pulse" style="color: #15803d; font-size: 1.5rem; margin-right: 0.75rem;"></i>
-                        <span style="color: #15803d; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.025em;">MISI</span>
+                <div class="vm-card">
+                    <div class="vm-header">
+                        <div class="vm-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="vm-title">Misi</h3>
                     </div>
-                    <ul style="list-style-type: disc; padding-left: 1.25rem; position: relative; z-index: 10;">
-                        <li style="margin-bottom: 0.5rem;">{{ __('messages.mission_1') ?? $company->misi }}</li>
-                        <li>{{ __('messages.mission_2') }}</li>
-                    </ul>
+                    <div class="vm-content">
+                        <ul>
+                            <li>{{ __('messages.mission_1') ?? $company->misi }}</li>
+                            <li>{{ __('messages.mission_2') }}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -734,14 +1371,14 @@
         <div class="brand-gradient-overlay"></div>
         
         <div class="brand-container">
-            <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up">
+            <div style="text-align: center; margin-bottom: 3rem;">
                 <h2 class="section-title">
                     Our Brands
                     <span class="title-underline"></span>
                 </h2>
             </div>
 
-            <div class="brand-grid" data-aos="fade-up" data-aos-delay="200">
+            <div class="brand-grid">
                 @foreach($brands as $brand)
                     <div class="brand-item">
                         <div class="brand-logo-wrapper">
@@ -756,172 +1393,212 @@
         </div>
     </section>
 
-    <!-- Core Values Section -->
+    <!-- CORE VALUES -->
     <section class="core-values-section">
-        <!-- Header -->
-        <div class="core-values-header animate-fade-in-up">
-            <div class="core-values-card">
-                <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up">
-                    <h2 class="section-title">
-                        {{ __('messages.core_values_title') }}
-                        <span class="title-underline"></span>
-                    </h2>
-                </div>
-                <p style="color: #374151; line-height: 1.625; text-align: center; font-size: 1rem;">
-                    {{ __('messages.core_values_description') }}
-                </p>
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="section-header">
+                <span class="section-tag">
+                    <i class="fas fa-heart"></i>
+                    Our Principles
+                </span>
+                <h2 class="section-title">
+                    Core <span class="section-title-highlight">Values</span>
+                </h2>
             </div>
-        </div>
 
-        <!-- Core Values Cards -->
-        <div class="core-values-grid">
-            @foreach ([
-                ['icon'=>'far fa-handshake','title'=>__('messages.innovation'),'desc'=>__('messages.innovation_description')],
-                ['icon'=>'fa fa-dollar-sign','title'=>__('messages.integrity'),'desc'=>__('messages.integrity_description')],
-                ['icon'=>'fa fa-bullseye','title'=>__('messages.customer_focus'),'desc'=>__('messages.customer_focus_description')],
-                ['icon'=>'fa fa-headphones','title'=>__('messages.collaboration'),'desc'=>__('messages.collaboration_description')],
-                ['icon'=>'fa fa-shield-alt','title'=>__('messages.excellence'),'desc'=>__('messages.excellence_description')],
-            ] as $index => $item)
-                <div class="core-value-item fade-in-up" style="animation-delay: {{ $index * 0.1 }}s;">
-                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+            <div class="core-values-grid">
+                @foreach ([
+                    ['icon'=>'fas fa-lightbulb','title'=>__('messages.innovation'),'desc'=>__('messages.innovation_description')],
+                    ['icon'=>'fas fa-shield-alt','title'=>__('messages.integrity'),'desc'=>__('messages.integrity_description')],
+                    ['icon'=>'fas fa-users','title'=>__('messages.customer_focus'),'desc'=>__('messages.customer_focus_description')],
+                    ['icon'=>'fas fa-handshake','title'=>__('messages.collaboration'),'desc'=>__('messages.collaboration_description')],
+                    ['icon'=>'fas fa-trophy','title'=>__('messages.excellence'),'desc'=>__('messages.excellence_description')],
+                ] as $item)
+                    <div class="core-value-item">
                         <div class="value-icon-wrapper">
                             <i class="{{ $item['icon'] }} value-icon"></i>
                         </div>
-                    </div>
-                    <h4 class="value-title">
-                        {{ $item['title'] }}
-                    </h4>
-                    <p class="value-desc">
-                        {{ $item['desc'] }}
-                    </p>
-                </div>
-            @endforeach
-        </div>
-
-        <!-- Background Pattern -->
-        <div style="position: absolute; inset: 0; background-image: url('{{ asset('/storage/img/bg-pattern-light.svg') }}'); opacity: 0.05; background-repeat: no-repeat; background-position: center; background-size: cover; pointer-events: none;"></div>
-    </section>
-
-    <!-- Our Team Section -->
-    <section class="team-section">
-        <div class="team-container">
-            <div class="core-values-header animate-fade-in-up">
-                <div class="core-values-card">
-                    <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up">
-                        <h2 class="section-title">
-                            {{ __('messages.ourteam_title') }}
-                            <span class="title-underline"></span>
-                        </h2>
-                    </div>
-                    <p style="color: #374151; line-height: 1.625; text-align: center; font-size: 1rem;">
-                        {{ __('messages.ourteam_desc') }}
-                    </p>
-                </div>
-            </div>
-
-            <img src="{{ asset('storage/img/ourteam/diskusi_team.webp') }}"
-                 alt="Foto Seluruh Tim Umalo"
-                 class="team-image">
-
-            @php
-                $team = [
-                    [
-                        'name' => 'Wahyu ',
-                        'position' => 'Product Designer',
-                        'desc' => __('messages.ourteam_designer'),
-                        'photo' => asset('storage/img/ourteam/product_designer.webp')
-                    ],
-                    [
-                        'name' => 'Trixie',
-                        'position' => 'R&D Specialist',
-                        'desc' => __('messages.ourteam_rnd'),
-                        'photo' => asset('storage/img/ourteam/rnd_specialist.webp')
-                    ],
-                    [
-                        'name' => 'Paian & Jodi',
-                        'position' => 'IOT Specialist',
-                        'desc' => __('messages.ourteam_iot'),
-                        'photo' => asset('storage/img/ourteam/iot_engineers.webp')
-                    ],
-                    [
-                        'name' => 'Aisyah',
-                        'position' => 'Software Engineer',
-                        'desc' => __('messages.ourteam_se'),
-                        'photo' => asset('storage/img/ourteam/software_engineer.webp')
-                    ],
-                    [
-                        'name' => 'Angle',
-                        'position' => 'Head of Marketing',
-                        'desc' => __('messages.ourteam_marketing'),
-                        'photo' => asset('storage/img/ourteam/marketing.webp')
-                    ],
-                ];
-            @endphp
-
-            <div class="team-grid">
-                @foreach ($team as $member)
-                    <div class="team-card">
-                        <img src="{{ $member['photo'] }}" class="team-photo" alt="{{ $member['name'] }}">
-                        <h3 class="team-name">{{ $member['name'] }}</h3>
-                        <p class="team-position">{{ $member['position'] }}</p>
-                        <p class="team-desc">{{ $member['desc'] }}</p>
+                        <h4 class="value-title">{{ $item['title'] }}</h4>
+                        <p class="value-desc">{{ $item['desc'] }}</p>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
 
-    <!-- Production Line Section -->
-    <section class="production-section">
-        <div class="production-container">
-            <div class="core-values-header animate-fade-in-up">
-                <div class="core-values-card">
-                    <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up">
-                        <h2 class="section-title">
-                            {{ __('messages.production_line_title') }}
-                            <span class="title-underline"></span>
-                        </h2>
-                    </div>
-                    <p style="color: #374151; line-height: 1.625; text-align: center; font-size: 1rem;">
-                        {{ __('messages.production_line_desc') }}
-                    </p>
-                </div>
-            </div>
+    <!-- TEAM SECTION -->
+<section class="team-section">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <div class="section-header">
+            <span class="section-tag">
+                <i class="fas fa-users"></i>
+                The Experts
+            </span>
+            <h2 class="section-title">
+                Meet Our <span class="section-title-highlight">Team</span>
+            </h2>
+        </div>
 
-            <div class="production-grid">
-                @foreach (range(1, 7) as $i)
-                    <div class="production-step">
-                        <div class="step-image-wrapper">
-                            <img src="{{ asset('storage/img/production/step' . $i . '.webp') }}"
-                                 alt="Step {{ $i }}"
-                                 class="step-image">
-                            <div class="step-number">{{ $i }}</div>
+        <div class="team-image-wrapper">
+            <div class="team-badge">
+                <i class="fas fa-star"></i>
+                <span>Our Amazing Team</span>
+            </div>
+            <img src="{{ asset('storage/img/ourteam/diskusi_team.webp') }}" alt="Team" class="team-image">
+        </div>
+
+        <div class="team-grid">
+
+            @foreach ($team as $member)
+                <div class="team-card">
+                    <div class="team-card-content">
+                        
+                        <!-- Photo -->
+                        <div class="team-photo-wrapper">
+                            <div class="team-photo-border"></div>
+                            <img src="{{ asset('storage/' . $member->photo) }}" 
+                                 class="team-photo" 
+                                 alt="{{ $member->name }}">
                         </div>
 
-                        <h3 class="step-title">
-                            {{ __('messages.production_line_' . $i . '_title') }}
-                        </h3>
-                        <p class="step-desc">
-                            {{ __('messages.production_line_' . $i . '_desc') }}
-                        </p>
+                        <!-- Name -->
+                        <h3 class="team-name">{{ $member->name }}</h3>
 
-                        @if ($i < 7)
-                            <div class="step-arrow">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     style="height: 1.5rem; width: 1.5rem; color: #22c55e;"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M9 5l7 7-7 7" />
-                                </svg>
-                            </div>
-                        @endif
+                        <!-- Position -->
+                        <span class="team-position">{{ $member->position }}</span>
+
+                        <!-- Desc -->
+                        <p class="team-desc">{{ $member->description }}</p>
+
+                        <!-- SOCIALS -->
+                        <div class="team-social">
+
+                            @if ($member->socials && $member->socials->linkedin)
+                                <a href="{{ $member->socials->linkedin }}" target="_blank" class="team-social-icon">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            @endif
+
+                            @if ($member->socials && $member->socials->instagram)
+                                <a href="{{ $member->socials->instagram }}" target="_blank" class="team-social-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            @endif
+
+                            @if ($member->socials && $member->socials->github)
+                                <a href="{{ $member->socials->github }}" target="_blank" class="team-social-icon">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            @endif
+
+                            @if ($member->socials && $member->socials->youtube)
+                                <a href="{{ $member->socials->youtube }}" target="_blank" class="team-social-icon">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            @endif
+
+                            @if ($member->socials && $member->socials->facebook)
+                                <a href="{{ $member->socials->facebook }}" target="_blank" class="team-social-icon">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                            @endif
+
+                        </div>
+
                     </div>
-                @endforeach
+                </div>
+            @endforeach
+
+        </div>
+    </div>
+</section>
+
+
+    <!-- PRODUCTION SECTION -->
+    <section class="production-section">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div class="section-header">
+                <span class="section-tag">
+                    <i class="fas fa-cogs"></i>
+                    Our Process
+                </span>
+                <h2 class="section-title">
+                    From Idea to <span class="section-title-highlight">Innovation</span>
+                </h2>
+            </div>
+
+            <div class="production-timeline">
+                <div class="timeline-line"></div>
+
+                @for($i = 1; $i <= 7; $i++)
+                    <div class="production-step" data-step="{{ $i }}">
+                        <div class="step-content">
+                            <h3 class="step-title">
+                                {{ __('messages.production_line_' . $i . '_title') }}
+                            </h3>
+                            <p class="step-desc">
+                                {{ __('messages.production_line_' . $i . '_desc') }}
+                            </p>
+                        </div>
+                        
+                        <div class="step-number-circle">{{ $i }}</div>
+                        
+                        <div class="step-image-card">
+                            <img src="{{ asset('storage/img/production/step' . $i . '.webp') }}" alt="Step {{ $i }}" class="step-image">
+                        </div>
+                    </div>
+                @endfor
             </div>
         </div>
     </section>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Production Timeline
+        const productionSteps = document.querySelectorAll('.production-step');
+        const timelineLine = document.querySelector('.timeline-line');
+
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    
+                    if (timelineLine) {
+                        const stepIndex = Array.from(productionSteps).indexOf(entry.target);
+                        const percentage = ((stepIndex + 1) / productionSteps.length) * 100;
+                        timelineLine.style.height = percentage + '%';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        productionSteps.forEach(step => {
+            observer.observe(step);
+        });
+
+        // Smooth reveal animations
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.core-value-item, .team-card, .vm-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            revealObserver.observe(el);
+        });
+    });
+</script>
 @endsection
