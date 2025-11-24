@@ -7,6 +7,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 // =============================
 // ADMIN CONTROLLERS
 // =============================
+use App\Http\Controllers\Admin\Solution\SolutionController;
 use App\Http\Controllers\Admin\MasterData\BidangPerusahaanController;
 use App\Http\Controllers\Admin\MasterData\KategoriController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;

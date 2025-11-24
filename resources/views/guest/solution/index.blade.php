@@ -4,7 +4,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/styles_reset.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/solution_styles.css') }}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
@@ -13,7 +12,7 @@
 @section('content')
 
 <style>
-    /* ===== CSS VARIABLES ===== */
+/* ===== CSS VARIABLES ===== */
 :root {
   /* Colors */
   --primary: #228b22;
@@ -36,11 +35,7 @@
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #228b22 0%, #207178 100%);
   --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  --gradient-overlay: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
+  --gradient-overlay: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
 
   /* Spacing */
   --container-width: 1320px;
@@ -79,77 +74,10 @@ body {
   padding: 0 32px;
 }
 
-/* ===== LOADING SCREEN ===== */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, var(--white) 0%, var(--gray-100) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.loading-screen.fade-out {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.loader-content {
-  text-align: center;
-}
-
-.loader-logo {
-  margin-bottom: 32px;
-  animation: fadeInUp 0.8s ease;
-}
-
-.loader-logo img {
-  height: 80px;
-  width: auto;
-  margin: 0 auto;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.loader-spinner {
-  margin-bottom: 20px;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto;
-  border: 4px solid rgba(34, 139, 34, 0.1);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.loader-text {
-  font-size: 16px;
-  color: var(--gray-700);
-  font-weight: 600;
-  animation: fadeIn 1s ease;
-}
-
 /* ===== ANIMATIONS ===== */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes fadeInUp {
@@ -164,26 +92,14 @@ body {
 }
 
 @keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 @keyframes float {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  33% {
-    transform: translate(30px, -50px) rotate(120deg);
-  }
-  66% {
-    transform: translate(-20px, 20px) rotate(240deg);
-  }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -50px) rotate(120deg); }
+  66% { transform: translate(-20px, 20px) rotate(240deg); }
 }
 
 /* ===== HERO SECTION ===== */
@@ -231,7 +147,8 @@ body {
 .grid-overlay {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(var(--gray-200) 1px, transparent 1px),
+  background-image: 
+    linear-gradient(var(--gray-200) 1px, transparent 1px),
     linear-gradient(90deg, var(--gray-200) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.3;
@@ -658,16 +575,18 @@ body {
   flex-wrap: wrap;
 }
 
-/* ===== MODAL - PERBAIKAN UTAMA ===== */
+/* ===== MODAL - IMPROVED VERSION ===== */
 .modal {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 99999;
-  padding: 40px 20px;
+  padding: 20px;
   overflow-y: auto;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .modal.show {
@@ -687,13 +606,13 @@ body {
   position: relative;
   background: var(--white);
   border-radius: var(--radius-2xl);
-  max-width: 900px;
+  max-width: 1000px;
   width: 100%;
-  margin: auto;
+  margin: 0 auto;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 10;
-  max-height: 90vh;
+  max-height: calc(100vh - 80px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -712,31 +631,35 @@ body {
 
 .modal-close {
   position: absolute;
-  top: 24px;
-  right: 24px;
-  width: 48px;
-  height: 48px;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border: none;
   border-radius: 50%;
   color: var(--gray-700);
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   z-index: 100;
   transition: var(--transition-base);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-close:hover {
   background: var(--white);
   color: var(--dark);
-  transform: rotate(90deg);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: var(--shadow-xl);
 }
 
 .modal-hero {
   position: relative;
-  height: 400px;
+  height: 320px;
   border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   overflow: hidden;
   flex-shrink: 0;
@@ -753,30 +676,54 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 40px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  padding: 32px 40px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
   color: var(--white);
 }
 
 .modal-hero-overlay h2 {
+  font-family: "Space Grotesk", sans-serif;
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 8px;
+  line-height: 1.2;
 }
 
 .modal-hero-overlay p {
-  font-size: 16px;
-  opacity: 0.9;
+  font-size: 15px;
+  opacity: 0.95;
+  font-weight: 500;
 }
 
 .modal-content {
-  padding: 48px;
+  padding: 40px;
   overflow-y: auto;
   flex: 1;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--gray-100);
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: var(--gray-100);
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
 }
 
 .modal-section {
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
 .modal-section:last-of-type {
@@ -784,27 +731,29 @@ body {
 }
 
 .section-icon {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--gradient-primary);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   color: var(--white);
-  font-size: 20px;
-  margin-bottom: 16px;
+  font-size: 18px;
+  margin-bottom: 14px;
 }
 
 .modal-section h3 {
-  font-size: 20px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
   font-weight: 700;
   color: var(--dark);
   margin-bottom: 16px;
+  line-height: 1.3;
 }
 
 .modal-section p {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--gray-600);
   line-height: 1.8;
 }
@@ -817,11 +766,11 @@ body {
 
 .modal-feature {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 16px;
   background: var(--gray-50);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   border: 1px solid var(--gray-200);
   transition: var(--transition-base);
 }
@@ -830,34 +779,38 @@ body {
   background: var(--white);
   border-color: var(--primary);
   transform: translateX(4px);
+  box-shadow: var(--shadow-md);
 }
 
 .modal-feature-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--gradient-primary);
   border-radius: 50%;
   color: var(--white);
-  font-size: 14px;
+  font-size: 13px;
   flex-shrink: 0;
+  font-weight: 600;
 }
 
 .modal-feature-text {
   font-size: 14px;
   font-weight: 500;
   color: var(--gray-700);
+  line-height: 1.5;
+  padding-top: 2px;
 }
 
 .modal-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding-top: 40px;
+  gap: 14px;
+  padding-top: 32px;
   border-top: 2px solid var(--gray-200);
-  margin-top: 40px;
+  margin-top: 32px;
 }
 
 /* ===== BACK TO TOP ===== */
@@ -895,6 +848,10 @@ body {
   .solution {
     gap: 60px;
   }
+  
+  .modal-container {
+    max-width: 900px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -919,6 +876,14 @@ body {
 
   .modal-actions {
     grid-template-columns: 1fr;
+  }
+  
+  .modal-container {
+    max-width: 700px;
+  }
+  
+  .modal-content {
+    padding: 32px 28px;
   }
 }
 
@@ -955,12 +920,48 @@ body {
     flex-direction: column;
   }
 
+  .modal {
+    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  .modal-container {
+    max-height: calc(100vh - 40px);
+  }
+
   .modal-content {
-    padding: 32px 20px;
+    padding: 24px 20px;
   }
 
   .modal-hero {
-    height: 300px;
+    height: 240px;
+  }
+  
+  .modal-hero-overlay {
+    padding: 24px;
+  }
+  
+  .modal-hero-overlay h2 {
+    font-size: 24px;
+  }
+  
+  .modal-hero-overlay p {
+    font-size: 14px;
+  }
+  
+  .modal-section h3 {
+    font-size: 19px;
+  }
+  
+  .modal-section p {
+    font-size: 14px;
+  }
+  
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 }
 
@@ -992,12 +993,36 @@ body {
     bottom: 24px;
     right: 24px;
   }
+  
+  .modal-close {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+  
+  .modal-hero {
+    height: 200px;
+  }
+  
+  .modal-hero-overlay {
+    padding: 20px;
+  }
+  
+  .modal-hero-overlay h2 {
+    font-size: 20px;
+  }
+  
+  .modal-actions {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* ===== FORCE MODAL VISIBILITY - OVERRIDE TERAKHIR ===== */
+/* ===== FORCE MODAL VISIBILITY ===== */
 .modal.show {
     display: flex !important;
-    align-items: center !important;
+    align-items: flex-start !important;
     justify-content: center !important;
 }
 
@@ -1011,19 +1036,6 @@ body {
     z-index: 99999 !important;
 }
 </style>
-
-<!-- Loading Screen -->
-<div class="loading-screen" id="loadingScreen">
-    <div class="loader-content">
-        <div class="loader-logo">
-            <img src="{{ asset('img/logo.png') }}" alt="Umalo" />
-        </div>
-        <div class="loader-spinner">
-            <div class="spinner"></div>
-        </div>
-        <p class="loader-text">Loading Solutions...</p>
-    </div>
-</div>
 
 <!-- Hero Section -->
 <section class="hero">
@@ -1179,11 +1191,11 @@ body {
     </div>
 </section>
 
-<!-- Modal - Pastikan di luar semua section -->
+<!-- Modal -->
 <div class="modal" id="modal">
     <div class="modal-backdrop" onclick="closeModal()"></div>
     <div class="modal-container">
-        <button class="modal-close" onclick="closeModal()">
+        <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
             <i class="fas fa-times"></i>
         </button>
 
@@ -1268,14 +1280,13 @@ const solutionsData = {
 // ===== INITIALIZATION =====
 document.addEventListener("DOMContentLoaded", function () {
     console.log("%c╔═══════════════════════════════════════════════════════╗", "color: #228B22; font-weight: bold; font-size: 14px");
-    console.log("%c║   UMALO SOLUTIONS - LARAVEL VERSION                  ║", "color: #228B22; font-weight: bold; font-size: 16px");
-    console.log("%c║   Updated: 2025-11-18 06:49:02 UTC                   ║", "color: #228B22; font-weight: bold; font-size: 14px");
+    console.log("%c║   UMALO SOLUTIONS - NO LOADING SCREEN                ║", "color: #228B22; font-weight: bold; font-size: 16px");
+    console.log("%c║   Updated: 2025-11-24 09:34:43 UTC                   ║", "color: #228B22; font-weight: bold; font-size: 14px");
     console.log("%c║   User: karinaamiriti                                ║", "color: #228B22; font-weight: bold; font-size: 14px");
     console.log("%c╚═══════════════════════════════════════════════════════╝", "color: #228B22; font-weight: bold; font-size: 14px");
 
     // Initialize all features
     initializeAOS();
-    initializeLoading();
     initializeScrollEffects();
     initializeModal();
 });
@@ -1292,21 +1303,6 @@ function initializeAOS() {
             disable: "mobile",
         });
         console.log("✅ AOS Animation Library Initialized");
-    }
-}
-
-// ===== LOADING SCREEN =====
-function initializeLoading() {
-    const loadingScreen = document.getElementById("loadingScreen");
-    if (loadingScreen) {
-        setTimeout(() => {
-            loadingScreen.classList.add("fade-out");
-            setTimeout(() => {
-                loadingScreen.style.display = "none";
-                document.body.style.overflow = "";
-            }, 500);
-        }, 1200);
-        console.log("✅ Loading Screen Initialized");
     }
 }
 
@@ -1367,6 +1363,18 @@ function initializeModal() {
             closeModal();
         }
     });
+
+    // Prevent body scroll when modal is open
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === "class") {
+                const isOpen = modal.classList.contains("show");
+                document.body.style.overflow = isOpen ? "hidden" : "";
+            }
+        });
+    });
+
+    observer.observe(modal, { attributes: true });
 
     console.log("✅ Modal System Initialized");
     console.log("📊 Solutions Loaded:", Object.keys(solutionsData).length);
@@ -1437,10 +1445,14 @@ function openModal(solutionId) {
     requestAnimationFrame(() => {
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
+        
+        // Scroll modal content to top
+        const modalContent = modal.querySelector(".modal-content");
+        if (modalContent) {
+            modalContent.scrollTop = 0;
+        }
+        
         console.log("✅ Modal opened successfully!");
-        console.log("Modal classes:", modal.className);
-        console.log("Modal display:", window.getComputedStyle(modal).display);
-        console.log("Modal z-index:", window.getComputedStyle(modal).zIndex);
     });
 }
 
@@ -1490,6 +1502,7 @@ console.log("\n%c✅ INITIALIZATION COMPLETE", "color: #228B22; font-weight: bol
 console.log("%c🚀 Laravel Integration: Active", "color: #207178; font-size: 12px; font-weight: bold");
 console.log("%c📊 Solutions Loaded: {{ $solutions->count() }}", "color: #207178; font-size: 12px; font-weight: bold");
 console.log("%c👤 User: karinaamiriti", "color: #207178; font-size: 12px; font-weight: bold");
-console.log("%c🕐 Time: 2025-11-18 06:49:02 UTC", "color: #207178; font-size: 12px; font-weight: bold");
+console.log("%c🕐 Time: 2025-11-24 09:34:43 UTC", "color: #207178; font-size: 12px; font-weight: bold");
+console.log("%c⚡ Loading Screen: REMOVED", "color: #228B22; font-weight: bold; font-size: 12px");
 </script>
 @endpush

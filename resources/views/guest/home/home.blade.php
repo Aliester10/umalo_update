@@ -161,33 +161,38 @@
 }
 /*** Button End ***/
 
-/*** Carousel Hero Header Start - FIXED WITH CONDITIONAL CAROUSEL ***/
+/*** Carousel Hero Header Start - FULLSCREEN FIX ***/
 .header-carousel {
     position: relative;
     background: transparent !important;
     margin: 0;
     padding: 0;
     overflow: hidden;
+    width: 100%;
+    height: 100vh !important;
 }
 
 .header-carousel .owl-stage-outer {
     overflow: hidden;
-    background: transparent !important;
+    width: 100%;
+    height: 100vh !important;
 }
 
 .header-carousel .owl-stage {
     display: flex !important;
-    background: transparent !important;
+    height: 100vh !important;
 }
 
 .header-carousel .owl-item {
-    opacity: 1 !important;
+    height: 100vh !important;
     background: transparent !important;
+    opacity: 1 !important;
 }
 
 .header-carousel .header-carousel-item {
     position: relative;
-    height: 700px;
+    width: 100%;
+    height: 100vh !important;   /* FULL SCREEN */
     overflow: hidden;
     background-size: cover !important;
     background-position: center !important;
@@ -196,21 +201,22 @@
     visibility: visible !important;
 }
 
-/* Remove all overlays */
+/* Remove overlays */
 .header-carousel .header-carousel-item::before,
 .header-carousel .header-carousel-item::after {
     display: none !important;
 }
 
+/* Caption */
 .header-carousel .header-carousel-item .carousel-caption {
     position: absolute;
-    left: 50px;
-    bottom: 100px;
+    left: 60px;
+    bottom: 120px;
     max-width: 700px;
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0, 0, 0, 0.55);
     padding: 40px;
     border-radius: 16px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
     z-index: 10;
     animation: fadeInUp 0.8s ease;
 }
@@ -218,8 +224,7 @@
 .header-carousel .header-carousel-item .carousel-caption h4 {
     color: #ffffff;
     margin-bottom: 15px;
-    font-size: 18px;
-    letter-spacing: 1px;
+    font-size: 20px;
     font-weight: 700;
 }
 
@@ -234,27 +239,31 @@
     color: #f0f0f0;
     margin-bottom: 25px;
     font-size: 16px;
-    line-height: 1.6;
 }
 
-/* Navigation Buttons */
+/* Navigation Arrows */
 .header-carousel .owl-nav .owl-prev,
 .header-carousel .owl-nav .owl-next {
     position: absolute;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.85);
     color: var(--primary);
     font-size: 26px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 999;
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: 0.2s ease;
+    z-index: 999;
+}
+
+.header-carousel .owl-nav .owl-prev:hover,
+.header-carousel .owl-nav .owl-next:hover {
+    background: var(--primary);
+    color: #fff;
 }
 
 .header-carousel .owl-nav .owl-prev {
@@ -265,22 +274,15 @@
     right: 30px;
 }
 
-.header-carousel .owl-nav .owl-prev:hover,
-.header-carousel .owl-nav .owl-next:hover {
-    background: var(--primary);
-    color: #ffffff;
-    transform: translateY(-50%) scale(1.1);
-}
-
-/* Dots Navigation */
+/* Dots */
 .header-carousel .owl-dots {
     position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 999;
     display: flex;
     gap: 10px;
+    z-index: 999;
 }
 
 .header-carousel .owl-dot {
@@ -289,8 +291,6 @@
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.5);
     transition: all 0.3s ease;
-    border: none;
-    outline: none;
 }
 
 .header-carousel .owl-dot.active {
@@ -299,49 +299,41 @@
     background: #ffffff;
 }
 
-/* Single Slide Mode - Hide navigation */
+/* Hide nav/dots if only 1 slide */
 .header-carousel.single-slide .owl-nav,
 .header-carousel.single-slide .owl-dots {
     display: none !important;
 }
 
-/* Responsive Design */
+/*** RESPONSIVE ***/
 @media (max-width: 991px) {
-    .header-carousel .header-carousel-item {
-        height: 600px;
-    }
-
     .header-carousel .header-carousel-item .carousel-caption {
         left: 30px;
-        bottom: 80px;
-        max-width: 600px;
+        bottom: 100px;
+        max-width: 90%;
         padding: 30px;
     }
 }
 
 @media (max-width: 767px) {
-    .header-carousel .header-carousel-item {
-        height: 500px;
+    .header-carousel,
+    .header-carousel .header-carousel-item,
+    .header-carousel .owl-stage-outer,
+    .header-carousel .owl-stage,
+    .header-carousel .owl-item {
+        height: 100vh !important;
     }
 
     .header-carousel .header-carousel-item .carousel-caption {
         left: 20px;
         right: 20px;
-        bottom: 60px;
+        bottom: 80px;
         max-width: 100%;
-        padding: 20px;
+        padding: 22px;
     }
 
     .header-carousel .header-carousel-item .carousel-caption h1 {
         font-size: 28px;
-    }
-
-    .header-carousel .header-carousel-item .carousel-caption h4 {
-        font-size: 16px;
-    }
-
-    .header-carousel .header-carousel-item .carousel-caption p {
-        font-size: 14px;
     }
 
     .header-carousel .owl-nav .owl-prev,
@@ -350,50 +342,34 @@
         height: 45px;
         font-size: 20px;
     }
-
-    .header-carousel .owl-nav .owl-prev {
-        left: 15px;
-    }
-
-    .header-carousel .owl-nav .owl-next {
-        right: 15px;
-    }
 }
 
 @media (max-width: 576px) {
-    .header-carousel .header-carousel-item {
-        height: 450px;
-    }
-
     .header-carousel .header-carousel-item .carousel-caption {
         left: 15px;
         right: 15px;
-        bottom: 50px;
-        padding: 15px;
+        bottom: 60px;
+        padding: 16px;
     }
 
     .header-carousel .header-carousel-item .carousel-caption h1 {
         font-size: 22px;
-        margin-bottom: 10px;
     }
 
     .header-carousel .header-carousel-item .carousel-caption h4 {
         font-size: 14px;
-        margin-bottom: 10px;
     }
 
     .header-carousel .header-carousel-item .carousel-caption p {
         font-size: 13px;
-        margin-bottom: 15px;
-        line-height: 1.4;
     }
 
-    .carousel-caption a.btn {
-        font-size: 12px;
-        padding: 10px 20px;
+    .header-carousel .owl-nav {
+        display: none !important;
     }
 }
 /*** Carousel Hero Header End ***/
+
 
 /*** Service Start ***/
 .service-item img {
