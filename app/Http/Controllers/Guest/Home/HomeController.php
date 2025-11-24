@@ -33,7 +33,7 @@ class HomeController extends Controller
         $company = CompanyParameter::first();
 
         // Ambil semua brand partner tanpa kolom 'order'
-        $brands = BrandPartner::all();
+        $brands = BrandPartner::where('type', 'partner')->orderBy('id', 'asc')->get(); 
 
         $locale = app()->getLocale();
 

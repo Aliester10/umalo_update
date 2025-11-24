@@ -1220,7 +1220,7 @@
 <!-- Service End -->
 
 <!-- Brand & Partner Start -->
-@if(isset($brands) && $brands->count() > 0)
+@if(isset($brands) && $brands->count() > 0) 
 <div class="container-fluid brand-section smooth-section">
     <div class="container" style="position: relative; z-index: 2;">
         <div class="brand-header">

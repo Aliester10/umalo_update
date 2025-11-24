@@ -42,7 +42,7 @@ class AboutController extends Controller
         // ==========================
         // BRAND PARTNERS
         // ==========================
-        $brands = BrandPartner::where('type', 'brand')->orderBy('id', 'asc')->get();
+        $brands = BrandPartner::where('type', 'brand')->orderBy('id', 'asc')->get(); 
 
         return view('guest.about.about', compact(
             'company',
