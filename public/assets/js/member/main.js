@@ -25,14 +25,15 @@
         }
     });
 
-    // Header carousel
+    // Header carousel - NO FADE ANIMATION (Prevents white flash)
     $(".header-carousel").owlCarousel({
-        animateOut: "fadeOut",
         items: 1,
         margin: 0,
         stagePadding: 0,
         autoplay: true,
-        smartSpeed: 500,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: false,
+        smartSpeed: 800, // Smooth transition speed
         dots: true,
         loop: true,
         nav: true,
@@ -40,6 +41,30 @@
             '<i class="bi bi-arrow-left"></i>',
             '<i class="bi bi-arrow-right"></i>',
         ],
+        lazyLoad: false,
+        // No fade effect - uses slide animation instead
+        onInitialized: function (event) {
+            // Preload images on initialization
+            $(".header-carousel .header-carousel-item").each(function () {
+                var bgImage = $(this).css("background-image");
+                if (bgImage && bgImage !== "none") {
+                    var imageUrl = bgImage.replace(
+                        /url\(['"]?(.*?)['"]?\)/i,
+                        "$1"
+                    );
+                    var img = new Image();
+                    img.src = imageUrl;
+                }
+            });
+        },
+        onTranslate: function (event) {
+            // Ensure smooth transition without white background
+            $(".header-carousel").css("background", "transparent");
+        },
+        onTranslated: function (event) {
+            // Maintain transparency after transition
+            $(".header-carousel").css("background", "transparent");
+        },
     });
 
     // testimonial carousel
@@ -83,6 +108,7 @@
             $(".back-to-top").fadeOut("slow");
         }
     });
+
     $(".back-to-top").click(function () {
         $("html, body").animate({ scrollTop: 0 }, 1500, "easeInOutExpo");
         return false;

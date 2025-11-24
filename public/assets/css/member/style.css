@@ -206,157 +206,6 @@
 }
 /*** Topbar End ***/
 
-/*** Carousel Hero Header Start ***/
-.header-carousel .header-carousel-item {
-    height: 700px;
-}
-
-.header-carousel .owl-nav .owl-prev,
-.header-carousel .owl-nav .owl-next {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-    background: var(--bs-light);
-    color: var(--bs-primary);
-    font-size: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.5s;
-}
-
-.header-carousel .owl-nav .owl-prev {
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-left: 30px;
-}
-
-.header-carousel .owl-nav .owl-next {
-    bottom: 30px;
-    right: 50%;
-    transform: translateX(-50%);
-    margin-right: 30px;
-}
-
-.header-carousel .owl-nav .owl-prev:hover,
-.header-carousel .owl-nav .owl-next:hover {
-    box-shadow: inset 0 0 100px 0 var(--bs-secondary);
-    color: var(--bs-white);
-}
-
-.header-carousel .header-carousel-item .carousel-caption {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-}
-
-@media (max-width: 991px) {
-    .header-carousel .header-carousel-item .carousel-caption {
-        padding-top: 45px;
-    }
-
-    .header-carousel .header-carousel-item {
-        height: 600px;
-    }
-}
-
-@media (max-width: 767px) {
-    .header-carousel .header-carousel-item {
-        height: 500px;
-    }
-
-    .header-carousel .owl-nav .owl-prev {
-        bottom: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-left: -45px;
-    }
-
-    .header-carousel .owl-nav .owl-next {
-        bottom: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-left: 45px;
-    }
-
-    .header-carousel .header-carousel-item .carousel-caption {
-        padding: 20px;
-        text-align: justify;
-    }
-
-    .header-carousel .header-carousel-item .carousel-caption h1 {
-        font-size: 24px;
-        line-height: 1.2;
-    }
-
-    .header-carousel .header-carousel-item .carousel-caption h4 {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .header-carousel .header-carousel-item .carousel-caption p {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    .header-carousel .header-carousel-item .carousel-caption a.btn {
-        font-size: 12px;
-        padding: 8px 12px;
-        margin-top: 15px;
-    }
-}
-
-@media (max-width: 576px) {
-    .header-carousel .header-carousel-item {
-        height: auto;
-        min-height: 400px;
-    }
-
-    .carousel-caption {
-        padding: 15px;
-        text-align: justify;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
-    }
-
-    .carousel-caption h1,
-    .carousel-caption h4,
-    .carousel-caption p {
-        margin-bottom: 10px;
-        overflow: auto;
-    }
-
-    .carousel-caption h1 {
-        font-size: 1.5rem;
-        line-height: 1.2;
-    }
-
-    .carousel-caption h4 {
-        font-size: 1.2rem;
-    }
-
-    .carousel-caption p {
-        font-size: 1rem;
-        line-height: 1.4;
-        max-height: 6em;
-    }
-
-    .carousel-caption a.btn {
-        font-size: 0.9rem;
-        padding: 10px 20px;
-    }
-}
-/*** Carousel Hero Header End ***/
-
 /*** Single Page Hero Header Start ***/
 .bg-breadcrumb {
     position: relative;
@@ -1544,6 +1393,7 @@
 }
 /*** Brand & Partner Section End ***/
 
+/* Tambahan untuk project detail page */
 :root {
     --primary-green: #107c10;
     --primary-dark: #0a5c0a;
@@ -1607,17 +1457,6 @@
     }
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @keyframes slideInDown {
     from {
         opacity: 0;
@@ -1636,16 +1475,6 @@
     }
     50% {
         opacity: 0.5;
-    }
-}
-
-@keyframes float {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
     }
 }
 
