@@ -226,4 +226,20 @@ return [
     'mission_1' => 'Deliver smart technology solutions and premium IT services that drive digital transformation, enhance operational efficiency, and empower our partners to stay competitive.',
     'mission_2' => 'Provide integrated digital solutions that advance learning, empower educational institutions, and shape future-ready generations equipped for global challenges.',
 
+
+    'production_line_1_title' => 'Research & Planning',
+    'production_line_2_title' => 'Product Concepting',
+    'production_line_3_title' => 'Design Development',
+    'production_line_4_title' => 'Material Preparation',
+    'production_line_5_title' => 'Assembly Process',
+    'production_line_6_title' => 'Quality Control',
+    'production_line_7_title' => 'Packaging & Delivery',
+
+    'production_line_1_desc' => 'Initial research stage to ensure market needs and technology fit.',
+    'production_line_2_desc' => 'Defining product concepts and functional strategies.',
+    'production_line_3_desc' => 'Building precise visual and system design.',
+    'production_line_4_desc' => 'Preparing materials and production components.',
+    'production_line_5_desc' => 'Product assembly by our professional team.',
+    'production_line_6_desc' => 'Quality checking to ensure high standards.',
+    'production_line_7_desc' => 'Final stage for packaging and delivery.',
 ];

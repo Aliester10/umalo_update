@@ -211,4 +211,22 @@ return [
     'vision' => 'Meraih kepemimpinan global dalam solusi teknologi pintar dengan mendorong inovasi berkelanjutan dan keunggulan berpikir maju.',
     'mission_1' => 'Menyediakan solusi teknologi pintar dan layanan IT premium yang mendorong transformasi digital, meningkatkan efisiensi operasional, dan memberdayakan mitra untuk tetap kompetitif.',
     'mission_2' => 'Menyediakan solusi digital terintegrasi yang memajukan pembelajaran, memberdayakan institusi pendidikan, dan membentuk generasi yang siap menghadapi tantangan global di masa depan.',
+
+    // Production Line Titles
+    'production_line_1_title' => 'Research & Planning',
+    'production_line_2_title' => 'Product Concepting',
+    'production_line_3_title' => 'Design Development',
+    'production_line_4_title' => 'Material Preparation',
+    'production_line_5_title' => 'Assembly Process',
+    'production_line_6_title' => 'Quality Control',
+    'production_line_7_title' => 'Packaging & Delivery',
+
+    // Production Line Descriptions
+    'production_line_1_desc' => 'Proses riset awal untuk memastikan kebutuhan pasar dan teknologi.',
+    'production_line_2_desc' => 'Menentukan konsep produk dan perencanaan fungsional.',
+    'production_line_3_desc' => 'Membangun desain visual dan sistem yang presisi.',
+    'production_line_4_desc' => 'Menyiapkan material dan komponen pendukung produksi.',
+    'production_line_5_desc' => 'Perakitan produk oleh tim profesional kami.',
+    'production_line_6_desc' => 'Pengecekan kualitas agar produk sesuai standar tinggi.',
+    'production_line_7_desc' => 'Tahap terakhir untuk pengemasan dan pengiriman.',
 ];
