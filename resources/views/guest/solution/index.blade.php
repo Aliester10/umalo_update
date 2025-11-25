@@ -575,7 +575,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* ===== MODAL - IMPROVED VERSION ===== */
+/* ===== MODAL ===== */
 .modal {
   display: none;
   position: fixed;
@@ -699,7 +699,6 @@ body {
   padding: 40px;
   overflow-y: auto;
   flex: 1;
-  /* Custom scrollbar */
   scrollbar-width: thin;
   scrollbar-color: var(--primary) var(--gray-100);
 }
@@ -811,6 +810,233 @@ body {
   padding-top: 32px;
   border-top: 2px solid var(--gray-200);
   margin-top: 32px;
+}
+
+/* ===== CUSTOM PROFESSIONAL ALERT/MODAL ===== */
+.custom-alert-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 100000;
+    animation: fadeIn 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-alert-overlay.show {
+    display: flex !important;
+}
+
+.custom-alert-box {
+    background: var(--white);
+    border-radius: var(--radius-2xl);
+    max-width: 520px;
+    width: 90%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: alertSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+@keyframes alertSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Alert Header */
+.alert-header {
+    padding: 32px 32px 24px;
+    text-align: center;
+    position: relative;
+}
+
+.alert-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    animation: iconPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+}
+
+@keyframes iconPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.alert-icon.success {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: var(--primary);
+}
+
+.alert-icon.error {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #dc2626;
+}
+
+.alert-icon.warning {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #f59e0b;
+}
+
+.alert-title {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+.alert-subtitle {
+    font-size: 15px;
+    color: var(--gray-600);
+    line-height: 1.6;
+}
+
+/* Alert Body */
+.alert-body {
+    padding: 0 32px 24px;
+}
+
+.alert-info-box {
+    background: var(--gray-50);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.alert-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.alert-info-item:last-child {
+    margin-bottom: 0;
+}
+
+.alert-info-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.alert-info-text {
+    flex: 1;
+}
+
+.alert-info-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.alert-info-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.alert-info-value a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+.alert-info-value a:hover {
+    text-decoration: underline;
+}
+
+.alert-message {
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.7;
+    text-align: center;
+    padding: 16px 0;
+}
+
+/* Alert Footer */
+.alert-footer {
+    padding: 0 32px 32px;
+    display: flex;
+    gap: 12px;
+}
+
+.alert-btn {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: var(--radius-lg);
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-base);
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.alert-btn-primary {
+    background: var(--gradient-primary);
+    color: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+.alert-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.alert-btn-secondary {
+    background: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.alert-btn-secondary:hover {
+    background: var(--gray-200);
+}
+
+.alert-btn-ghost {
+    background: transparent;
+    color: var(--gray-600);
+}
+
+.alert-btn-ghost:hover {
+    background: var(--gray-50);
 }
 
 /* ===== BACK TO TOP ===== */
@@ -1017,6 +1243,33 @@ body {
   .modal-actions {
     grid-template-columns: 1fr;
   }
+
+  .custom-alert-box {
+    max-width: 95%;
+  }
+  
+  .alert-header {
+    padding: 24px 20px 20px;
+  }
+  
+  .alert-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+  }
+  
+  .alert-title {
+    font-size: 20px;
+  }
+  
+  .alert-body {
+    padding: 0 20px 20px;
+  }
+  
+  .alert-footer {
+    padding: 0 20px 24px;
+    flex-direction: column;
+  }
 }
 
 /* ===== FORCE MODAL VISIBILITY ===== */
@@ -1144,9 +1397,9 @@ body {
                             <span>Download Brochure</span>
                         </a>
                         @else
-                        <button class="btn btn-ghost">
-                            <i class="fas fa-play-circle"></i>
-                            <span>Watch Demo</span>
+                        <button class="btn btn-ghost" onclick="showBrochureNotAvailable()">
+                            <i class="fas fa-download"></i>
+                            <span>Download Brochure</span>
                         </button>
                         @endif
                     </div>
@@ -1246,6 +1499,28 @@ body {
     </div>
 </div>
 
+<!-- Custom Alert Overlay -->
+<div class="custom-alert-overlay" id="customAlert">
+    <div class="custom-alert-box">
+        <div class="alert-header">
+            <div class="alert-icon" id="alertIcon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="alert-title" id="alertTitle">Success</h3>
+            <p class="alert-subtitle" id="alertSubtitle">Your request has been processed</p>
+        </div>
+        <div class="alert-body" id="alertBody">
+            <!-- Dynamic content here -->
+        </div>
+        <div class="alert-footer" id="alertFooter">
+            <button class="alert-btn alert-btn-primary" onclick="closeCustomAlert()">
+                <i class="fas fa-check"></i>
+                <span>OK</span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Back to Top -->
 <button class="back-to-top" id="backToTop">
     <i class="fas fa-arrow-up"></i>
@@ -1256,253 +1531,452 @@ body {
 @push('scripts')
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-// ===== SOLUTIONS DATA FROM DATABASE =====
-const solutionsData = {
-    @foreach($solutions as $solution)
-    'solution-{{ $solution->id }}': {
-        id: {{ $solution->id }},
-        title: "{{ $solution->title }}",
-        subtitle: "{{ $solution->short_description }}",
-        image: "{{ $solution->banner_image ? asset($solution->banner_image) : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&h=1050&fit=crop&q=90' }}",
-        overview: `{!! str_replace(["\r", "\n"], ' ', addslashes($solution->overview_description)) !!}`,
-        features: [
-            @foreach($solution->features as $feature)
-            "{{ $feature->feature_title }}",
-            @endforeach
-        ],
-        benefits: `{!! str_replace(["\r", "\n"], ' ', addslashes($solution->benefits)) !!}`,
-        brochureUrl: "{{ $solution->brochure_file ? route('solutions.download', $solution->slug) : '' }}",
-        contactLink: "{{ $solution->contact_link ?? '#' }}"
-    },
-    @endforeach
-};
+// ===== PREVENT SCRIPT CONFLICTS - IIFE WRAPPER =====
+(function() {
+    'use strict';
 
-// ===== INITIALIZATION =====
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("%c╔═══════════════════════════════════════════════════════╗", "color: #228B22; font-weight: bold; font-size: 14px");
-    console.log("%c║   UMALO SOLUTIONS - NO LOADING SCREEN                ║", "color: #228B22; font-weight: bold; font-size: 16px");
-    console.log("%c║   Updated: 2025-11-24 09:34:43 UTC                   ║", "color: #228B22; font-weight: bold; font-size: 14px");
-    console.log("%c║   User: karinaamiriti                                ║", "color: #228B22; font-weight: bold; font-size: 14px");
-    console.log("%c╚═══════════════════════════════════════════════════════╝", "color: #228B22; font-weight: bold; font-size: 14px");
+    // ===== SOLUTIONS DATA FROM DATABASE =====
+    const solutionsData = {
+        @foreach($solutions as $solution)
+        'solution-{{ $solution->id }}': {
+            id: {{ $solution->id }},
+            title: "{{ $solution->title }}",
+            subtitle: "{{ $solution->short_description }}",
+            image: "{{ $solution->banner_image ? asset($solution->banner_image) : 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&h=1050&fit=crop&q=90' }}",
+            overview: `{!! str_replace(["\r", "\n"], ' ', addslashes($solution->overview_description)) !!}`,
+            features: [
+                @foreach($solution->features as $feature)
+                "{{ $feature->feature_title }}"{{ !$loop->last ? ',' : '' }}
+                @endforeach
+            ],
+            benefits: `{!! str_replace(["\r", "\n"], ' ', addslashes($solution->benefits)) !!}`,
+            brochureUrl: "{{ $solution->brochure_file ? route('solutions.download', $solution->slug) : '' }}",
+            contactLink: "{{ $solution->contact_link ?? '#' }}",
+            demoVideoUrl: "{{ $solution->demo_video_url ?? '' }}"
+        }{{ !$loop->last ? ',' : '' }}
+        @endforeach
+    };
 
-    // Initialize all features
-    initializeAOS();
-    initializeScrollEffects();
-    initializeModal();
-});
+    // ===== CUSTOM ALERT FUNCTIONS =====
+    window.showCustomAlert = function(type, title, subtitle, bodyContent, buttons) {
+        const overlay = document.getElementById('customAlert');
+        const icon = document.getElementById('alertIcon');
+        const titleEl = document.getElementById('alertTitle');
+        const subtitleEl = document.getElementById('alertSubtitle');
+        const body = document.getElementById('alertBody');
+        const footer = document.getElementById('alertFooter');
+        
+        // Set icon
+        icon.className = `alert-icon ${type}`;
+        if (type === 'success') {
+            icon.innerHTML = '<i class="fas fa-check"></i>';
+        } else if (type === 'error') {
+            icon.innerHTML = '<i class="fas fa-times"></i>';
+        } else if (type === 'warning') {
+            icon.innerHTML = '<i class="fas fa-exclamation"></i>';
+        }
+        
+        // Set content
+        titleEl.textContent = title;
+        subtitleEl.textContent = subtitle;
+        body.innerHTML = bodyContent;
+        
+        // Set buttons
+        if (buttons) {
+            footer.innerHTML = buttons;
+        } else {
+            footer.innerHTML = `
+                <button class="alert-btn alert-btn-primary" onclick="closeCustomAlert()">
+                    <i class="fas fa-check"></i>
+                    <span>OK</span>
+                </button>
+            `;
+        }
+        
+        // Show alert
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    };
 
-// ===== AOS ANIMATION =====
-function initializeAOS() {
-    if (typeof AOS !== "undefined") {
-        AOS.init({
-            duration: 1200,
-            easing: "ease-out-cubic",
-            once: true,
-            offset: 80,
-            delay: 50,
-            disable: "mobile",
-        });
-        console.log("✅ AOS Animation Library Initialized");
-    }
-}
+    window.closeCustomAlert = function() {
+        const overlay = document.getElementById('customAlert');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    };
 
-// ===== SCROLL EFFECTS =====
-function initializeScrollEffects() {
-    const backToTop = document.getElementById("backToTop");
-    
-    if (backToTop) {
-        window.addEventListener("scroll", () => {
-            if (window.pageYOffset > 600) {
-                backToTop.classList.add("visible");
+    // ===== REQUEST DEMO - PROFESSIONAL VERSION =====
+    window.requestDemo = function() {
+        console.log("📅 Demo request initiated");
+        
+        const bodyContent = `
+            <div class="alert-info-box">
+                <div class="alert-info-item">
+                    <div class="alert-info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="alert-info-text">
+                        <div class="alert-info-label">Phone</div>
+                        <div class="alert-info-value">
+                            <a href="tel:+6281281653311">+62 812 8165 3311</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="alert-info-text">
+                        <div class="alert-info-label">Email</div>
+                        <div class="alert-info-value">
+                            <a href="mailto:solutions@umalo.com">solutions@umalo.com</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert-info-item">
+                    <div class="alert-info-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="alert-info-text">
+                        <div class="alert-info-label">WhatsApp</div>
+                        <div class="alert-info-value">
+                            <a href="https://wa.me/6281281653311" target="_blank">Available 24/7</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert-message">
+                Our enterprise solutions team will contact you within <strong>24 business hours</strong> to schedule a personalized demo.
+                <br><br>
+                <strong>Business Hours:</strong><br>
+                Mon-Fri: 09:00 - 18:00 WIB<br>
+                Saturday: 09:00 - 14:00 WIB
+            </div>
+        `;
+        
+        const buttons = `
+            <button class="alert-btn alert-btn-primary" onclick="closeCustomAlert()">
+                <i class="fas fa-check"></i>
+                <span>Got It</span>
+            </button>
+            <button class="alert-btn alert-btn-secondary" onclick="window.open('tel:+6281281653311', '_self')">
+                <i class="fas fa-phone"></i>
+                <span>Call Now</span>
+            </button>
+        `;
+        
+        showCustomAlert(
+            'success',
+            'Demo Request Submitted',
+            'Thank you for your interest in Umalo Solutions!',
+            bodyContent,
+            buttons
+        );
+        
+        window.closeModal();
+    };
+
+    // ===== BROCHURE NOT AVAILABLE =====
+    window.showBrochureNotAvailable = function() {
+        console.log("📄 Brochure not available");
+        
+        const bodyContent = `
+            <div class="alert-message">
+                The brochure for this solution is currently being updated with the latest information.
+                <br><br>
+                Please contact our team to receive detailed product information via email.
+            </div>
+        `;
+        
+        const buttons = `
+            <button class="alert-btn alert-btn-secondary" onclick="closeCustomAlert()">
+                <i class="fas fa-times"></i>
+                <span>Close</span>
+            </button>
+            <button class="alert-btn alert-btn-primary" onclick="window.open('mailto:solutions@umalo.com?subject=Request Brochure', '_blank'); closeCustomAlert();">
+                <i class="fas fa-envelope"></i>
+                <span>Contact Us</span>
+            </button>
+        `;
+        
+        showCustomAlert(
+            'warning',
+            'Brochure Not Available',
+            'This document is currently unavailable',
+            bodyContent,
+            buttons
+        );
+    };
+
+    // ===== VIDEO DEMO NOT AVAILABLE =====
+    window.showVideoDemoNotAvailable = function() {
+        console.log("🎥 Video demo not available");
+        
+        const bodyContent = `
+            <div class="alert-message">
+                Video demonstration for this solution is not available at the moment.
+                <br><br>
+                We recommend scheduling a <strong>live demo session</strong> with our product specialists for a comprehensive walkthrough.
+            </div>
+        `;
+        
+        const buttons = `
+            <button class="alert-btn alert-btn-secondary" onclick="closeCustomAlert()">
+                <i class="fas fa-times"></i>
+                <span>Close</span>
+            </button>
+            <button class="alert-btn alert-btn-primary" onclick="closeCustomAlert(); requestDemo();">
+                <i class="fas fa-calendar-check"></i>
+                <span>Request Live Demo</span>
+            </button>
+        `;
+        
+        showCustomAlert(
+            'warning',
+            'Video Demo Not Available',
+            'This video is currently unavailable',
+            bodyContent,
+            buttons
+        );
+    };
+
+    // ===== WATCH DEMO VIDEO =====
+    window.watchDemoVideo = function(solutionId) {
+        const data = solutionsData[solutionId];
+        
+        if (data && data.demoVideoUrl) {
+            window.open(data.demoVideoUrl, '_blank');
+        } else {
+            showVideoDemoNotAvailable();
+        }
+    };
+
+    // ===== EXPOSE FUNCTIONS TO GLOBAL SCOPE =====
+    window.openModal = function(solutionId) {
+        console.log("🔓 Opening modal for:", solutionId);
+
+        const data = solutionsData[solutionId];
+
+        if (!data) {
+            console.error("❌ Solution data not found:", solutionId);
+            alert("Error: Solution data not found!");
+            return;
+        }
+
+        const modal = document.getElementById("modal");
+        
+        if (!modal) {
+            console.error("❌ Modal element not found in DOM!");
+            return;
+        }
+
+        // Populate modal content
+        const modalImage = document.getElementById("modalImage");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalSubtitle = document.getElementById("modalSubtitle");
+        const modalOverview = document.getElementById("modalOverview");
+        const modalBenefits = document.getElementById("modalBenefits");
+        
+        if (modalImage) {
+            modalImage.src = data.image;
+            modalImage.alt = data.title;
+        }
+        if (modalTitle) modalTitle.textContent = data.title;
+        if (modalSubtitle) modalSubtitle.textContent = data.subtitle;
+        if (modalOverview) modalOverview.textContent = data.overview;
+        if (modalBenefits) modalBenefits.textContent = data.benefits;
+
+        // Populate features
+        const featuresContainer = document.getElementById("modalFeatures");
+        if (featuresContainer) {
+            featuresContainer.innerHTML = "";
+
+            data.features.forEach((feature, index) => {
+                const featureDiv = document.createElement("div");
+                featureDiv.className = "modal-feature";
+                featureDiv.style.animationDelay = `${index * 0.05}s`;
+                featureDiv.innerHTML = `
+                    <div class="modal-feature-icon">✓</div>
+                    <div class="modal-feature-text">${feature}</div>
+                `;
+                featuresContainer.appendChild(featureDiv);
+            });
+        }
+
+        // Setup download brochure button
+        const downloadBtn = document.getElementById("downloadBrochureBtn");
+        if (downloadBtn) {
+            if (data.brochureUrl) {
+                downloadBtn.onclick = () => window.location.href = data.brochureUrl;
             } else {
-                backToTop.classList.remove("visible");
+                downloadBtn.onclick = showBrochureNotAvailable;
+            }
+        }
+
+        // Show modal with slight delay for animation
+        setTimeout(() => {
+            modal.classList.add("show");
+            document.body.style.overflow = "hidden";
+            
+            const modalContent = modal.querySelector(".modal-content");
+            if (modalContent) {
+                modalContent.scrollTop = 0;
+            }
+            
+            console.log("✅ Modal opened successfully!");
+        }, 10);
+    };
+
+    window.closeModal = function() {
+        console.log("🔒 Closing modal");
+        const modal = document.getElementById("modal");
+        if (modal) {
+            modal.classList.remove("show");
+            document.body.style.overflow = "";
+        }
+    };
+
+    // ===== INITIALIZATION FUNCTION =====
+    function init() {
+        console.log("%c╔═══════════════════════════════════════════════════════╗", "color: #228B22; font-weight: bold; font-size: 14px");
+        console.log("%c║   UMALO SOLUTIONS - PROFESSIONAL ALERTS               ║", "color: #228B22; font-weight: bold; font-size: 16px");
+        console.log("%c╚═══════════════════════════════════════════════════════╝", "color: #228B22; font-weight: bold; font-size: 14px");
+
+        initializeAOS();
+        initializeScrollEffects();
+        initializeModal();
+        initializeAlertEvents();
+    }
+
+    // ===== AOS ANIMATION =====
+    function initializeAOS() {
+        if (typeof AOS !== "undefined") {
+            AOS.init({
+                duration: 1200,
+                easing: "ease-out-cubic",
+                once: true,
+                offset: 80,
+                delay: 50,
+                disable: "mobile",
+            });
+            console.log("✅ AOS Animation Library Initialized");
+        } else {
+            console.warn("⚠️ AOS Library not loaded");
+        }
+    }
+
+    // ===== SCROLL EFFECTS =====
+    function initializeScrollEffects() {
+        const backToTop = document.getElementById("backToTop");
+        
+        if (backToTop) {
+            window.addEventListener("scroll", () => {
+                if (window.pageYOffset > 600) {
+                    backToTop.classList.add("visible");
+                } else {
+                    backToTop.classList.remove("visible");
+                }
+            });
+
+            backToTop.addEventListener("click", () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener("click", function (e) {
+                const href = this.getAttribute("href");
+                if (href !== "#" && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 90;
+                        window.scrollTo({ top: offsetTop, behavior: "smooth" });
+                    }
+                }
+            });
+        });
+
+        console.log("✅ Scroll Effects Initialized");
+    }
+
+    // ===== MODAL INITIALIZATION =====
+    function initializeModal() {
+        const modal = document.getElementById("modal");
+        
+        if (!modal) {
+            console.error("❌ Modal element not found!");
+            return;
+        }
+
+        const modalBackdrop = modal.querySelector(".modal-backdrop");
+
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener("click", window.closeModal);
+        }
+
+        // Close modal with ESC key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal.classList.contains("show")) {
+                window.closeModal();
             }
         });
 
-        backToTop.addEventListener("click", () => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
+        // Prevent body scroll when modal is open
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === "class") {
+                    const isOpen = modal.classList.contains("show");
+                    document.body.style.overflow = isOpen ? "hidden" : "";
+                }
+            });
         });
+
+        observer.observe(modal, { attributes: true });
+                console.log("✅ Modal System Initialized");
+        console.log("📊 Solutions Loaded:", Object.keys(solutionsData).length);
     }
 
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-            const href = this.getAttribute("href");
-            if (href !== "#" && href.length > 1) {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    const offsetTop = target.offsetTop - 90;
-                    window.scrollTo({ top: offsetTop, behavior: "smooth" });
+    // ===== ALERT EVENTS INITIALIZATION =====
+    function initializeAlertEvents() {
+        // Close alert on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const alertOverlay = document.getElementById('customAlert');
+                if (alertOverlay && alertOverlay.classList.contains('show')) {
+                    closeCustomAlert();
                 }
             }
         });
-    });
 
-    console.log("✅ Scroll Effects Initialized");
-}
-
-// ===== MODAL FUNCTIONS =====
-function initializeModal() {
-    const modal = document.getElementById("modal");
-    
-    if (!modal) {
-        console.error("❌ Modal element not found!");
-        return;
-    }
-
-    const modalBackdrop = modal.querySelector(".modal-backdrop");
-
-    if (modalBackdrop) {
-        modalBackdrop.addEventListener("click", closeModal);
-    }
-
-    // Close modal with ESC key
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal.classList.contains("show")) {
-            closeModal();
+        // Close alert on backdrop click
+        const alertOverlay = document.getElementById('customAlert');
+        if (alertOverlay) {
+            alertOverlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCustomAlert();
+                }
+            });
         }
-    });
 
-    // Prevent body scroll when modal is open
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.attributeName === "class") {
-                const isOpen = modal.classList.contains("show");
-                document.body.style.overflow = isOpen ? "hidden" : "";
-            }
-        });
-    });
-
-    observer.observe(modal, { attributes: true });
-
-    console.log("✅ Modal System Initialized");
-    console.log("📊 Solutions Loaded:", Object.keys(solutionsData).length);
-}
-
-function openModal(solutionId) {
-    console.log("🔓 Opening modal for:", solutionId);
-
-    const data = solutionsData[solutionId];
-
-    if (!data) {
-        console.error("❌ Solution data not found:", solutionId);
-        alert("Error: Solution data not found!");
-        return;
+        console.log("✅ Custom Alert Events Initialized");
     }
 
-    const modal = document.getElementById("modal");
-    
-    if (!modal) {
-        console.error("❌ Modal element not found in DOM!");
-        return;
+    // ===== DOM READY CHECK =====
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
     }
 
-    // Populate modal content dengan null checking
-    const modalImage = document.getElementById("modalImage");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalSubtitle = document.getElementById("modalSubtitle");
-    const modalOverview = document.getElementById("modalOverview");
-    const modalBenefits = document.getElementById("modalBenefits");
-    
-    if (modalImage) {
-        modalImage.src = data.image;
-        modalImage.alt = data.title;
-    }
-    if (modalTitle) modalTitle.textContent = data.title;
-    if (modalSubtitle) modalSubtitle.textContent = data.subtitle;
-    if (modalOverview) modalOverview.textContent = data.overview;
-    if (modalBenefits) modalBenefits.textContent = data.benefits;
+    console.log("\n%c✅ INITIALIZATION COMPLETE", "color: #228B22; font-weight: bold; font-size: 16px; background: #e6ffe6; padding: 12px; border-radius: 6px");
+    console.log("%c🚀 Laravel Integration: Active", "color: #207178; font-size: 12px; font-weight: bold");
+    console.log("%c📊 Solutions Loaded: {{ $solutions->count() }}", "color: #207178; font-size: 12px; font-weight: bold");
+    console.log("%c👤 User: karinaamiriti", "color: #207178; font-size: 12px; font-weight: bold");
+    console.log("%c⚡ Loading Screen: REMOVED", "color: #228B22; font-weight: bold; font-size: 12px");
+    console.log("%c✅ Modal Functions: WORKING", "color: #228B22; font-weight: bold; font-size: 12px");
+    console.log("%c🎨 Professional Alerts: ENABLED", "color: #228B22; font-weight: bold; font-size: 12px");
 
-    // Populate features
-    const featuresContainer = document.getElementById("modalFeatures");
-    if (featuresContainer) {
-        featuresContainer.innerHTML = "";
-
-        data.features.forEach((feature, index) => {
-            const featureDiv = document.createElement("div");
-            featureDiv.className = "modal-feature";
-            featureDiv.style.animationDelay = `${index * 0.05}s`;
-            featureDiv.innerHTML = `
-                <div class="modal-feature-icon">✓</div>
-                <div class="modal-feature-text">${feature}</div>
-            `;
-            featuresContainer.appendChild(featureDiv);
-        });
-    }
-
-    // Setup download brochure button
-    const downloadBtn = document.getElementById("downloadBrochureBtn");
-    if (downloadBtn) {
-        if (data.brochureUrl) {
-            downloadBtn.onclick = () => window.location.href = data.brochureUrl;
-        } else {
-            downloadBtn.onclick = () => alert("Brochure not available");
-        }
-    }
-
-    // Show modal dengan delay untuk animasi
-    requestAnimationFrame(() => {
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-        
-        // Scroll modal content to top
-        const modalContent = modal.querySelector(".modal-content");
-        if (modalContent) {
-            modalContent.scrollTop = 0;
-        }
-        
-        console.log("✅ Modal opened successfully!");
-    });
-}
-
-function closeModal() {
-    console.log("🔒 Closing modal");
-    const modal = document.getElementById("modal");
-    if (modal) {
-        modal.classList.remove("show");
-        document.body.style.overflow = "";
-    }
-}
-
-function requestDemo() {
-    console.log("📅 Demo request initiated");
-    
-    const message = `
-╔════════════════════════════════════════════════╗
-║         DEMO REQUEST SUBMITTED                 ║
-╚════════════════════════════════════════════════╝
-
-✅ Thank you for your interest in Umalo Solutions!
-
-Our enterprise solutions team will contact you within 
-24 business hours to schedule a personalized demo.
-
-📞 CONTACT INFORMATION:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• Phone:     +62 812 8165 3311
-• Email:     solutions@umalo.com
-• WhatsApp:  Available 24/7
-• Website:   www.umalo.com
-
-🕐 BUSINESS HOURS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• Mon-Fri:   09:00 - 18:00 WIB
-• Saturday:  09:00 - 14:00 WIB
-• Sunday:    Closed
-
-We look forward to transforming your business!
-    `;
-
-    alert(message);
-    closeModal();
-}
-
-console.log("\n%c✅ INITIALIZATION COMPLETE", "color: #228B22; font-weight: bold; font-size: 16px; background: #e6ffe6; padding: 12px; border-radius: 6px");
-console.log("%c🚀 Laravel Integration: Active", "color: #207178; font-size: 12px; font-weight: bold");
-console.log("%c📊 Solutions Loaded: {{ $solutions->count() }}", "color: #207178; font-size: 12px; font-weight: bold");
-console.log("%c👤 User: karinaamiriti", "color: #207178; font-size: 12px; font-weight: bold");
-console.log("%c🕐 Time: 2025-11-24 09:34:43 UTC", "color: #207178; font-size: 12px; font-weight: bold");
-console.log("%c⚡ Loading Screen: REMOVED", "color: #228B22; font-weight: bold; font-size: 12px");
+})();
 </script>
 @endpush

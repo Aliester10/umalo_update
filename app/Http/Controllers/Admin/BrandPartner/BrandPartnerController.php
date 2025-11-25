@@ -1,10 +1,17 @@
 <?php
+
 namespace App\Http\Controllers\Admin\BrandPartner;
 
 use App\Http\Controllers\Controller;
 use App\Models\BrandPartner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
+// Intervention v3
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
 
 class BrandPartnerController extends Controller
 {
@@ -25,16 +32,33 @@ class BrandPartnerController extends Controller
             'nama' => 'required|string|max:255',
             'type' => 'required|string',
             'url'  => 'nullable|url',
-            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:4096',
         ]);
 
-        $path = $request->file('gambar')->store('brandpartner', 'public');
+        // ================
+        // COMPRESS IMAGE
+        // ================
+        $manager = new ImageManager(new Driver());
+
+        $image = $request->file('gambar');
+        $slug = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $slug = Str::slug($slug);
+
+        $fileName = time() . '_' . $slug . '.webp';
+
+        $imagePath = 'brandpartner/' . $fileName;
+        $fullPath = storage_path('app/public/' . $imagePath);
+
+        // Resize + Encode
+        $img = $manager->read($image->getRealPath());
+        $img->scale(width: 600); // brand icon tidak perlu resolusi besar
+        $img->encode(new WebpEncoder(80))->save($fullPath);
 
         BrandPartner::create([
             'nama' => $request->nama,
             'type' => $request->type,
             'url' => $request->url,
-            'gambar' => $path,
+            'gambar' => $imagePath,
         ]);
 
         return redirect()->route('admin.brand-partner.index')->with('success', 'Brand berhasil ditambahkan.');
@@ -54,17 +78,40 @@ class BrandPartnerController extends Controller
             'nama' => 'required|string|max:255',
             'type' => 'required|string',
             'url'  => 'nullable|url',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ]);
 
+        // ========================
+        // CHECK IF NEW IMAGE EXIST
+        // ========================
         if ($request->hasFile('gambar')) {
-            if (File::exists(public_path('storage/' . $brand->gambar))) {
-                File::delete(public_path('storage/' . $brand->gambar));
+
+            // Delete old file
+            if (File::exists(storage_path('app/public/' . $brand->gambar))) {
+                File::delete(storage_path('app/public/' . $brand->gambar));
             }
-            $data['gambar'] = $request->file('gambar')->store('brandpartner', 'public');
+
+            $manager = new ImageManager(new Driver());
+
+            $image = $request->file('gambar');
+            $slug = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $slug = Str::slug($slug);
+
+            $fileName = time() . '_' . $slug . '.webp';
+
+            $imagePath = 'brandpartner/' . $fileName;
+            $fullPath = storage_path('app/public/' . $imagePath);
+
+            // Compress + Resize
+            $img = $manager->read($image->getRealPath());
+            $img->scale(width: 600);
+            $img->encode(new WebpEncoder(80))->save($fullPath);
+
+            $data['gambar'] = $imagePath;
         }
 
         $brand->update($data);
+
         return redirect()->route('admin.brand-partner.index')->with('success', 'Brand berhasil diperbarui.');
     }
 
@@ -72,8 +119,9 @@ class BrandPartnerController extends Controller
     {
         $brand = BrandPartner::findOrFail($id);
 
-        if (File::exists(public_path('storage/' . $brand->gambar))) {
-            File::delete(public_path('storage/' . $brand->gambar));
+        // Delete image file
+        if (File::exists(storage_path('app/public/' . $brand->gambar))) {
+            File::delete(storage_path('app/public/' . $brand->gambar));
         }
 
         $brand->delete();

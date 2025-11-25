@@ -2,53 +2,57 @@
 
 namespace App\Http\Controllers\Admin\Banner;
 
-
 use App\Http\Controllers\Controller;
-use App\Models\Activity;
-use App\Models\Meta;
-use App\Models\Produk;
 use Illuminate\Http\Request;
 use App\Models\Banner;
+use App\Models\Activity;
+use App\Models\Meta;
 use App\Models\Product;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
 
+// Intervention Image v3 (Wajib)
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
 
 class BannerController extends Controller
 {
-    // Display all banners
+    /**
+     * Show all banners
+     */
     public function index()
     {
         $banners = Banner::all();
         return view('admin.banner.index', compact('banners'));
     }
 
-    // Show form to create a new banner
+    /**
+     * Create page
+     */
     public function create()
     {
-        $activities = Activity::all(); // Retrieve all activities
+        $activities = Activity::all();
         $routes = [
-            // Define your predefined routes here
             'home' => route('home'),
             'about' => route('about'),
-            // Add other predefined routes as needed
         ];
-    
+
         $metas = Meta::where('start_date', '<=', today())
                      ->where('end_date', '>=', today())
                      ->get();
-    
-        $products = Product::all(); // Retrieve all products to use in the form
-    
+
+        $products = Product::all();
+
         return view('admin.banner.create', compact('activities', 'routes', 'metas', 'products'));
     }
-    
-    
 
+    /**
+     * Store banner with compression
+     */
     public function store(Request $request)
     {
         $request->validate([
-           'image_url' => 'required|image',
+            'image_url' => 'required|image',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -56,71 +60,83 @@ class BannerController extends Controller
             'button_url' => 'nullable|string',
         ]);
 
+        // ===============================
+        // IMAGE PROCESS (Intervention v3)
+        // ===============================
+        $manager = new ImageManager(new Driver());
 
-        // Save image to public/uploads/banner
         $image = $request->file('image_url');
-        $imageName = time() . '_' . $image->getClientOriginalName();
-        $image->move(public_path('uploads/banner'), $imageName);
+        $imageName = time() . '.webp';
         $imagePath = 'uploads/banner/' . $imageName;
+        $fullPath = public_path($imagePath);
 
-        // Determine if the button URL comes from a predefined route, activity, meta, or product
+        // Read & scale
+        $img = $manager->read($image->getRealPath());
+        $img->scale(width: 1920);
+
+        // Encode to WEBP
+        $img->encode(new WebpEncoder(75))->save($fullPath);
+
+        // ===============================
+        // DYNAMIC BUTTON URL
+        // ===============================
         if ($request->filled('activity_id')) {
-            $activity = Activity::find($request->activity_id);
-            $buttonUrl = route('activity.show', $activity->id);
+            $buttonUrl = route('activity.show', $request->activity_id);
         } elseif ($request->filled('meta_slug')) {
-            // Use the meta_slug to get the URL for meta data
             $meta = Meta::where('slug', $request->meta_slug)->firstOrFail();
             $buttonUrl = route('member.meta.show', $meta->slug);
         } elseif ($request->filled('product_id')) {
-            // Generate URL for product detail page
             $product = Product::findOrFail($request->product_id);
             $buttonUrl = route('product.show', $product->slug);
         } else {
             $buttonUrl = $request->button_url;
         }
 
+        // Save banner
         Banner::create([
             'image_url' => $imagePath,
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'description' => $request->description,
             'button_text' => $request->button_text,
-            'button_url' => $buttonUrl, // Dynamic button URL
+            'button_url' => $buttonUrl,
         ]);
 
-        return redirect()->route('admin.banner.index')->with('success', 'banner created successfully.');
+        return redirect()->route('admin.banner.index')
+            ->with('success', 'Banner created successfully.');
     }
 
-
-    // Show form to edit an existing banner
+    /**
+     * Edit page
+     */
     public function edit($id)
     {
-        $banner = Banner::findOrFail($id); // Retrieve the banner to edit
-        $activities = Activity::all(); // Retrieve all activities
+        $banner = Banner::findOrFail($id);
+        $activities = Activity::all();
+
         $routes = [
-            // Define your predefined routes here
             'home' => route('home'),
             'about' => route('about'),
-            // Add other predefined routes as needed
         ];
-    
+
         $metas = Meta::where('start_date', '<=', today())
                      ->where('end_date', '>=', today())
                      ->get();
-    
-        $products = Product::all(); // Retrieve all products to use in the form
-    
+
+        $products = Product::all();
+
         return view('admin.banner.edit', compact('banner', 'activities', 'routes', 'metas', 'products'));
     }
-    
 
-    // Update banner
-        public function update(Request $request, $id)
+    /**
+     * Update banner with compression
+     */
+    public function update(Request $request, $id)
     {
-        $banner = Banner::findOrFail($id); // Find the banner to update
+        $banner = Banner::findOrFail($id);
 
         $request->validate([
-           'image_url' => 'required|image',
+            'image_url' => 'nullable|image',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -128,65 +144,74 @@ class BannerController extends Controller
             'button_url' => 'nullable|string',
         ]);
 
-        // Handle image upload if a new image is provided
+        // Default image (jika tidak diganti)
+        $imagePath = $banner->image_url;
+
+        // ===============================
+        // IF NEW IMAGE
+        // ===============================
         if ($request->hasFile('image_url')) {
-            // Delete the old image if a new one is uploaded
-            if ($banner->image_url && file_exists(public_path($banner->image_url))) {
-                unlink(public_path($banner->image_url));
+
+            // Delete old image
+            if ($banner->image_url && File::exists(public_path($banner->image_url))) {
+                File::delete(public_path($banner->image_url));
             }
 
-            // Upload new image
+            $manager = new ImageManager(new Driver());
+
             $image = $request->file('image_url');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/banner'), $imageName);
+            $imageName = time() . '.webp';
             $imagePath = 'uploads/banner/' . $imageName;
-        } else {
-            // Keep the existing image if no new image is uploaded
-            $imagePath = $banner->image_url;
+            $fullPath = public_path($imagePath);
+
+            $img = $manager->read($image->getRealPath());
+            $img->scale(width: 1920);
+            $img->encode(new WebpEncoder(75))->save($fullPath);
         }
 
-        // Determine if the button URL comes from a predefined route, activity, meta, or product
+        // ===============================
+        // BUTTON URL LOGIC
+        // ===============================
         if ($request->filled('activity_id')) {
-            $activity = Activity::find($request->activity_id);
-            $buttonUrl = route('activity.show', $activity->id);
+            $buttonUrl = route('activity.show', $request->activity_id);
         } elseif ($request->filled('meta_slug')) {
-            // Use the meta_slug to get the URL for meta data
             $meta = Meta::where('slug', $request->meta_slug)->firstOrFail();
             $buttonUrl = route('member.meta.show', $meta->slug);
         } elseif ($request->filled('product_id')) {
-            // Generate URL for product detail page
             $product = Product::findOrFail($request->product_id);
             $buttonUrl = route('product.show', $product->slug);
         } else {
             $buttonUrl = $request->button_url;
         }
 
-        // Update the banner with the new data
+        // Update DB
         $banner->update([
             'image_url' => $imagePath,
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'description' => $request->description,
             'button_text' => $request->button_text,
-            'button_url' => $buttonUrl, // Dynamic button URL
+            'button_url' => $buttonUrl,
         ]);
 
-        return redirect()->route('admin.banner.index')->with('success', 'banner updated successfully.');
+        return redirect()->route('admin.banner.index')
+            ->with('success', 'Banner updated successfully.');
     }
 
-
-    // Delete banner
+    /**
+     * Delete banner
+     */
     public function destroy($id)
     {
         $banner = Banner::findOrFail($id);
 
-        // Delete the image file
         if (File::exists(public_path($banner->image_url))) {
             File::delete(public_path($banner->image_url));
         }
 
         $banner->delete();
 
-        return redirect()->route('admin.banner.index')->with('success', 'banner deleted successfully.');
+        return redirect()->route('admin.banner.index')
+            ->with('success', 'Banner deleted successfully.');
     }
 }

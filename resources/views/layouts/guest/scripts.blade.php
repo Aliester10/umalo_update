@@ -16,8 +16,7 @@
 <!-- Template Javascript -->
 <script src="{{ asset('assets/js/member/main.js') }}"></script>
 
-<!-- Loading & Smooth Scroll Javascript - TAMBAHAN BARU -->
-<script src="{{ asset('assets/js/member/loading-scroll.js') }}"></script>
+
 
 @stack('scripts')
 

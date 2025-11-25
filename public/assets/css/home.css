@@ -397,7 +397,13 @@
 }
 /*** Carousel Hero Header End ***/
 
-/*** Service Start ***/
+/***********************************************/
+/*** SERVICE SECTION START (UPDATED & FIXED) ***/
+/***********************************************/
+
+/*** Service Start (Original Design + FIX Hover Text) ***/
+
+/* Image */
 .service-item img {
     width: 100%;
     height: 250px;
@@ -408,6 +414,7 @@
     border-radius: 10px;
 }
 
+/* IMAGE WRAPPER */
 .service .service-item .service-img {
     position: relative;
     overflow: hidden;
@@ -423,6 +430,7 @@
     transform: scale(1.1);
 }
 
+/* GREEN OVERLAY ON IMAGE */
 .service .service-item .service-img::after {
     content: "";
     position: absolute;
@@ -441,6 +449,7 @@
     height: 100%;
 }
 
+/* SERVICE ICON */
 .service .service-item .service-img .service-icon {
     position: absolute;
     width: 70px;
@@ -472,28 +481,36 @@
     background: var(--primary);
 }
 
+/* CONTENT BOX */
 .service .service-content {
     position: relative;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     background: var(--light-gray);
+    z-index: 2;
 }
 
-.service .service-item .service-content .service-content-inner {
+/* FIX agar teks berada di atas overlay */
+.service .service-content * {
     position: relative;
-    z-index: 9;
-}
-
-.service .service-item .service-content .service-content-inner .h4,
-.service .service-item .service-content .service-content-inner p {
+    z-index: 10;
     transition: 0.5s;
 }
 
-.service .service-item:hover .service-content .service-content-inner .h4,
-.service .service-item:hover .service-content .service-content-inner p {
-    color: var(--white);
+/* ORIGINAL TRANSITION */
+.service .service-item .service-content .h4,
+.service .service-item .service-content p {
+    transition: 0.5s;
 }
 
+/* HOVER → TEKS MENJADI PUTIH */
+.service .service-item:hover .service-content .h4,
+.service .service-item:hover .service-content p,
+.service .service-item:hover .service-content a {
+    color: #ffffff !important;
+}
+
+/* GREEN HOVER OVERLAY ON CONTENT */
 .service .service-item .service-content::after {
     content: "";
     position: absolute;
@@ -505,13 +522,18 @@
     border-bottom-right-radius: 10px;
     background: var(--primary);
     transition: 0.5s;
-    z-index: 1;
+    z-index: 0 !important; /* overlay tetap di bawah teks */
 }
 
 .service .service-item:hover .service-content::after {
     height: 100%;
 }
+
 /*** Service End ***/
+
+/*********************************************/
+/*** SERVICE SECTION END (UPDATED & FIXED) ***/
+/*********************************************/
 
 /*** Contact Start ***/
 .contact-img {
@@ -525,6 +547,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 100%;
+}
+
+.contact .contact-img::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 1;
+    animation-name: image-efects;
+    animation-duration: 10s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    transition: 0.5s;
 }
 
 .contact .contact-img .contact-img-inner {

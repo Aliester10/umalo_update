@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
+// Intervention Image v3
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
+
 class SolutionController extends Controller
 {
     public function index()
@@ -25,6 +30,9 @@ class SolutionController extends Controller
         return view('admin.solution.create');
     }
 
+    // ================================================================
+    //                             STORE
+    // ================================================================
     public function store(Request $request)
     {
         $request->validate([
@@ -33,34 +41,50 @@ class SolutionController extends Controller
             'overview_title' => 'nullable|max:255',
             'overview_description' => 'nullable',
             'benefits' => 'nullable',
-            'banner_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'banner_image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
             'brochure_file' => 'nullable|mimes:pdf,doc,docx|max:5120',
-            'status' => 'required|in:draft,published', // ✅ SESUAIKAN
+            'status' => 'required|in:draft,published',
             'order' => 'nullable|integer'
         ]);
+
+        $manager = new ImageManager(new Driver());
 
         $data = $request->except(['banner_image', 'brochure_file', 'features']);
         $data['slug'] = Str::slug($request->title);
 
-        // Upload banner image
+        // ===========================
+        // COMPRESS BANNER IMAGE
+        // ===========================
         if ($request->hasFile('banner_image')) {
+
             $file = $request->file('banner_image');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/solutions'), $filename);
-            $data['banner_image'] = 'uploads/solutions/' . $filename;
+            $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+            $imageName = time() . '_' . $slug . '.webp';
+            $imagePath = 'uploads/solutions/' . $imageName;
+
+            $img = $manager->read($file->getRealPath());
+            $img->scale(width: 1920);
+            $img->encode(new WebpEncoder(75))->save(public_path($imagePath));
+
+            $data['banner_image'] = $imagePath;
         }
 
-        // Upload brochure
+        // ===========================
+        // UPLOAD BROCHURE (NO COMPRESS)
+        // ===========================
         if ($request->hasFile('brochure_file')) {
             $file = $request->file('brochure_file');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
             $file->move(public_path('uploads/solutions/brochures'), $filename);
-            $data['brochure_file'] = 'uploads/solutions/brochures/' . $filename;
+            $data['brochure_file'] = 'uploads/solutions/brochures/'.$filename;
         }
 
         $solution = Solution::create($data);
 
-        // Save features
+        // ===========================
+        // SAVE FEATURES
+        // ===========================
         if ($request->has('features')) {
             foreach ($request->features as $feature) {
                 if (!empty($feature['title'])) {
@@ -77,12 +101,22 @@ class SolutionController extends Controller
             ->with('success', 'Solution created successfully');
     }
 
+
+
+    // ================================================================
+    //                             EDIT
+    // ================================================================
     public function edit(Solution $solution)
     {
         $solution->load('features');
         return view('admin.solution.edit', compact('solution'));
     }
 
+
+
+    // ================================================================
+    //                             UPDATE
+    // ================================================================
     public function update(Request $request, Solution $solution)
     {
         $request->validate([
@@ -91,11 +125,13 @@ class SolutionController extends Controller
             'overview_title' => 'nullable|max:255',
             'overview_description' => 'nullable',
             'benefits' => 'nullable',
-            'banner_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'banner_image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
             'brochure_file' => 'nullable|mimes:pdf,doc,docx|max:5120',
-            'status' => 'required|in:draft,published', // ✅ SESUAIKAN
+            'status' => 'required|in:draft,published',
             'order' => 'nullable|integer'
         ]);
+
+        $manager = new ImageManager(new Driver());
 
         $data = $request->except(['banner_image', 'brochure_file', 'features']);
 
@@ -103,33 +139,52 @@ class SolutionController extends Controller
             $data['slug'] = Str::slug($request->title);
         }
 
-        // Update banner image
+        // ===========================
+        // UPDATE BANNER IMAGE + COMPRESS
+        // ===========================
         if ($request->hasFile('banner_image')) {
+
             if ($solution->banner_image && File::exists(public_path($solution->banner_image))) {
                 File::delete(public_path($solution->banner_image));
             }
 
             $file = $request->file('banner_image');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/solutions'), $filename);
-            $data['banner_image'] = 'uploads/solutions/' . $filename;
+            $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+            $imageName = time().'_'.$slug.'.webp';
+            $imagePath = 'uploads/solutions/'.$imageName;
+
+            $img = $manager->read($file->getRealPath());
+            $img->scale(width:1920);
+            $img->encode(new WebpEncoder(75))->save(public_path($imagePath));
+
+            $data['banner_image'] = $imagePath;
         }
 
-        // Update brochure
+        // ===========================
+        // UPDATE BROCHURE
+        // ===========================
         if ($request->hasFile('brochure_file')) {
+
             if ($solution->brochure_file && File::exists(public_path($solution->brochure_file))) {
                 File::delete(public_path($solution->brochure_file));
             }
 
             $file = $request->file('brochure_file');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
             $file->move(public_path('uploads/solutions/brochures'), $filename);
-            $data['brochure_file'] = 'uploads/solutions/brochures/' . $filename;
+
+            $data['brochure_file'] = 'uploads/solutions/brochures/'.$filename;
         }
 
+        // ===========================
+        // UPDATE SOLUTION DATA
+        // ===========================
         $solution->update($data);
 
-        // Replace features
+        // ===========================
+        // REPLACE FEATURES
+        // ===========================
         SolutionFeature::where('solution_id', $solution->id)->delete();
 
         if ($request->has('features')) {
@@ -148,6 +203,11 @@ class SolutionController extends Controller
             ->with('success', 'Solution updated successfully');
     }
 
+
+
+    // ================================================================
+    //                             DESTROY
+    // ================================================================
     public function destroy(Solution $solution)
     {
         if ($solution->banner_image && File::exists(public_path($solution->banner_image))) {
@@ -164,3 +224,4 @@ class SolutionController extends Controller
         return back()->with('success', 'Solution deleted successfully');
     }
 }
+

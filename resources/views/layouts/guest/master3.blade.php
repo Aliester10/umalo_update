@@ -7,3 +7,5 @@
 
 @include('layouts.guest.footer')
 
+{{-- Scripts Section --}}
+@include('layouts.guest.scripts')

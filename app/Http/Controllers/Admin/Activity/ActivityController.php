@@ -9,6 +9,12 @@ use App\Models\ActivityGallery;
 use App\Models\ActivityHighlight;
 use App\Models\ActivitySchedule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+
+// Intervention Image v3
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
 
 class ActivityController extends Controller
 {
@@ -28,36 +34,70 @@ class ActivityController extends Controller
         return view('Admin.Activity.create');
     }
 
+    // =====================================================
+    //                        STORE
+    // =====================================================
     public function store(Request $request)
     {
         $request->validate([
-            'images'        => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'cover_image'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images'        => 'required|image|mimes:jpeg,png,jpg|max:4096',
+            'cover_image'   => 'nullable|image|mimes:jpeg,png,jpg|max:4096',
             'title'         => 'required|string|max:255',
             'description'   => 'required|string'
         ]);
 
-        // Upload main image
-        $imagePath = null;
+        $manager = new ImageManager(new Driver());
+
+        // ===========================
+        // MAIN IMAGE COMPRESS
+        // ===========================
+        $mainImagePath = null;
+
         if ($request->hasFile('images')) {
+
             $file = $request->file('images');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->move('uploads/activities/images/', $filename);
-            $imagePath = 'uploads/activities/images/'.$filename;
+            $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+            $imageName = time() . '_main_' . $slug . '.webp';
+            $imagePath = 'uploads/activities/images/' . $imageName;
+
+            $fullPath = public_path($imagePath);
+
+            $img = $manager->read($file->getRealPath());
+            $img->scale(width: 1920);
+            $img->encode(new WebpEncoder(75))->save($fullPath);
+
+            $mainImagePath = $imagePath;
         }
 
-        // Upload cover image
-        $coverPath = null;
+        // ===========================
+        // COVER IMAGE COMPRESS
+        // ===========================
+        $coverImagePath = null;
+
         if ($request->hasFile('cover_image')) {
+
             $file = $request->file('cover_image');
-            $filename = 'cover_'.time().'_'.$file->getClientOriginalName();
-            $file->move('uploads/activities/images/', $filename);
-            $coverPath = 'uploads/activities/images/'.$filename;
+            $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+            $imageName = time() . '_cover_' . $slug . '.webp';
+            $imagePath = 'uploads/activities/images/' . $imageName;
+
+            $fullPath = public_path($imagePath);
+
+            $img = $manager->read($file->getRealPath());
+            $img->scale(width: 1920);
+            $img->encode(new WebpEncoder(75))->save($fullPath);
+
+            $coverImagePath = $imagePath;
         }
 
+        // ===========================
+        // SAVE ACTIVITY
+        // ===========================
         $activity = Activity::create([
-            'images'        => $imagePath,
-            'cover_image'   => $coverPath,
+            'images'        => $mainImagePath,
+            'cover_image'   => $coverImagePath,
             'title'         => $request->title,
             'slug'          => Str::slug($request->title),
             'description'   => $request->description,
@@ -71,7 +111,9 @@ class ActivityController extends Controller
             'tags'          => $request->tags,
         ]);
 
-        // Highlights
+        // ===========================
+        // HIGHLIGHTS
+        // ===========================
         if ($request->highlights) {
             foreach ($request->highlights as $h) {
                 if (!empty(trim($h))) {
@@ -83,20 +125,34 @@ class ActivityController extends Controller
             }
         }
 
-        // Gallery
+        // ===========================
+        // GALLERY (COMPRESS)
+        // ===========================
         if ($request->hasFile('gallery')) {
+
             foreach ($request->file('gallery') as $file) {
-                $name = time().'_'.$file->getClientOriginalName();
-                $file->move('uploads/activities/gallery/', $name);
+
+                $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+                $imageName = time() . '_gallery_' . $slug . '.webp';
+                $imagePath = 'uploads/activities/gallery/' . $imageName;
+
+                $fullPath = public_path($imagePath);
+
+                $img = $manager->read($file->getRealPath());
+                $img->scale(width: 1920);
+                $img->encode(new WebpEncoder(75))->save($fullPath);
 
                 ActivityGallery::create([
                     'activity_id' => $activity->id,
-                    'image'       => 'uploads/activities/gallery/'.$name
+                    'image'       => $imagePath
                 ]);
             }
         }
 
-        // Schedules
+        // ===========================
+        // SCHEDULE
+        // ===========================
         if ($request->schedule_day && $request->schedule_content) {
             foreach ($request->schedule_day as $i => $day) {
                 ActivitySchedule::create([
@@ -107,10 +163,15 @@ class ActivityController extends Controller
             }
         }
 
-        return redirect()->route('Admin.Activity.index')->with('success', 'Activity created successfully.');
+        return redirect()->route('Admin.Activity.index')
+            ->with('success', 'Activity created successfully.');
     }
 
 
+
+    // =====================================================
+    //                        EDIT
+    // =====================================================
     public function edit(Activity $activity)
     {
         $activity->load(['highlights', 'galleries', 'schedules']);
@@ -118,43 +179,67 @@ class ActivityController extends Controller
     }
 
 
-    // ================================================================
-    //                          UPDATE SECTION
-    // ================================================================
+    // =====================================================
+    //                        UPDATE
+    // =====================================================
     public function update(Request $request, Activity $activity)
     {
         $request->validate([
-            'images'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'cover_image'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images'        => 'nullable|image|mimes:jpeg,png,jpg|max:4096',
+            'cover_image'   => 'nullable|image|mimes:jpeg,png,jpg|max:4096',
             'title'         => 'required|string|max:255',
             'description'   => 'required|string'
         ]);
 
-        // ================== UPDATE MAIN IMAGE ==================
+        $manager = new ImageManager(new Driver());
+
+        // ===========================
+        // UPDATE MAIN IMAGE
+        // ===========================
         if ($request->hasFile('images')) {
+
             if ($activity->images && file_exists(public_path($activity->images))) {
                 unlink(public_path($activity->images));
             }
 
             $file = $request->file('images');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $file->move('uploads/activities/images/', $filename);
-            $activity->images = 'uploads/activities/images/'.$filename;
+            $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+            $imageName = time() . '_main_' . $slug . '.webp';
+            $imagePath = 'uploads/activities/images/' . $imageName;
+
+            $img = $manager->read($file->getRealPath());
+            $img->scale(width: 1920);
+            $img->encode(new WebpEncoder(75))->save(public_path($imagePath));
+
+            $activity->images = $imagePath;
         }
 
-        // ================= UPDATE COVER IMAGE ===================
+        // ===========================
+        // UPDATE COVER IMAGE
+        // ===========================
         if ($request->hasFile('cover_image')) {
+
             if ($activity->cover_image && file_exists(public_path($activity->cover_image))) {
                 unlink(public_path($activity->cover_image));
             }
 
             $file = $request->file('cover_image');
-            $filename = 'cover_'.time().'_'.$file->getClientOriginalName();
-            $file->move('uploads/activities/images/', $filename);
-            $activity->cover_image = 'uploads/activities/images/'.$filename;
+            $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+            $imageName = time() . '_cover_' . $slug . '.webp';
+            $imagePath = 'uploads/activities/images/' . $imageName;
+
+            $img = $manager->read($file->getRealPath());
+            $img->scale(width: 1920);
+            $img->encode(new WebpEncoder(75))->save(public_path($imagePath));
+
+            $activity->cover_image = $imagePath;
         }
 
-        // ================== UPDATE BASIC FIELDS ==================
+        // ===========================
+        // UPDATE BASIC FIELDS
+        // ===========================
         $activity->title        = $request->title;
         $activity->slug         = Str::slug($request->title);
         $activity->description  = $request->description;
@@ -168,19 +253,16 @@ class ActivityController extends Controller
         $activity->tags         = $request->tags;
         $activity->save();
 
+        // ===========================
+        // HIGHLIGHTS
+        // ===========================
 
-        // ======================================================
-        //                      HIGHLIGHTS
-        // ======================================================
-
-        // HAPUS highlight lama
         if ($request->delete_highlight) {
             foreach ($request->delete_highlight as $id) {
                 ActivityHighlight::where('id', $id)->delete();
             }
         }
 
-        // UPDATE highlight lama
         if ($request->highlight_ids) {
             foreach ($request->highlight_ids as $i => $id) {
                 ActivityHighlight::where('id', $id)->update([
@@ -189,7 +271,6 @@ class ActivityController extends Controller
             }
         }
 
-        // TAMBAH highlight baru
         if ($request->highlights) {
             foreach ($request->highlights as $h) {
                 if (!empty(trim($h))) {
@@ -201,12 +282,9 @@ class ActivityController extends Controller
             }
         }
 
-
-        // ======================================================
-        //                        GALLERY
-        // ======================================================
-
-        // HAPUS foto gallery
+        // ===========================
+        // GALLERY UPDATE
+        // ===========================
         if ($request->delete_gallery) {
             foreach ($request->delete_gallery as $id) {
                 $g = ActivityGallery::find($id);
@@ -219,32 +297,35 @@ class ActivityController extends Controller
             }
         }
 
-        // TAMBAH gallery baru
         if ($request->hasFile('gallery')) {
+
             foreach ($request->file('gallery') as $file) {
-                $filename = time().'_'.$file->getClientOriginalName();
-                $file->move('uploads/activities/gallery/', $filename);
+
+                $slug = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+
+                $imageName = time() . '_gallery_' . $slug . '.webp';
+                $imagePath = 'uploads/activities/gallery/' . $imageName;
+
+                $img = $manager->read($file->getRealPath());
+                $img->scale(width: 1920);
+                $img->encode(new WebpEncoder(75))->save(public_path($imagePath));
 
                 ActivityGallery::create([
                     'activity_id' => $activity->id,
-                    'image'       => 'uploads/activities/gallery/'.$filename
+                    'image'       => $imagePath
                 ]);
             }
         }
 
-
-        // ======================================================
-        //                     SCHEDULE (JADWAL)
-        // ======================================================
-
-        // HAPUS schedule lama
+        // ===========================
+        // SCHEDULE
+        // ===========================
         if ($request->delete_schedule) {
             foreach ($request->delete_schedule as $id) {
                 ActivitySchedule::where('id', $id)->delete();
             }
         }
 
-        // UPDATE schedule lama
         if ($request->schedule_ids) {
             foreach ($request->schedule_ids as $i => $id) {
                 ActivitySchedule::where('id', $id)->update([
@@ -254,31 +335,26 @@ class ActivityController extends Controller
             }
         }
 
-        // TAMBAH schedule baru
         if ($request->schedule_day) {
             foreach ($request->schedule_day as $i => $day) {
-                if (!empty(trim($day))) {
-                    ActivitySchedule::create([
-                        'activity_id'      => $activity->id,
-                        'day_title'        => $day,
-                        'schedule_content' => $request->schedule_content[$i]
-                    ]);
-                }
+                ActivitySchedule::create([
+                    'activity_id'      => $activity->id,
+                    'day_title'        => $day,
+                    'schedule_content' => $request->schedule_content[$i]
+                ]);
             }
         }
-
 
         return redirect()->route('Admin.Activity.index')
             ->with('success', 'Activity updated successfully.');
     }
 
 
-    // ======================================================
-    //                      DESTROY
-    // ======================================================
+    // =====================================================
+    //                        DESTROY
+    // =====================================================
     public function destroy(Activity $activity)
     {
-        // hapus gallery
         foreach ($activity->galleries as $gallery) {
             if (file_exists(public_path($gallery->image))) {
                 unlink(public_path($gallery->image));
@@ -286,18 +362,13 @@ class ActivityController extends Controller
             $gallery->delete();
         }
 
-        // hapus highlight
         $activity->highlights()->delete();
-
-        // hapus schedule
         $activity->schedules()->delete();
 
-        // hapus cover image
         if ($activity->cover_image && file_exists(public_path($activity->cover_image))) {
             unlink(public_path($activity->cover_image));
         }
 
-        // hapus main image
         if ($activity->images && file_exists(public_path($activity->images))) {
             unlink(public_path($activity->images));
         }
@@ -308,3 +379,4 @@ class ActivityController extends Controller
             ->with('success', 'Aktivitas berhasil dihapus.');
     }
 }
+
