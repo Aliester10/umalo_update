@@ -12,22 +12,32 @@
                 <a href="{{ route('product.show', $product->slug) }}" class="product-card">
 
                     <div class="product-image-wrapper">
-                        <img src="{{ asset($product->images->first()->images ?? '') }}"
-                             alt="{{ $product->name }}"
-                             class="product-image"
-                             onerror="this.src='https://via.placeholder.com/400x300?text=No+Image';">
+                        <img
+                            src="{{ asset($product->images->first()->images ?? 'assets/img/default_product.jpg') }}"
+                            alt="{{ $product->name }}"
+                            class="product-image"
+                            loading="lazy"
+                            decoding="async"
+                            onerror="this.src='https://via.placeholder.com/400x300?text=No+Image';">
 
                         <div class="badge-container">
                             @if($product->discount)
                                 <span class="discount-badge">-{{ $product->discount }}%</span>
                             @endif
+
                             @if($product->is_featured)
-                                <span class="featured-badge">{{ $product->featured_label ?? 'Featured' }}</span>
+                                <span class="featured-badge">
+                                    {{ $product->featured_label ?? 'Featured' }}
+                                </span>
                             @endif
                         </div>
 
                         <div class="logo-badge">
-                            <img src="{{ asset($company->logo ?? 'assets/img/logo.png') }}">
+                            <img
+                                src="{{ asset($company->logo ?? 'assets/img/logo.png') }}"
+                                alt="Company Logo"
+                                loading="lazy"
+                                decoding="async">
                         </div>
                     </div>
 
@@ -45,6 +55,7 @@
                             <span class="badge-official">
                                 <i class="fas fa-check-circle"></i> Official
                             </span>
+
                             <span class="stock-info">
                                 Stok: {{ rand(5, 50) }}
                             </span>

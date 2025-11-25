@@ -3,26 +3,27 @@
     <div class="container">
 
         <div class="brand-header text-center mb-5">
-            <h4>Our Partners & Brands</h4>
+            <h4>Our Partners &amp; Brands</h4>
             <h1>Trusted Collaborations</h1>
             <p>Kami berkolaborasi dengan berbagai brand terpercaya.</p>
         </div>
 
         <div class="brand-row">
-
             @foreach ($brands as $brand)
-            <div class="brand-item-wrapper">
-                <div class="brand-item">
-                    <a href="{{ $brand->url ?? '#' }}" target="_blank">
-                        <img src="{{ asset('storage/' . $brand->gambar) }}" 
-                             alt="{{ $brand->nama }}"
-                             class="brand-logo"
-                             onerror="this.src='https://via.placeholder.com/150?text=No+Image';">
-                    </a>
+                <div class="brand-item-wrapper">
+                    <div class="brand-item">
+                        <a href="{{ $brand->url ?? '#' }}" target="_blank">
+                            <img
+                                src="{{ asset('storage/' . $brand->gambar) }}"
+                                alt="{{ $brand->nama }}"
+                                class="brand-logo"
+                                loading="lazy"
+                                decoding="async"
+                                onerror="this.src='https://via.placeholder.com/150?text=No+Image';">
+                        </a>
+                    </div>
                 </div>
-            </div>
             @endforeach
-
         </div>
 
     </div>

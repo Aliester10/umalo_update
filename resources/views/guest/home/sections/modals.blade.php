@@ -1,3 +1,4 @@
+
 {{-- ERROR INDICATOR --}}
 @if($errors->any())
     <span id="modal-error-indicator" hidden></span>
@@ -7,7 +8,6 @@
 @if(session('success'))
     <span id="modal-success-indicator" hidden></span>
 @endif
-
 
 {{-- ERROR MODAL --}}
 @if($errors->any())
@@ -32,7 +32,6 @@
     </div>
 </div>
 @endif
-
 
 {{-- SUCCESS MODAL --}}
 @if(session('success'))

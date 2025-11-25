@@ -20,4 +20,18 @@
         </div>
 
     </div>
+
+    <div class="row mt-4">
+        <div class="col-12 wow fadeInUp" data-wow-delay="0.2s">
+            <div class="rounded">
+                <iframe
+                    class="rounded w-100"
+                    style="height: 400px;"
+                    src="{{ $company->maps_iframe }}"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
 </div>
