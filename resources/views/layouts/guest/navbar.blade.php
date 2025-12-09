@@ -1,23 +1,25 @@
-<body>
+    <body>
 
     @php
     $activeMetas = \App\Models\Meta::where('start_date', '<=', today())
         ->where('end_date', '>=', today())
         ->get()
         ->groupBy('type');
-
     $compro = \App\Models\CompanyParameter::first();
     @endphp
 
-    <!-- Navbar Component V1 - Dark Background / Hero Section -->
-    <nav class="navbar navbar-pertamina-dark">
-        <!-- DESKTOP NAVBAR - TETAP ABSOLUT TIDAK BERUBAH -->
+    <!-- ======================================= -->
+    <!--               NAVBAR (DESKTOP)          -->
+    <!-- ======================================= -->
+    <nav class="navbar-umalo-dark">
+        
+        <!-- DESKTOP NAVBAR -->
         <div class="nav-desktop">
             <div class="nav-content">
-                <a href="{{ route('home') }}" class="nav-link {{ Route::is('home') ? 'active' : '' }}">{{ __('messages.home') }}</a>
-                <a href="{{ route('about') }}" class="nav-link {{ Route::is('about') ? 'active' : '' }}">{{ __('messages.about') }}</a>
-                <a href="{{ route('product.index') }}" class="nav-link {{ Route::is('product.index') ? 'active' : '' }}">{{ __('messages.products') }}</a>
-                <a href="{{ route('activity') }}" class="nav-link {{ Route::is('activity') ? 'active' : '' }}">{{ __('messages.activities') }}</a>
+                <a href="{{ route('home') }}" class="nav-link {{ Route::is('home') ? 'active' : '' }}">Home</a>
+                <a href="{{ route('about') }}" class="nav-link {{ Route::is('about') ? 'active' : '' }}">About</a>
+                <a href="{{ route('product.index') }}" class="nav-link {{ Route::is('product.index') ? 'active' : '' }}">Products</a>
+                <a href="{{ route('activity') }}" class="nav-link {{ Route::is('activity') ? 'active' : '' }}">Activities</a>
 
                 <a href="{{ route('home') }}" class="nav-logo">
                     <img src="{{ asset('assets/img/logo.png') }}" alt="Umalo Logo" />
@@ -25,651 +27,588 @@
 
                 <a href="{{ route('solutions.index') }}" class="nav-link {{ Route::is('solutions.*') ? 'active' : '' }}">Solution</a>
                 <a href="{{ route('career.index') }}" class="nav-link {{ Route::is('career.index') ? 'active' : '' }}">Career</a>
-                <a href="{{ route('contact') }}" class="nav-link {{ Route::is('contact') ? 'active' : '' }}">{{ __('messages.contactUS') }}</a>
-                <a href="{{ route('faq') }}" class="nav-link {{ Route::is('faq') ? 'active' : '' }}">{{ __('messages.faqs') }}</a>
+                <a href="{{ route('contact') }}" class="nav-link {{ Route::is('contact') ? 'active' : '' }}">Contact</a>
+                <a href="{{ route('faq') }}" class="nav-link {{ Route::is('faq') ? 'active' : '' }}">FAQs</a>
             </div>
 
             <div class="nav-actions">
-
                 @guest
                     <a href="{{ route('login') }}" class="login-btn">Masuk</a>
                 @endguest
 
                 @auth
                     <div class="dropdown">
-                        <button class="login-btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="login-btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i>
-                            <span>{{ Str::limit(Auth::user()->nama_perusahaan, 15, '...') ?? 'Your Company' }}</span>
+                            <span>{{ Str::limit(Auth::user()->nama_perusahaan, 15, '...') }}</span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('portal') }}">
-                                    <i class="fas fa-th-large me-2"></i>Portal
-                                </a>
-                            </li>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ route('portal') }}"><i class="fas fa-th-large me-2"></i>Portal</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
                             </li>
                         </ul>
                     </div>
                 @endauth
 
                 @guest
-                    @if (!empty($compro->no_wa))
-                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $compro->no_wa) }}" class="btn-whatsapp" target="_blank">
-                            <i class="fab fa-whatsapp fa-lg"></i>
-                        </a>
-                    @endif
+                @if (!empty($compro->no_wa))
+                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $compro->no_wa) }}" class="btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp fa-lg"></i>
+                    </a>
+                @endif
                 @endguest
             </div>
         </div>
 
-        <!-- MOBILE NAVBAR - STICKY -->
+        <!-- ======================================= -->
+        <!--             MOBILE TOP NAVBAR           -->
+        <!-- ======================================= -->
         <div class="nav-mobile">
             <a href="{{ route('home') }}" class="nav-mobile-logo">
                 <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" />
             </a>
 
             <button class="hamburger" id="hamburger" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
         </div>
 
-        <!-- MOBILE MENU DROPDOWN -->
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="{{ route('home') }}" class="mobile-menu-link {{ Route::is('home') ? 'active' : '' }}">
-                {{ __('messages.home') }}
-            </a>
-            <a href="{{ route('about') }}" class="mobile-menu-link {{ Route::is('about') ? 'active' : '' }}">
-                {{ __('messages.about') }}
-            </a>
-            <a href="{{ route('product.index') }}" class="mobile-menu-link {{ Route::is('product.index') ? 'active' : '' }}">
-                {{ __('messages.products') }}
-            </a>
-            <a href="{{ route('activity') }}" class="mobile-menu-link {{ Route::is('activity') ? 'active' : '' }}">
-                {{ __('messages.activities') }}
-            </a>
-            <a href="{{ route('solutions.index') }}" class="mobile-menu-link {{ Route::is('solutions.*') ? 'active' : '' }}">
-                Solution
-            </a>
-            <a href="{{ route('career.index') }}" class="mobile-menu-link {{ Route::is('career.index') ? 'active' : '' }}">
-                Career
-            </a>
-            <a href="{{ route('contact') }}" class="mobile-menu-link {{ Route::is('contact') ? 'active' : '' }}">
-                {{ __('messages.contactUS') }}
-            </a>
-            <a href="{{ route('faq') }}" class="mobile-menu-link {{ Route::is('faq') ? 'active' : '' }}">
-                {{ __('messages.faqs') }}
-            </a>
-
-            <div class="mobile-menu-divider"></div>
-
-            @foreach ($activeMetas as $type => $metas)
-                <div class="mobile-menu-section">
-                    <div class="mobile-menu-title">{{ ucfirst($type) }}</div>
-                    @foreach ($metas as $meta)
-                        <a href="{{ route('member.meta.show', $meta->slug) }}" class="mobile-menu-sublink">
-                            {{ $meta->title }}
-                        </a>
-                    @endforeach
-                </div>
-            @endforeach
-
-            <div class="mobile-menu-divider"></div>
-
-            <div class="mobile-menu-section">
-                <div class="mobile-menu-title">Bahasa</div>
-                <a href="{{ LaravelLocalization::getLocalizedURL('id') }}" class="mobile-menu-sublink">
-                    🇮🇩 {{ __('messages.bahasa') }}
-                </a>
-                <a href="{{ LaravelLocalization::getLocalizedURL('en') }}" class="mobile-menu-sublink">
-                    🇬🇧 {{ __('messages.english') }}
-                </a>
-            </div>
-
-            <div class="mobile-menu-divider"></div>
-
-            @guest
-                <a href="{{ route('login') }}" class="mobile-menu-btn">
-                    Masuk
-                </a>
-                @if (!empty($compro->no_wa))
-                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $compro->no_wa) }}" class="mobile-menu-btn whatsapp" target="_blank">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
-                    </a>
-                @endif
-            @endguest
-
-            @auth
-                <a href="{{ route('portal') }}" class="mobile-menu-btn">
-                    Portal
-                </a>
-                <a href="{{ route('logout') }}" class="mobile-menu-btn logout" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
-                    Logout
-                </a>
-                <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            @endauth
-        </div>
     </nav>
 
+    <!-- ======================================= -->
+    <!--       SIDEBAR FULL MENU (DRAWER)        -->
+    <!-- ======================================= -->
+
+    <div id="sidebarOverlay"></div>
+
+    <div id="sidebarMenu">
+
+        <!-- Header -->
+        <div class="sb-header">
+            <span class="sb-logo">
+                <img src="{{ asset('assets/img/logo.png') }}" height="40">
+            </span>
+            <button id="sbClose">&times;</button>
+        </div>
+
+        <!-- Profile Section -->
+        @auth
+        <div class="sb-profile">
+            <img src="{{ Auth::user()->profile_photo_url ?? asset('default.png') }}" class="sb-avatar">
+            <div>
+                <h4>{{ Auth::user()->name }}</h4>
+                <p>{{ Auth::user()->email }}</p>
+            </div>
+        </div>
+        @endauth
+
+        <!-- Search -->
+        <div class="sb-search">
+            <input type="text" placeholder="Cari Product...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+
+        <!-- Menu -->
+    <div class="sb-menu">
+        <a href="{{ route('home') }}"><i class="fas fa-home"></i> Home</a>
+        <a href="{{ route('about') }}"><i class="fas fa-info-circle"></i> About</a>
+        <a href="{{ route('product.index') }}"><i class="fas fa-box"></i> Products</a>
+        <a href="{{ route('activity') }}"><i class="fas fa-calendar-alt"></i> Activities</a>
+        <a href="{{ route('solutions.index') }}"><i class="fas fa-layer-group"></i> Solution</a>
+        <a href="{{ route('career.index') }}"><i class="fas fa-briefcase"></i> Career</a>
+        <a href="{{ route('contact') }}"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="{{ route('faq') }}"><i class="fas fa-question-circle"></i> FAQs</a>
+    </div>
+
+
+        <!-- Language -->
+        <div class="sb-lang">
+            <span>Bahasa</span>
+            <div class="sb-lang-options">
+                <a href="{{ LaravelLocalization::getLocalizedURL('id') }}">🇮🇩 Bahasa</a>
+                <a href="{{ LaravelLocalization::getLocalizedURL('en') }}">🇬🇧 English</a>
+            </div>
+        </div>
+
+        <!-- Logout -->
+        @auth
+        <div class="sb-logout">
+            <a href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form2').submit();">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+            </a>
+            <form id="logout-form2" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+        </div>
+        @endauth
+    </div>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        /* ============================================================
+    IMPORT FONT
+    ============================================================ */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        /* ===== NAVBAR MAIN - FOR DARK BACKGROUND ===== */
-        .navbar-pertamina-dark {
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 15px 0;
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
-            background: transparent !important;
-            border-bottom: none !important;
-        }
 
-        /* ===== DESKTOP NAVBAR - UNTUK BACKGROUND GELAP/HERO ===== */
-        .navbar-pertamina-dark .nav-desktop {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 30px;
-            height: 70px;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: transparent;
-        }
 
-        .navbar-pertamina-dark .nav-content {
-            display: grid;
-            grid-template-columns: repeat(4, auto) auto repeat(4, auto);
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-            position: relative;
-        }
+    /* ============================================================
+    BASE NAVBAR GENERAL STYLE
+    ============================================================ */
+.navbar-umalo-dark {
+    width: 100%;
+    position: fixed;   /* ✅ FIX: bukan absolute */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 0;        /* ✅ FIX: hapus padding penyebab gap */
+    background: transparent;
+}
 
-        /* WARNA PUTIH UNTUK BACKGROUND GELAP */
-        .navbar-pertamina-dark .nav-link {
-            color: #ffffff !important;
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-size: 14.5px;
-            letter-spacing: 0.3px;
-            padding: 8px 0 !important;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
 
-        .navbar-pertamina-dark .nav-link::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            height: 2px;
-            width: 0;
-            background: #ffffff;
-            transition: all 0.3s ease;
-        }
+    /* Desktop nav container */
+    .nav-desktop {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70px;
+        width: 100%;
+        padding: 0 30px;
+        position: absolute;
+        top: 0;
+    }
 
-        .navbar-pertamina-dark .nav-link:hover,
-        .navbar-pertamina-dark .nav-link.active {
-            color: #ffffff !important;
-            font-weight: 600;
-        }
+    /* Grid menu desktop */
+    .nav-content {
+        display: grid;
+        grid-template-columns: repeat(4, auto) auto repeat(4, auto);
+        gap: 40px;
+        align-items: center;
+    }
 
-        .navbar-pertamina-dark .nav-link:hover::after,
-        .navbar-pertamina-dark .nav-link.active::after {
-            width: 100%;
-        }
+    /* Navigation link */
+    .nav-link {
+        color: #fff !important;
+        font-size: 14.5px;
+        white-space: nowrap;
+        letter-spacing: .3px;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 0 !important;
+        position: relative;
+        text-shadow: 0 1px 3px rgba(0,0,0,.4);
+        transition: .3s;
+    }
 
-        .navbar-pertamina-dark .nav-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-            margin: 0 20px;
-        }
+    .nav-link::after {
+        content: "";
+        width: 0;
+        height: 2px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: #fff;
+        transition: .3s;
+    }
 
-        .navbar-pertamina-dark .nav-logo img {
-            height: 60px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15)) brightness(1.1);
-        }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        width: 100%;
+    }
 
-        .navbar-pertamina-dark .nav-logo:hover img {
-            transform: scale(1.05);
-        }
+    /* Logo */
+    .nav-logo img {
+        height: 60px;
+        transition: .35s;
+        filter: drop-shadow(0 2px 8px rgba(0,0,0,.15)) brightness(1.1);
+    }
 
-        .navbar-pertamina-dark .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: absolute;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+    /* Action buttons (login / WA) */
+    .nav-actions {
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 16px;
+    }
 
-        /* LIQUID GLASS EFFECT - PUTIH TRANSPARAN UNTUK BACKGROUND GELAP */
-        .navbar-pertamina-dark .login-btn {
-            background: rgba(255, 255, 255, 0.15) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
-            color: #fff !important;
-            padding: 9px 26px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            white-space: nowrap;
-            font-size: 14px;
-            letter-spacing: 0.4px;
-            font-family: 'Poppins', sans-serif;
-            flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+    /* Login button */
+    .login-btn {
+        background: #107c1040; !important;
+        border: 1.5px solid #107c1040; !important;
+        backdrop-filter: blur(12px);
+        color: #fff !important;
+        padding: 9px 26px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: .3s;
+    }
 
-        .navbar-pertamina-dark .login-btn:hover {
-            background: rgba(255, 255, 255, 0.25) !important;
-            border-color: rgba(255, 255, 255, 0.4) !important;
-            transform: translateY(-2px);
-            color: #fff !important;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-        }
+    .login-btn:hover {
+        background: #107c1070 !important;
+    }
 
-        .navbar-pertamina-dark .nav-actions .dropdown-menu {
-            border: 1px solid rgba(0, 0, 0, 0.1) !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
-            border-radius: 12px;
-            padding: 10px 0;
-            min-width: 200px;
-            background: #ffffff !important;
-            margin-top: 15px;
-        }
+    /* WhatsApp button */
+    .btn-whatsapp {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items:center;
+        justify-content:center;
+        background: rgba(37,211,102,.2);
+        border: 1.5px solid rgba(37,211,102,.35);
+        color:#fff !important;
+        transition:.3s;
+    }
 
-        .navbar-pertamina-dark .nav-actions .dropdown-item {
-            padding: 12px 20px;
-            color: #1a1a1a !important;
-            transition: all 0.2s ease;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-        }
+    .btn-whatsapp:hover {
+        transform: scale(1.1);
+    }
 
-        .navbar-pertamina-dark .nav-actions .dropdown-item:hover {
-            background: rgba(16, 124, 16, 0.08) !important;
-            color: #107c10 !important;
-            padding-left: 24px;
-        }
 
-        .navbar-pertamina-dark .nav-actions .dropdown-divider {
-            margin: 8px 0;
-            opacity: 0.15;
-        }
 
-        /* WHATSAPP BUTTON - LIQUID GLASS HIJAU */
-        .navbar-pertamina-dark .btn-whatsapp {
-            background: rgba(37, 211, 102, 0.2) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(37, 211, 102, 0.35);
-            color: #ffffff !important;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.15);
-        }
+    /* ============================================================
+    STICKY DESKTOP NAVBAR
+    ============================================================ */
+    .navbar-umalo-dark.sticky {
+        position: fixed !important;
+        background: rgba(255,255,255,.95) !important;
+        backdrop-filter: blur(12px);
+        height: 70px;
+        padding: 0 !important;
+        box-shadow: 0 4px 18px rgba(0,0,0,.08);
+        display: flex;
+        align-items: center;
+    }
 
-        .navbar-pertamina-dark .btn-whatsapp:hover {
-            background: rgba(37, 211, 102, 0.35) !important;
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-            border-color: rgba(37, 211, 102, 0.5);
-        }
+    .navbar-umalo-dark.sticky .nav-link {
+        color: #1a1a1a !important;
+        text-shadow: none;
+    }
 
-        /* ===== MOBILE NAVBAR - STICKY ===== */
-        .navbar-pertamina-dark .nav-mobile {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            height: 60px;
-            width: 100%;
-            position: sticky;
-            top: 0;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            z-index: 1000;
-        }
+    .navbar-umalo-dark.sticky .nav-link::after {
+        background: #107c10;
+    }
 
-        .navbar-pertamina-dark .nav-mobile-logo {
-            height: 40px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
+    .navbar-umalo-dark.sticky .nav-logo img {
+        height: 50px;
+    }
 
-        .navbar-pertamina-dark .nav-mobile-logo img {
-            height: 100%;
-            width: auto;
-            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1)) brightness(1);
-        }
 
-        .navbar-pertamina-dark .hamburger {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            width: 44px;
-            height: 44px;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
 
-        .navbar-pertamina-dark .hamburger:hover {
-            background: rgba(16, 124, 16, 0.08);
-            border-radius: 8px;
-        }
+/* ============================================================
+MOBILE TOP NAVBAR (HEADER) - FIXED & RAPIH
+============================================================ */
+.nav-mobile {
+    display: none;
+    height: 64px;
+    padding: 10px 18px;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    position: fixed;   /* ✅ GANTI dari sticky jadi fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+}
 
-        .navbar-pertamina-dark .hamburger span {
-            width: 24px;
-            height: 2.5px;
-            background: #1a1a1a;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            display: block;
-        }
 
-        .navbar-pertamina-dark .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(7px, 7px);
-        }
+/* Logo kiri */
+.nav-mobile-logo {
+    display: flex;
+    align-items: center;
+}
 
-        .navbar-pertamina-dark .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
+.nav-mobile-logo img {
+    height: 42px !important;
+    object-fit: contain;
+}
 
-        .navbar-pertamina-dark .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
+/* Hamburger kanan */
+.hamburger {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+    margin-left: auto; /* ✅ PAKSA KE KANAN */
+}
 
-        /* ===== MOBILE MENU ===== */
-        .navbar-pertamina-dark .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            max-height: calc(100vh - 60px);
-            background: white;
-            overflow-y: auto;
-            flex-direction: column;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            z-index: 999;
-            animation: slideDown 0.3s ease;
-        }
+.hamburger:hover {
+    background: rgba(0,0,0,.05);
+}
 
-        .navbar-pertamina-dark .mobile-menu.active {
-            display: flex;
-        }
+.hamburger span {
+    width: 26px;
+    height: 3px;
+    background: #333 !important;
+    border-radius: 2px;
+}
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
-        .navbar-pertamina-dark .mobile-menu-link {
-            display: block;
-            padding: 14px 20px;
-            color: #1a1a1a;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 400;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
-        }
+    /* ============================================================
+    SIDEBAR / DRAWER
+    ============================================================ */
+    #sidebarOverlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.4);
+        display: none;
+        z-index: 9998;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-link:hover,
-        .navbar-pertamina-dark .mobile-menu-link.active {
-            background: rgba(16, 124, 16, 0.05);
-            color: #107c10;
-            font-weight: 500;
-            padding-left: 24px;
-        }
+    #sidebarMenu {
+        position: fixed;
+        top: 0;
+        left: -320px;
+        width: 320px;
+        height: 100%;
+        background: #fff;
+        padding: 22px;
+        box-shadow: 2px 0 12px rgba(0,0,0,.08);
+        z-index: 9999;
+        transition: .3s ease;
+        border-radius: 0 12px 12px 0;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-divider {
-            height: 1px;
-            background: rgba(0, 0, 0, 0.08);
-            margin: 8px 0;
-        }
+    #sidebarMenu.open { left: 0; }
+    #sidebarOverlay.show { display: block; }
 
-        .navbar-pertamina-dark .mobile-menu-section {
-            padding: 0;
-        }
+    /* Sidebar header */
+    .sb-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-title {
-            padding: 12px 20px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #1a1a1a;
-            background: rgba(16, 124, 16, 0.03);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    #sbClose {
+        font-size: 32px;
+        color: #444;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-sublink {
-            display: block;
-            padding: 12px 20px 12px 40px;
-            color: #555;
-            text-decoration: none;
-            font-size: 13px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-            transition: all 0.2s ease;
-        }
+    /* Sidebar profile */
+    .sb-profile {
+        display: flex;
+        align-items: center;
+        margin: 24px 0;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-sublink:hover,
-        .navbar-pertamina-dark .mobile-menu-sublink.active {
-            background: rgba(16, 124, 16, 0.05);
-            color: #107c10;
-            font-weight: 500;
-            padding-left: 48px;
-        }
+    .sb-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        margin-right: 12px;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-btn {
-            margin: 8px 16px;
-            padding: 12px 16px;
-            text-align: center;
-            background: linear-gradient(135deg, #107c10 0%, #0d6b0d 100%);
-            color: white !important;
-            text-decoration: none;
-            border-radius: 24px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            border: none;
-            cursor: pointer;
-        }
+    .sb-profile h4 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(16, 124, 16, 0.3);
-        }
+    .sb-profile p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: #777;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-btn.whatsapp {
-            background: linear-gradient(135deg, #25D366 0%, #1FB040 100%);
-        }
+    /* Search */
+    .sb-search {
+        display: flex;
+        margin-bottom: 20px;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-btn.whatsapp:hover {
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
+    .sb-search input {
+        flex: 1;
+        padding: 11px 16px;
+        border-radius: 30px 0 0 30px;
+        border: 1px solid #ccc;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-btn.logout {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-        }
+    .sb-search button {
+        width: 50px;
+        background: #107c10;
+        border: none;
+        color: white;
+        border-radius: 0 30px 30px 0;
+    }
 
-        .navbar-pertamina-dark .mobile-menu-btn.logout:hover {
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
-        }
+    /* Sidebar menu */
+    .sb-menu a {
+        display: block;
+        padding: 14px 0;
+        font-size: 15px;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(0,0,0,.05);
+        color: #111;
+    }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .navbar-pertamina-dark .nav-desktop {
-                display: none;
-            }
+    .sb-menu a i { width: 24px; }
 
-            .navbar-pertamina-dark .nav-mobile {
-                display: flex;
-            }
-        }
+    /* Language section */
+    .sb-lang {
+        margin-top: 20px;
+        font-weight: 600;
+    }
 
-        @media (max-width: 480px) {
-            .navbar-pertamina-dark .nav-mobile {
-                padding: 10px 12px;
-                height: 55px;
-            }
+    .sb-lang-options a {
+        display: inline-block;
+        padding: 8px 16px;
+        margin-right: 10px;
+        background: #f4f4f4;
+        border-radius: 8px;
+        font-size: 13px;
+    }
 
-            .navbar-pertamina-dark .nav-mobile-logo {
-                height: 36px;
-            }
+    /* Logout */
+    .sb-logout a {
+        display: block;
+        padding: 14px 0;
+        color: red;
+        font-weight: 600;
+        font-size: 15px;
+    }
 
-            .navbar-pertamina-dark .hamburger {
-                width: 40px;
-                height: 40px;
-            }
+    .bn-item {
+        color: #555;
+        text-decoration: none;
+        font-size: 12.5px;
+        font-weight: 500;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
 
-            .navbar-pertamina-dark .hamburger span {
-                width: 20px;
-                height: 2px;
-            }
+    .bn-item i {
+        font-size: 22px !important;
+        transition: .2s;
+    }
 
-            .navbar-pertamina-dark .mobile-menu {
-                top: 55px;
-                max-height: calc(100vh - 55px);
-            }
+    .bn-item.active {
+        color: #107c10;
+        font-weight: 600;
+    }
 
-            .navbar-pertamina-dark .mobile-menu-link {
-                padding: 12px 16px;
-                font-size: 13px;
-            }
+    .bn-item.active i {
+        transform: scale(1.2);
+    }
 
-            .navbar-pertamina-dark .mobile-menu-link:hover,
-            .navbar-pertamina-dark .mobile-menu-link.active {
-                padding-left: 22px;
-            }
 
-            .navbar-pertamina-dark .mobile-menu-title {
-                padding: 10px 16px;
-                font-size: 11px;
-            }
 
-            .navbar-pertamina-dark .mobile-menu-sublink {
-                padding: 10px 16px 10px 36px;
-                font-size: 12px;
-            }
+    /* ============================================================
+    RESPONSIVE BREAKPOINT
+    ============================================================ */
+    @media (max-width: 1024px) {
+        .nav-desktop { display: none !important; }
+        .nav-mobile { display: flex !important; }
+        body { padding-bottom: 75px !important; }
+    }
 
-            .navbar-pertamina-dark .mobile-menu-sublink:hover,
-            .navbar-pertamina-dark .mobile-menu-sublink.active {
-                padding-left: 44px;
-            }
-
-            .navbar-pertamina-dark .mobile-menu-btn {
-                margin: 6px 12px;
-                padding: 10px 14px;
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .navbar-pertamina-dark .nav-mobile {
-                padding: 8px 10px;
-            }
-
-            .navbar-pertamina-dark .nav-mobile-logo {
-                height: 32px;
-            }
-
-            .navbar-pertamina-dark .hamburger {
-                width: 38px;
-                height: 38px;
-            }
-
-            .navbar-pertamina-dark .hamburger span {
-                width: 18px;
-            }
-        }
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.getElementById('hamburger');
-            const mobileMenu = document.getElementById('mobileMenu');
+        document.addEventListener("DOMContentLoaded", function () {
 
-            // Hamburger toggle
-            hamburger.addEventListener('click', function() {
-                hamburger.classList.toggle('active');
-                mobileMenu.classList.toggle('active');
-                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
-            });
+        /* =======================================================
+        *  STICKY DESKTOP NAVBAR
+        * ======================================================= */
+const navbar = document.querySelector(".navbar-umalo-dark");
 
-            // Close menu saat klik link
-            document.querySelectorAll('.mobile-menu-link, .mobile-menu-sublink, .mobile-menu-btn').forEach(item => {
-                item.addEventListener('click', function() {
-                    hamburger.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                });
-            });
+window.addEventListener("scroll", function () {
+    // ✅ HANYA JALAN DI DESKTOP
+    if (window.innerWidth > 1024) {
+        if (window.scrollY > 50) {
+            navbar.classList.add("sticky");
+        } else {
+            navbar.classList.remove("sticky");
+        }
+    }
+});
 
-            // Close menu saat klik di luar
-            document.addEventListener('click', function(e) {
-                if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-                    hamburger.classList.remove('active');
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
+
+
+
+        /* =======================================================
+        *  MOBILE HAMBURGER → OPEN SIDEBAR
+        * ======================================================= */
+        const hamburger = document.getElementById("hamburger");
+        const sidebar = document.getElementById("sidebarMenu");
+        const overlay = document.getElementById("sidebarOverlay");
+        const sbClose = document.getElementById("sbClose");
+
+        // Open sidebar
+        hamburger.addEventListener("click", function () {
+            sidebar.classList.add("open");
+            overlay.classList.add("show");
+            document.body.style.overflow = "hidden";
+        });
+
+        // Close sidebar (X button)
+        sbClose.addEventListener("click", closeSidebar);
+
+        // Close on overlay click
+        overlay.addEventListener("click", closeSidebar);
+
+        function closeSidebar() {
+            sidebar.classList.remove("open");
+            overlay.classList.remove("show");
+            document.body.style.overflow = "auto";
+        }
+
+
+
+        /* =======================================================
+        *  CLOSE SIDEBAR WHEN CLICKING LINKS INSIDE
+        * ======================================================= */
+        const sidebarLinks = sidebar.querySelectorAll("a");
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener("click", function () {
+                closeSidebar(); 
             });
         });
+
+
+
+        /* =======================================================
+        *  OPTIONAL: AUTO CLOSE SIDEBAR WHEN RESIZE TO DESKTOP
+        * ======================================================= */
+        window.addEventListener("resize", function () {
+            if (window.innerWidth > 1024) {
+                closeSidebar();
+            }
+        });
+
+
+
+        /* =======================================================
+        *  HAMBURGER ANIMATION (TURN INTO X)
+        * ======================================================= */
+        hamburger.addEventListener("click", function () {
+            this.classList.toggle("active");
+        });
+
+    });
+
     </script>
 
-</body>
+    </body>

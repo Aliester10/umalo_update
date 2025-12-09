@@ -1,4 +1,3 @@
-
 <div class="container-fluid service py-5 mb-5 smooth-section">
     <div class="container py-5">
 
@@ -22,7 +21,7 @@
             @endphp
 
             @foreach ($services as $index => $service)
-                <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp"
+                <div class="col-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp"
                      data-wow-delay="{{ 0.2 + $index * 0.1 }}s">
                     <div class="service-item">
                         <div class="service-img">

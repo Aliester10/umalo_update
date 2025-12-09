@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         // Ambil data produk terbatas 6 item
-        $products = Product::take(6)->get();
+        $products = Product::all()->take(4);
 
         // Ambil semua banner/slider
         $sliders = Banner::all();

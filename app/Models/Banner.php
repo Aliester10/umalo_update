@@ -11,9 +11,9 @@ class Banner extends Model
 
     protected $table = 't_banner';
 
-    // Define the fillable fields
     protected $fillable = [
-        'image_url',
+        'image_url',       // DESKTOP
+        'image_mobile',    // MOBILE
         'title',
         'subtitle',
         'description',

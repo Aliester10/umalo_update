@@ -3,8 +3,8 @@
     <div class="container py-5">
         <div class="row g-4 justify-content-center">
 
-            <!-- About Image -->
-            <div class="col-xl-6 wow fadeInRight about-image" data-wow-delay="0.2s">
+            <!-- About Image - Kiri di mobile -->
+            <div class="col-xl-6 order-1 order-xl-1 wow fadeInRight about-image" data-wow-delay="0.2s">
                 <div class="bg-white rounded p-2 h-100 overflow-hidden">
                     <img
                         src="{{ $company && $company->about_gambar ? asset('storage/' . $company->about_gambar) : asset('assets/img/default_about2.jpg') }}"
@@ -16,18 +16,18 @@
                 </div>
             </div>
 
-            <!-- About Content -->
-            <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+            <!-- About Content - Kanan di mobile -->
+            <div class="col-xl-6 order-2 order-xl-2 wow fadeInLeft" data-wow-delay="0. 2s">
                 <div class="about-item-content bg-white rounded p-5 h-100">
 
-                    <h4>{{ $company->slogan ?? 'Way To Know' }}</h4>
+                    <h4>{{ $company->slogan ??  'Way To Know' }}</h4>
 
                     <h1 class="display-4 mb-4 text-primary">
-                        {{ $company->company_name ?? 'Umalo Sedia Tekno' }}
+                        {{ $company->company_name ??  'Umalo Sedia Tekno' }}
                     </h1>
 
                     <p>
-                        {{ $company->short_history ?? 'PT. Umalo Sedia Tekno adalah penyedia solusi teknologi cerdas yang berfokus pada integrasi sistem dan inovasi.' }}
+                        {{ $company->short_history ?? 'PT.  Umalo Sedia Tekno adalah penyedia solusi teknologi cerdas yang berfokus pada integrasi sistem dan inovasi.' }}
                     </p>
 
                     <a class="btn btn-primary btn-sm py-3 px-5 mt-5" href="{{ route('about') }}">

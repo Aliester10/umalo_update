@@ -15,6 +15,7 @@
 
 <!-- Template Javascript -->
 <script src="{{ asset('assets/js/member/main.js') }}"></script>
+<script src="{{ asset('assets/js/home.js') }}"></script>
 
 
 
